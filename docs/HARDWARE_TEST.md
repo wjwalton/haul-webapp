@@ -16,6 +16,13 @@ Setup, either:
 Logs: the update log and `raw.jsonl` download to the laptop's Downloads folder. Copy them into `logs/` in
 the project on the dev PC (git-ignored; they hold the bike's serials) for review.
 
+Before going to the bike:
+- On the laptop: Chrome up to date (note the version from `chrome://version`), the beta site opens, and
+  `M1B0306s0.bin` is on the laptop for step 2.
+- The laptop is charged and its charger is with you. The bike battery is at least 30 %.
+- The bike isn't paired in Windows Bluetooth settings, and no phone app is connected to it.
+- You know how to power-cycle the bike (off, then on) quickly: step 2 needs it.
+
 ## 1. Read-only connect (milestone 2): Windows, and Linux
 
 Windows: Chrome first, then Edge. The bike must **not** be paired in Windows Bluetooth settings (remove it
@@ -45,8 +52,8 @@ distribution, the browser and its version, and how it was installed (deb / rpm /
      and a "Reflash the same version" checkbox above it. Don't tick it in this step. On Linux, "Verified
      browser for updates" is ✗ as well.
 7. Debug panel: note the …0001 notification sizes (MTU page mode), whether **0xFE59** is listed, and
-   **…0011's properties** (write without response / with response). Download `raw.jsonl` and check
-   that `python3 reference/globe_capture.py replay <the downloaded .jsonl>` reads it.
+   **…0011's properties** (write without response / with response). Download `raw.jsonl`. Later, on the
+   dev PC: `python3 reference/globe_capture.py replay <the downloaded .jsonl>` must read it.
 8. If a PIN-locked bike is to hand (locked earlier with another app; this app never sends PIN
    commands): connect to it. Reading works, the panel shows "PIN-locked", and the checklist's "Awake and
    unlocked" is ✗.
@@ -92,7 +99,13 @@ If anything fails, don't retry blindly. Download the log, then:
 - Link lost mid-stream: reconnect (power-cycle the bike first if no live data comes back) and flash again.
 - Display stuck showing **bypass**: power-cycle the bike, reconnect, then do the recovery flash.
 
-Send the update log, the raw.jsonl and a note of what the display showed.
+Bring back (copy into `logs/` on the dev PC):
+- Every update log (`update_<bike>_<time>.txt`), successful or not.
+- The `raw.jsonl` from step 1 and one from the session with the flash (download it after the
+  power-cycle and Reconnect: it holds both connections).
+- Notes: Windows and Chrome versions; the debug panel's …0011 properties, FE59 yes / no and notification
+  sizes; how long the flash took; what the bike's display showed during and after it; anything that
+  looked wrong, even if it worked.
 
 ## 3. HMI DFU on Windows (milestone 4, deferred: no HMI to test on yet)
 
