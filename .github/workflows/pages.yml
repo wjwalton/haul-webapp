@@ -1,0 +1,55 @@
+# Build and publish to GitHub Pages on every push to main.
+# One-time setup on GitHub: Settings → Pages → Build and deployment → Source: "GitHub Actions".
+#
+# The firmware images and the real-bike captures are not in the repo, so this build has no built-in
+# firmware (the update screen asks for the file from disk; only the official file is accepted) and the
+# tests that need those files are skipped.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      # The test phase: the header and every update log say "beta" and the commit. Remove for release.
+      - run: npm run build
+        env:
+          VITE_CHANNEL: beta
+      - name: No firmware in the published site
+        run: |
+          if find dist -iname '*.bin' -o -iname '*.zip' | grep -q .; then
+            echo "dist/ contains a .bin or .zip: refusing to publish firmware"; exit 1
+          fi
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

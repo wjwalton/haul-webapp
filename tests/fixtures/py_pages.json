@@ -1,0 +1,7403 @@
+{
+ "cases": [
+  {
+   "hex": "38000132303232303938c5de6a4700000003ffff",
+   "name": "protocol.md page 56",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "380001323032323039ae01de6a4700000003ffff",
+   "name": "protocol.md page 56 (doc bytes)",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0902990000001492ff37caff00007c0100000000",
+   "name": "android page 9",
+   "raw": {
+    "assist": 2,
+    "batt_current_ma": -110,
+    "batt_mv": 51767,
+    "batt_remaining_cap_raw": 0,
+    "batt_temp_c": 20,
+    "motor_rpm": 380,
+    "motor_temp_c": 255,
+    "speed": 15.3,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 2,
+    "batt_current_ma": -110,
+    "batt_mv": 51767,
+    "batt_remaining_cap_raw": 0,
+    "batt_temp_c": 20,
+    "motor_rpm": 380,
+    "speed": 15.3,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07ff000000008b010000b80b000030330b004d00",
+   "name": "android page 7 assist 255",
+   "raw": {
+    "odometer_m": 734000,
+    "range_est": 77,
+    "ride_time_s": 395,
+    "speed": 0.0,
+    "trip_m": 3000,
+    "walk_mode": true
+   },
+   "stripped": {
+    "odometer_m": 734000,
+    "range_est": 77,
+    "ride_time_s": 395,
+    "speed": 0.0,
+    "trip_m": 3000,
+    "walk_mode": true
+   }
+  },
+  {
+   "hex": "0a01000005501027010000000001ff0000000000",
+   "name": "android page 10",
+   "raw": {
+    "assist": 1,
+    "assist_levels": 5,
+    "batt_full_cap_raw": 10000,
+    "batt_pct": 80,
+    "headlight": 255,
+    "key_flags": "010000000001",
+    "speed": 0.0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 1,
+    "assist_levels": 5,
+    "batt_full_cap_raw": 10000,
+    "batt_pct": 80,
+    "key_flags": "010000000001",
+    "speed": 0.0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "2803ffff05000000ffffffffffffffffffffffff",
+   "name": "android page 40 sentinels",
+   "raw": {
+    "assist": 3,
+    "ccw_raw": 255,
+    "cw_raw": 255,
+    "error_bits": 5,
+    "last_charge_epoch": 4294967295,
+    "motor_voltage_raw": 65535,
+    "speed": 6553.5,
+    "throttle_raw": 255,
+    "torque_voltage_raw": 65535,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 3,
+    "error_bits": 5,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0802000000000000000000000000000000003e00",
+   "name": "android page 8 cadence 62",
+   "raw": {
+    "assist": 2,
+    "cadence_raw": 62,
+    "pedal_power_raw": 0,
+    "ride_time_s": 0,
+    "speed": 0.0,
+    "torque_nm": 0.0,
+    "trip_m": 0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 2,
+    "cadence_raw": 62,
+    "pedal_power_raw": 0,
+    "ride_time_s": 0,
+    "speed": 0.0,
+    "torque_nm": 0.0,
+    "trip_m": 0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "2801000000000100ffffffffffffff00ffffffff",
+   "name": "page 40 C101 throttle under",
+   "raw": {
+    "assist": 1,
+    "ccw_raw": 255,
+    "cw_raw": 255,
+    "error_bits": 65536,
+    "last_charge_epoch": 4294967295,
+    "motor_voltage_raw": 65535,
+    "speed": 0.0,
+    "throttle_raw": 255,
+    "torque_voltage_raw": 65535,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 1,
+    "error_bits": 65536,
+    "speed": 0.0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "3701ff010000000000000100000000000000ffff",
+   "name": "page 55 C101 throttle under",
+   "raw": {
+    "assist": 1,
+    "batt_err_code": 0,
+    "ctrl_err_code": 0,
+    "error_bits": 65536,
+    "headlight": 1,
+    "motor_err_code": 0,
+    "sensitivity": 255,
+    "shutdown_timer_s": 0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 1,
+    "batt_err_code": 0,
+    "ctrl_err_code": 0,
+    "error_bits": 65536,
+    "headlight": 1,
+    "motor_err_code": 0,
+    "shutdown_timer_s": 0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0b00000000000000000000000000000000000000",
+   "name": "pid 11 zeros",
+   "raw": {
+    "motor_serial1": ""
+   },
+   "stripped": {
+    "motor_serial1": ""
+   }
+  },
+  {
+   "hex": "0bffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 11 ff",
+   "raw": {
+    "motor_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0b68af26170973c3a1fdd8546f01751bbd036a8d",
+   "name": "pid 11 random 0",
+   "raw": {
+    "motor_serial1": "h\ufffd&\u0017\ts\ufffd\ufffd\ufffd\ufffdTo\u0001u\u001b\ufffd"
+   },
+   "stripped": {
+    "motor_serial1": "h\ufffd&\u0017\ts\ufffd\ufffd\ufffd\ufffdTo\u0001u\u001b\ufffd"
+   }
+  },
+  {
+   "hex": "0bb6316ac7496d7636fcda6e1aee5c824ecdc0b7",
+   "name": "pid 11 random 1",
+   "raw": {
+    "motor_serial1": "\ufffd1j\ufffdImv6\ufffd\ufffdn\u001a\ufffd\\\ufffdN"
+   },
+   "stripped": {
+    "motor_serial1": "\ufffd1j\ufffdImv6\ufffd\ufffdn\u001a\ufffd\\\ufffdN"
+   }
+  },
+  {
+   "hex": "0b1d2097afc04fcb8aac38648ddef14b4d217bc1",
+   "name": "pid 11 random 2",
+   "raw": {
+    "motor_serial1": "\ufffd\ufffd\ufffdO\ufffd\ufffd\ufffd8d\ufffd\ufffd\ufffdKM"
+   },
+   "stripped": {
+    "motor_serial1": "\ufffd\ufffd\ufffdO\ufffd\ufffd\ufffd8d\ufffd\ufffd\ufffdKM"
+   }
+  },
+  {
+   "hex": "0beed30e8ec92f601db01535f187c9c46430e656",
+   "name": "pid 11 random 3",
+   "raw": {
+    "motor_serial1": "\ufffd\ufffd\u000e\ufffd\ufffd/`\u001d\ufffd\u00155\ufffd\ufffd\ufffd\ufffdd"
+   },
+   "stripped": {
+    "motor_serial1": "\ufffd\ufffd\u000e\ufffd\ufffd/`\u001d\ufffd\u00155\ufffd\ufffd\ufffd\ufffdd"
+   }
+  },
+  {
+   "hex": "0b",
+   "name": "pid 11 short 1",
+   "raw": {
+    "motor_serial1": ""
+   },
+   "stripped": {
+    "motor_serial1": ""
+   }
+  },
+  {
+   "hex": "0b60",
+   "name": "pid 11 short 2",
+   "raw": {
+    "motor_serial1": "`"
+   },
+   "stripped": {
+    "motor_serial1": "`"
+   }
+  },
+  {
+   "hex": "0b9ea80b35",
+   "name": "pid 11 short 5",
+   "raw": {
+    "motor_serial1": "\ufffd\ufffd\u000b5"
+   },
+   "stripped": {
+    "motor_serial1": "\ufffd\ufffd\u000b5"
+   }
+  },
+  {
+   "hex": "0b71509659c5a0a23a",
+   "name": "pid 11 short 9",
+   "raw": {
+    "motor_serial1": "qP\ufffdY\ufffd\ufffd\ufffd:"
+   },
+   "stripped": {
+    "motor_serial1": "qP\ufffdY\ufffd\ufffd\ufffd:"
+   }
+  },
+  {
+   "hex": "0b577a24ebfcc378240108541b2ab9",
+   "name": "pid 11 short 15",
+   "raw": {
+    "motor_serial1": "Wz$\ufffd\ufffd\ufffdx$\u0001\bT\u001b*\ufffd"
+   },
+   "stripped": {
+    "motor_serial1": "Wz$\ufffd\ufffd\ufffdx$\u0001\bT\u001b*\ufffd"
+   }
+  },
+  {
+   "hex": "0b044bdd9629c24a6f43b6b0e6245b25ac2942",
+   "name": "pid 11 short 19",
+   "raw": {
+    "motor_serial1": "\u0004K\ufffd\ufffd)\ufffdJoC\ufffd\ufffd\ufffd$[%\ufffd"
+   },
+   "stripped": {
+    "motor_serial1": "\u0004K\ufffd\ufffd)\ufffdJoC\ufffd\ufffd\ufffd$[%\ufffd"
+   }
+  },
+  {
+   "hex": "0c00000000000000000000000000000000000000",
+   "name": "pid 12 zeros",
+   "raw": {
+    "motor_serial2": ""
+   },
+   "stripped": {
+    "motor_serial2": ""
+   }
+  },
+  {
+   "hex": "0cffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 12 ff",
+   "raw": {
+    "motor_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0cef9f8c0d7a8e3d20ed57c8152d5eeef3d24ad7",
+   "name": "pid 12 random 0",
+   "raw": {
+    "motor_serial2": "\ufffd\ufffd\ufffd\rz\ufffd= \ufffdW\ufffd\u0015-^\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_serial2": "\ufffd\ufffd\ufffd\rz\ufffd= \ufffdW\ufffd\u0015-^\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0c26e03f036e9a5215795d94a5f721d3917d009c",
+   "name": "pid 12 random 1",
+   "raw": {
+    "motor_serial2": "&\ufffd?\u0003n\ufffdR\u0015y]\ufffd\ufffd\ufffd!\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_serial2": "&\ufffd?\u0003n\ufffdR\u0015y]\ufffd\ufffd\ufffd!\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0c5a79c08f0a3f67f4417ef754064538572e4d6e",
+   "name": "pid 12 random 2",
+   "raw": {
+    "motor_serial2": "Zy\ufffd\ufffd\n?g\ufffdA~\ufffdT\u0006E8W"
+   },
+   "stripped": {
+    "motor_serial2": "Zy\ufffd\ufffd\n?g\ufffdA~\ufffdT\u0006E8W"
+   }
+  },
+  {
+   "hex": "0cf4b88c9de0e4ea5c8e90a22c40b3846542f97a",
+   "name": "pid 12 random 3",
+   "raw": {
+    "motor_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\\\ufffd\ufffd\ufffd,@\ufffd\ufffde"
+   },
+   "stripped": {
+    "motor_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\\\ufffd\ufffd\ufffd,@\ufffd\ufffde"
+   }
+  },
+  {
+   "hex": "0c",
+   "name": "pid 12 short 1",
+   "raw": {
+    "motor_serial2": ""
+   },
+   "stripped": {
+    "motor_serial2": ""
+   }
+  },
+  {
+   "hex": "0c97",
+   "name": "pid 12 short 2",
+   "raw": {
+    "motor_serial2": "\ufffd"
+   },
+   "stripped": {
+    "motor_serial2": "\ufffd"
+   }
+  },
+  {
+   "hex": "0cbabe582b",
+   "name": "pid 12 short 5",
+   "raw": {
+    "motor_serial2": "\ufffd\ufffdX+"
+   },
+   "stripped": {
+    "motor_serial2": "\ufffd\ufffdX+"
+   }
+  },
+  {
+   "hex": "0c5b8f4edfd10e9c5a",
+   "name": "pid 12 short 9",
+   "raw": {
+    "motor_serial2": "[\ufffdN\ufffd\ufffd\u000e\ufffdZ"
+   },
+   "stripped": {
+    "motor_serial2": "[\ufffdN\ufffd\ufffd\u000e\ufffdZ"
+   }
+  },
+  {
+   "hex": "0c42dc9aca0ed85cf4eca66a1d0b80",
+   "name": "pid 12 short 15",
+   "raw": {
+    "motor_serial2": "B\ufffd\ufffd\ufffd\u000e\ufffd\\\ufffd\ufffd\ufffdj\u001d\u000b\ufffd"
+   },
+   "stripped": {
+    "motor_serial2": "B\ufffd\ufffd\ufffd\u000e\ufffd\\\ufffd\ufffd\ufffdj\u001d\u000b\ufffd"
+   }
+  },
+  {
+   "hex": "0c29319f01fc94d47038d22a718b95c8ea7e88",
+   "name": "pid 12 short 19",
+   "raw": {
+    "motor_serial2": ")1\ufffd\u0001\ufffd\ufffd\ufffdp8\ufffd*q\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_serial2": ")1\ufffd\u0001\ufffd\ufffd\ufffdp8\ufffd*q\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0d00000000000000000000000000000000000000",
+   "name": "pid 13 zeros",
+   "raw": {
+    "motor_model": ""
+   },
+   "stripped": {
+    "motor_model": ""
+   }
+  },
+  {
+   "hex": "0dffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 13 ff",
+   "raw": {
+    "motor_model": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_model": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0d081b43ed7e2d2cb41c03526b8cf6f3a59c2c4d",
+   "name": "pid 13 random 0",
+   "raw": {
+    "motor_model": "\b\u001bC\ufffd~-,\ufffd\u001c\u0003Rk\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_model": "\b\u001bC\ufffd~-,\ufffd\u001c\u0003Rk\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0da983655bffaa0c7d97dec308fd759f63daf499",
+   "name": "pid 13 random 1",
+   "raw": {
+    "motor_model": "\ufffd\ufffde[\ufffd\ufffd\f}\ufffd\ufffd\ufffd\b\ufffdu\ufffdc"
+   },
+   "stripped": {
+    "motor_model": "\ufffd\ufffde[\ufffd\ufffd\f}\ufffd\ufffd\ufffd\b\ufffdu\ufffdc"
+   }
+  },
+  {
+   "hex": "0d1ed0fbc4ee0bac76d92fd5cbd39c11474d189e",
+   "name": "pid 13 random 2",
+   "raw": {
+    "motor_model": "\ufffd\ufffd\ufffd\ufffd\u000b\ufffdv\ufffd/\ufffd\ufffd\ufffd\ufffd\u0011G"
+   },
+   "stripped": {
+    "motor_model": "\ufffd\ufffd\ufffd\ufffd\u000b\ufffdv\ufffd/\ufffd\ufffd\ufffd\ufffd\u0011G"
+   }
+  },
+  {
+   "hex": "0d965a033397bbfe3736fca44ab119895474a2d4",
+   "name": "pid 13 random 3",
+   "raw": {
+    "motor_model": "\ufffdZ\u00033\ufffd\ufffd\ufffd76\ufffd\ufffdJ\ufffd\u0019\ufffdT"
+   },
+   "stripped": {
+    "motor_model": "\ufffdZ\u00033\ufffd\ufffd\ufffd76\ufffd\ufffdJ\ufffd\u0019\ufffdT"
+   }
+  },
+  {
+   "hex": "0d",
+   "name": "pid 13 short 1",
+   "raw": {
+    "motor_model": ""
+   },
+   "stripped": {
+    "motor_model": ""
+   }
+  },
+  {
+   "hex": "0d05",
+   "name": "pid 13 short 2",
+   "raw": {
+    "motor_model": "\u0005"
+   },
+   "stripped": {
+    "motor_model": "\u0005"
+   }
+  },
+  {
+   "hex": "0dd836efd5",
+   "name": "pid 13 short 5",
+   "raw": {
+    "motor_model": "\ufffd6\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_model": "\ufffd6\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0d721c46b4432fec56",
+   "name": "pid 13 short 9",
+   "raw": {
+    "motor_model": "r\u001cF\ufffdC/\ufffdV"
+   },
+   "stripped": {
+    "motor_model": "r\u001cF\ufffdC/\ufffdV"
+   }
+  },
+  {
+   "hex": "0d6bda445ac0acf9b56ac1c6a65d31",
+   "name": "pid 13 short 15",
+   "raw": {
+    "motor_model": "k\ufffdDZ\ufffd\ufffd\ufffd\ufffdj\ufffd\ufffd\ufffd]1"
+   },
+   "stripped": {
+    "motor_model": "k\ufffdDZ\ufffd\ufffd\ufffd\ufffdj\ufffd\ufffd\ufffd]1"
+   }
+  },
+  {
+   "hex": "0dac220db8fd8999d5e9dba37063e62a10f49e",
+   "name": "pid 13 short 19",
+   "raw": {
+    "motor_model": "\ufffd\"\r\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdpc\ufffd*\u0010"
+   },
+   "stripped": {
+    "motor_model": "\ufffd\"\r\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdpc\ufffd*\u0010"
+   }
+  },
+  {
+   "hex": "0e00000000000000000000000000000000000000",
+   "name": "pid 14 zeros",
+   "raw": {
+    "motor_sw": ""
+   },
+   "stripped": {
+    "motor_sw": ""
+   }
+  },
+  {
+   "hex": "0effffffffffffffffffffffffffffffffffffff",
+   "name": "pid 14 ff",
+   "raw": {
+    "motor_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0e5079fd3009e9a3b4ad8a93f4bd366387fd9449",
+   "name": "pid 14 random 0",
+   "raw": {
+    "motor_sw": "Py\ufffd0\t\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd6c\ufffd"
+   },
+   "stripped": {
+    "motor_sw": "Py\ufffd0\t\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd6c\ufffd"
+   }
+  },
+  {
+   "hex": "0e4e07ad0e87a93ca123ea0a06f74d5b50aee4da",
+   "name": "pid 14 random 1",
+   "raw": {
+    "motor_sw": "N\u0007\ufffd\u000e\ufffd\ufffd<\ufffd#\ufffd\n\u0006\ufffdM[P"
+   },
+   "stripped": {
+    "motor_sw": "N\u0007\ufffd\u000e\ufffd\ufffd<\ufffd#\ufffd\n\u0006\ufffdM[P"
+   }
+  },
+  {
+   "hex": "0e0580fd32fd67008a71d516e343b8173128eaef",
+   "name": "pid 14 random 2",
+   "raw": {
+    "motor_sw": "\u0005\ufffd\ufffd2\ufffdg"
+   },
+   "stripped": {
+    "motor_sw": "\u0005\ufffd\ufffd2\ufffdg"
+   }
+  },
+  {
+   "hex": "0e964c31d8d93df328d5950e327f2fbd0885334c",
+   "name": "pid 14 random 3",
+   "raw": {
+    "motor_sw": "\ufffdL1\ufffd\ufffd=\ufffd(\ufffd\ufffd\u000e2\u007f/\ufffd\b"
+   },
+   "stripped": {
+    "motor_sw": "\ufffdL1\ufffd\ufffd=\ufffd(\ufffd\ufffd\u000e2\u007f/\ufffd\b"
+   }
+  },
+  {
+   "hex": "0e",
+   "name": "pid 14 short 1",
+   "raw": {
+    "motor_sw": ""
+   },
+   "stripped": {
+    "motor_sw": ""
+   }
+  },
+  {
+   "hex": "0e7f",
+   "name": "pid 14 short 2",
+   "raw": {
+    "motor_sw": "\u007f"
+   },
+   "stripped": {
+    "motor_sw": "\u007f"
+   }
+  },
+  {
+   "hex": "0e1abf30ef",
+   "name": "pid 14 short 5",
+   "raw": {
+    "motor_sw": "\u001a\ufffd0\ufffd"
+   },
+   "stripped": {
+    "motor_sw": "\u001a\ufffd0\ufffd"
+   }
+  },
+  {
+   "hex": "0eec0e42a1ae9aa95c",
+   "name": "pid 14 short 9",
+   "raw": {
+    "motor_sw": "\ufffd\u000eB\ufffd\ufffd\ufffd\ufffd\\"
+   },
+   "stripped": {
+    "motor_sw": "\ufffd\u000eB\ufffd\ufffd\ufffd\ufffd\\"
+   }
+  },
+  {
+   "hex": "0e78f74041cae9b46d6b51dad09f99",
+   "name": "pid 14 short 15",
+   "raw": {
+    "motor_sw": "x\ufffd@A\ufffd\ufffd\ufffdmkQ\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_sw": "x\ufffd@A\ufffd\ufffd\ufffdmkQ\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0eb4559b694becb1d7a819a2dec1c568dabb86",
+   "name": "pid 14 short 19",
+   "raw": {
+    "motor_sw": "\ufffdU\ufffdiK\ufffd\ufffd\ufffd\ufffd\u0019\ufffd\ufffd\ufffd\ufffdh\ufffd"
+   },
+   "stripped": {
+    "motor_sw": "\ufffdU\ufffdiK\ufffd\ufffd\ufffd\ufffd\u0019\ufffd\ufffd\ufffd\ufffdh\ufffd"
+   }
+  },
+  {
+   "hex": "0f00000000000000000000000000000000000000",
+   "name": "pid 15 zeros",
+   "raw": {
+    "motor_hw": ""
+   },
+   "stripped": {
+    "motor_hw": ""
+   }
+  },
+  {
+   "hex": "0fffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 15 ff",
+   "raw": {
+    "motor_hw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_hw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0fc084fec21c5ace4d7792176d694c7f322671b0",
+   "name": "pid 15 random 0",
+   "raw": {
+    "motor_hw": "\ufffd\ufffd\ufffd\ufffd\u001cZ\ufffdMw\ufffd\u0017miL\u007f2"
+   },
+   "stripped": {
+    "motor_hw": "\ufffd\ufffd\ufffd\ufffd\u001cZ\ufffdMw\ufffd\u0017miL\u007f2"
+   }
+  },
+  {
+   "hex": "0f3e0578137e7666b13ff9e65b1814fc9a67c729",
+   "name": "pid 15 random 1",
+   "raw": {
+    "motor_hw": ">\u0005x\u0013~vf\ufffd?\ufffd\ufffd[\u0018\u0014\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_hw": ">\u0005x\u0013~vf\ufffd?\ufffd\ufffd[\u0018\u0014\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0fec9f3dd299aaa0866e72af265d454a9bcc8896",
+   "name": "pid 15 random 2",
+   "raw": {
+    "motor_hw": "\ufffd\ufffd=\ufffd\ufffd\ufffd\ufffd\ufffdnr\ufffd&]EJ\ufffd"
+   },
+   "stripped": {
+    "motor_hw": "\ufffd\ufffd=\ufffd\ufffd\ufffd\ufffd\ufffdnr\ufffd&]EJ\ufffd"
+   }
+  },
+  {
+   "hex": "0fb6e6414f35147f813e85415f6fd59010060999",
+   "name": "pid 15 random 3",
+   "raw": {
+    "motor_hw": "\ufffd\ufffdAO5\u0014\u007f\ufffd>\ufffdA_o\ufffd\ufffd\u0010"
+   },
+   "stripped": {
+    "motor_hw": "\ufffd\ufffdAO5\u0014\u007f\ufffd>\ufffdA_o\ufffd\ufffd\u0010"
+   }
+  },
+  {
+   "hex": "0f",
+   "name": "pid 15 short 1",
+   "raw": {
+    "motor_hw": ""
+   },
+   "stripped": {
+    "motor_hw": ""
+   }
+  },
+  {
+   "hex": "0f22",
+   "name": "pid 15 short 2",
+   "raw": {
+    "motor_hw": "\""
+   },
+   "stripped": {
+    "motor_hw": "\""
+   }
+  },
+  {
+   "hex": "0f7b6dc4b6",
+   "name": "pid 15 short 5",
+   "raw": {
+    "motor_hw": "{m\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_hw": "{m\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0f8eac1bdf3b4a0f1b",
+   "name": "pid 15 short 9",
+   "raw": {
+    "motor_hw": "\ufffd\ufffd\u001b\ufffd;J\u000f\u001b"
+   },
+   "stripped": {
+    "motor_hw": "\ufffd\ufffd\u001b\ufffd;J\u000f\u001b"
+   }
+  },
+  {
+   "hex": "0f1bd6fb676bd792034bfed7b5bfb5",
+   "name": "pid 15 short 15",
+   "raw": {
+    "motor_hw": "\u001b\ufffd\ufffdgk\ufffd\ufffd\u0003K\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_hw": "\u001b\ufffd\ufffdgk\ufffd\ufffd\u0003K\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0fca7f5c842634234c3731ce4b19e7e3acfe40",
+   "name": "pid 15 short 19",
+   "raw": {
+    "motor_hw": "\ufffd\u007f\\\ufffd&4#L71\ufffdK\u0019\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_hw": "\ufffd\u007f\\\ufffd&4#L71\ufffdK\u0019\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1000000000000000000000000000000000000000",
+   "name": "pid 16 zeros",
+   "raw": {
+    "ctrl_serial1": ""
+   },
+   "stripped": {
+    "ctrl_serial1": ""
+   }
+  },
+  {
+   "hex": "10ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 16 ff",
+   "raw": {
+    "ctrl_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "100b46d5b5505763e8632c65a7a96dcbcbfd0b00",
+   "name": "pid 16 random 0",
+   "raw": {
+    "ctrl_serial1": "F\ufffd\ufffdPWc\ufffdc,e\ufffd\ufffdm\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "F\ufffd\ufffdPWc\ufffdc,e\ufffd\ufffdm\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1004c4ae2bdaf0fe2b1c942845674d91733d90ba",
+   "name": "pid 16 random 1",
+   "raw": {
+    "ctrl_serial1": "\u0004\ufffd\ufffd+\ufffd\ufffd\ufffd+\u001c\ufffd(EgM\ufffds"
+   },
+   "stripped": {
+    "ctrl_serial1": "\u0004\ufffd\ufffd+\ufffd\ufffd\ufffd+\u001c\ufffd(EgM\ufffds"
+   }
+  },
+  {
+   "hex": "108fa783f8693d5a7ffd877f8a898ffebf36cede",
+   "name": "pid 16 random 2",
+   "raw": {
+    "ctrl_serial1": "\ufffd\ufffd\ufffd\ufffdi=Z\u007f\ufffd\ufffd\u007f\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "\ufffd\ufffd\ufffd\ufffdi=Z\u007f\ufffd\ufffd\u007f\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "109b62af4d8b36b26c74b42cf745cf2aef397d14",
+   "name": "pid 16 random 3",
+   "raw": {
+    "ctrl_serial1": "\ufffdb\ufffdM\ufffd6\ufffdlt\ufffd,\ufffdE\ufffd*\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "\ufffdb\ufffdM\ufffd6\ufffdlt\ufffd,\ufffdE\ufffd*\ufffd"
+   }
+  },
+  {
+   "hex": "10",
+   "name": "pid 16 short 1",
+   "raw": {
+    "ctrl_serial1": ""
+   },
+   "stripped": {
+    "ctrl_serial1": ""
+   }
+  },
+  {
+   "hex": "1022",
+   "name": "pid 16 short 2",
+   "raw": {
+    "ctrl_serial1": "\""
+   },
+   "stripped": {
+    "ctrl_serial1": "\""
+   }
+  },
+  {
+   "hex": "1029ef2ad4",
+   "name": "pid 16 short 5",
+   "raw": {
+    "ctrl_serial1": ")\ufffd*\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": ")\ufffd*\ufffd"
+   }
+  },
+  {
+   "hex": "10939f1bc6e7c2ce13",
+   "name": "pid 16 short 9",
+   "raw": {
+    "ctrl_serial1": "\ufffd\ufffd\u001b\ufffd\ufffd\ufffd\ufffd\u0013"
+   },
+   "stripped": {
+    "ctrl_serial1": "\ufffd\ufffd\u001b\ufffd\ufffd\ufffd\ufffd\u0013"
+   }
+  },
+  {
+   "hex": "1009182fbe95f153f8100cbd9d3d7e",
+   "name": "pid 16 short 15",
+   "raw": {
+    "ctrl_serial1": "\u0018/\ufffd\ufffd\ufffdS\ufffd\u0010\f\ufffd\ufffd=~"
+   },
+   "stripped": {
+    "ctrl_serial1": "\u0018/\ufffd\ufffd\ufffdS\ufffd\u0010\f\ufffd\ufffd=~"
+   }
+  },
+  {
+   "hex": "101d077e25a0e07a8401fccada31549cda8ef2",
+   "name": "pid 16 short 19",
+   "raw": {
+    "ctrl_serial1": "\u0007~%\ufffd\ufffdz\ufffd\u0001\ufffd\ufffd\ufffd1T\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "\u0007~%\ufffd\ufffdz\ufffd\u0001\ufffd\ufffd\ufffd1T\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1100000000000000000000000000000000000000",
+   "name": "pid 17 zeros",
+   "raw": {
+    "ctrl_serial2": ""
+   },
+   "stripped": {
+    "ctrl_serial2": ""
+   }
+  },
+  {
+   "hex": "11ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 17 ff",
+   "raw": {
+    "ctrl_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "11cb0ad11d1ef872bafe0171309dfc188bfd70ac",
+   "name": "pid 17 random 0",
+   "raw": {
+    "ctrl_serial2": "\ufffd\n\ufffd\u001d\u001e\ufffdr\ufffd\ufffd\u0001q0\ufffd\ufffd\u0018\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial2": "\ufffd\n\ufffd\u001d\u001e\ufffdr\ufffd\ufffd\u0001q0\ufffd\ufffd\u0018\ufffd"
+   }
+  },
+  {
+   "hex": "1170fe337a059a37b901f462212276a251e4b792",
+   "name": "pid 17 random 1",
+   "raw": {
+    "ctrl_serial2": "p\ufffd3z\u0005\ufffd7\ufffd\u0001\ufffdb!\"v\ufffdQ"
+   },
+   "stripped": {
+    "ctrl_serial2": "p\ufffd3z\u0005\ufffd7\ufffd\u0001\ufffdb!\"v\ufffdQ"
+   }
+  },
+  {
+   "hex": "11693e93bf9486c260a4cb32c676508cf9a4a583",
+   "name": "pid 17 random 2",
+   "raw": {
+    "ctrl_serial2": "i>\ufffd\ufffd\ufffd\ufffd\ufffd`\ufffd\ufffd2\ufffdvP\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial2": "i>\ufffd\ufffd\ufffd\ufffd\ufffd`\ufffd\ufffd2\ufffdvP\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "11f9a7decfc23305f396b8442ff507bcaca6fbe7",
+   "name": "pid 17 random 3",
+   "raw": {
+    "ctrl_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd3\u0005\ufffd\ufffd\ufffdD/\ufffd\u0007\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd3\u0005\ufffd\ufffd\ufffdD/\ufffd\u0007\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "11",
+   "name": "pid 17 short 1",
+   "raw": {
+    "ctrl_serial2": ""
+   },
+   "stripped": {
+    "ctrl_serial2": ""
+   }
+  },
+  {
+   "hex": "119c",
+   "name": "pid 17 short 2",
+   "raw": {
+    "ctrl_serial2": "\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial2": "\ufffd"
+   }
+  },
+  {
+   "hex": "11fd092eef",
+   "name": "pid 17 short 5",
+   "raw": {
+    "ctrl_serial2": "\ufffd\t.\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial2": "\ufffd\t.\ufffd"
+   }
+  },
+  {
+   "hex": "11797d79f2a7244415",
+   "name": "pid 17 short 9",
+   "raw": {
+    "ctrl_serial2": "y}y\ufffd\ufffd$D\u0015"
+   },
+   "stripped": {
+    "ctrl_serial2": "y}y\ufffd\ufffd$D\u0015"
+   }
+  },
+  {
+   "hex": "11e2a235ae467bf7d43d4b0d10fcdc",
+   "name": "pid 17 short 15",
+   "raw": {
+    "ctrl_serial2": "\ufffd\ufffd5\ufffdF{\ufffd\ufffd=K\r\u0010\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial2": "\ufffd\ufffd5\ufffdF{\ufffd\ufffd=K\r\u0010\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "111da50b49a8aaa26b446a879b5fac5920f7e3",
+   "name": "pid 17 short 19",
+   "raw": {
+    "ctrl_serial2": "\ufffd\u000bI\ufffd\ufffd\ufffdkDj\ufffd\ufffd_\ufffdY"
+   },
+   "stripped": {
+    "ctrl_serial2": "\ufffd\u000bI\ufffd\ufffd\ufffdkDj\ufffd\ufffd_\ufffdY"
+   }
+  },
+  {
+   "hex": "1200000000000000000000000000000000000000",
+   "name": "pid 18 zeros",
+   "raw": {
+    "ctrl_model": ""
+   },
+   "stripped": {
+    "ctrl_model": ""
+   }
+  },
+  {
+   "hex": "12ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 18 ff",
+   "raw": {
+    "ctrl_model": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "12842be49a9c3ac0eccfdabeb2ad08154724cd09",
+   "name": "pid 18 random 0",
+   "raw": {
+    "ctrl_model": "\ufffd+\ufffd\ufffd\ufffd:\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\b\u0015G"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd+\ufffd\ufffd\ufffd:\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\b\u0015G"
+   }
+  },
+  {
+   "hex": "12f2bc53ac3a2c8f367bf5479b3f03688444024e",
+   "name": "pid 18 random 1",
+   "raw": {
+    "ctrl_model": "\ufffd\ufffdS\ufffd:,\ufffd6{\ufffdG\ufffd?\u0003h\ufffd"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd\ufffdS\ufffd:,\ufffd6{\ufffdG\ufffd?\u0003h\ufffd"
+   }
+  },
+  {
+   "hex": "12066c6ea66aa32b13a066e85a08e4831172081f",
+   "name": "pid 18 random 2",
+   "raw": {
+    "ctrl_model": "\u0006ln\ufffdj\ufffd+\u0013\ufffdf\ufffdZ\b\ufffd\ufffd\u0011"
+   },
+   "stripped": {
+    "ctrl_model": "\u0006ln\ufffdj\ufffd+\u0013\ufffdf\ufffdZ\b\ufffd\ufffd\u0011"
+   }
+  },
+  {
+   "hex": "12aaef2579cabef3fe9197d7d228bc44990b0d82",
+   "name": "pid 18 random 3",
+   "raw": {
+    "ctrl_model": "\ufffd\ufffd%y\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd(\ufffdD\ufffd"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd\ufffd%y\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd(\ufffdD\ufffd"
+   }
+  },
+  {
+   "hex": "12",
+   "name": "pid 18 short 1",
+   "raw": {
+    "ctrl_model": ""
+   },
+   "stripped": {
+    "ctrl_model": ""
+   }
+  },
+  {
+   "hex": "1290",
+   "name": "pid 18 short 2",
+   "raw": {
+    "ctrl_model": "\ufffd"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd"
+   }
+  },
+  {
+   "hex": "122357f3f4",
+   "name": "pid 18 short 5",
+   "raw": {
+    "ctrl_model": "#W\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_model": "#W\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "12e1a30f3b31b0bf27",
+   "name": "pid 18 short 9",
+   "raw": {
+    "ctrl_model": "\ufffd\ufffd\u000f;1\ufffd\ufffd'"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd\ufffd\u000f;1\ufffd\ufffd'"
+   }
+  },
+  {
+   "hex": "12cd3fb83177f466de710534c625cd",
+   "name": "pid 18 short 15",
+   "raw": {
+    "ctrl_model": "\ufffd?\ufffd1w\ufffdf\ufffdq\u00054\ufffd%\ufffd"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd?\ufffd1w\ufffdf\ufffdq\u00054\ufffd%\ufffd"
+   }
+  },
+  {
+   "hex": "12edf32652da62072c821a16f32b8bdf97e59e",
+   "name": "pid 18 short 19",
+   "raw": {
+    "ctrl_model": "\ufffd\ufffd&R\ufffdb\u0007,\ufffd\u001a\u0016\ufffd+\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_model": "\ufffd\ufffd&R\ufffdb\u0007,\ufffd\u001a\u0016\ufffd+\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1300000000000000000000000000000000000000",
+   "name": "pid 19 zeros",
+   "raw": {
+    "ctrl_sw": ""
+   },
+   "stripped": {
+    "ctrl_sw": ""
+   }
+  },
+  {
+   "hex": "13ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 19 ff",
+   "raw": {
+    "ctrl_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "134185d0951b39ada8eca815062614758aa1bb02",
+   "name": "pid 19 random 0",
+   "raw": {
+    "ctrl_sw": "A\ufffd\ufffd\ufffd\u001b9\ufffd\ufffd\ufffd\ufffd\u0015\u0006&\u0014u\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "A\ufffd\ufffd\ufffd\u001b9\ufffd\ufffd\ufffd\ufffd\u0015\u0006&\u0014u\ufffd"
+   }
+  },
+  {
+   "hex": "13c755d9afa20880c1479a8f0532b03a1fd6ed86",
+   "name": "pid 19 random 1",
+   "raw": {
+    "ctrl_sw": "\ufffdU\ufffd\ufffd\ufffd\b\ufffd\ufffdG\ufffd\ufffd\u00052\ufffd:"
+   },
+   "stripped": {
+    "ctrl_sw": "\ufffdU\ufffd\ufffd\ufffd\b\ufffd\ufffdG\ufffd\ufffd\u00052\ufffd:"
+   }
+  },
+  {
+   "hex": "13a99b93c2c0638f29126c64f7afa9cef0ee2dca",
+   "name": "pid 19 random 2",
+   "raw": {
+    "ctrl_sw": "\ufffd\ufffd\ufffd\ufffd\ufffdc\ufffd)\u0012ld\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "\ufffd\ufffd\ufffd\ufffd\ufffdc\ufffd)\u0012ld\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "137b020c497f93d3efd86b9cb6debd047696397f",
+   "name": "pid 19 random 3",
+   "raw": {
+    "ctrl_sw": "{\u0002\fI\u007f\ufffd\ufffd\ufffd\ufffdk\ufffd\ufffd\ufffd\ufffd\u0004v"
+   },
+   "stripped": {
+    "ctrl_sw": "{\u0002\fI\u007f\ufffd\ufffd\ufffd\ufffdk\ufffd\ufffd\ufffd\ufffd\u0004v"
+   }
+  },
+  {
+   "hex": "13",
+   "name": "pid 19 short 1",
+   "raw": {
+    "ctrl_sw": ""
+   },
+   "stripped": {
+    "ctrl_sw": ""
+   }
+  },
+  {
+   "hex": "1310",
+   "name": "pid 19 short 2",
+   "raw": {
+    "ctrl_sw": "\u0010"
+   },
+   "stripped": {
+    "ctrl_sw": "\u0010"
+   }
+  },
+  {
+   "hex": "130073128c",
+   "name": "pid 19 short 5",
+   "raw": {
+    "ctrl_sw": ""
+   },
+   "stripped": {
+    "ctrl_sw": ""
+   }
+  },
+  {
+   "hex": "1358125f5c2c43b8d0",
+   "name": "pid 19 short 9",
+   "raw": {
+    "ctrl_sw": "X\u0012_\\,C\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "X\u0012_\\,C\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "13fd572ae68e5eccb6f300f1e44d00",
+   "name": "pid 19 short 15",
+   "raw": {
+    "ctrl_sw": "\ufffdW*\ufffd\ufffd^\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "\ufffdW*\ufffd\ufffd^\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1342a13a64c0d5aaa22b2d45446e0f7e9efd19",
+   "name": "pid 19 short 19",
+   "raw": {
+    "ctrl_sw": "B\ufffd:d\ufffd\ufffd\ufffd\ufffd+-EDn\u000f~\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "B\ufffd:d\ufffd\ufffd\ufffd\ufffd+-EDn\u000f~\ufffd"
+   }
+  },
+  {
+   "hex": "1400000000000000000000000000000000000000",
+   "name": "pid 20 zeros",
+   "raw": {
+    "ctrl_hw": ""
+   },
+   "stripped": {
+    "ctrl_hw": ""
+   }
+  },
+  {
+   "hex": "14ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 20 ff",
+   "raw": {
+    "ctrl_hw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_hw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1448a2207670803e19113e2718b23e87541295ad",
+   "name": "pid 20 random 0",
+   "raw": {
+    "ctrl_hw": "H\ufffd vp\ufffd>\u0019\u0011>'\u0018\ufffd>\ufffdT"
+   },
+   "stripped": {
+    "ctrl_hw": "H\ufffd vp\ufffd>\u0019\u0011>'\u0018\ufffd>\ufffdT"
+   }
+  },
+  {
+   "hex": "14a867b7de6abb5c52653dfb84e7573491453b01",
+   "name": "pid 20 random 1",
+   "raw": {
+    "ctrl_hw": "\ufffdg\ufffd\ufffdj\ufffd\\Re=\ufffd\ufffd\ufffdW4\ufffd"
+   },
+   "stripped": {
+    "ctrl_hw": "\ufffdg\ufffd\ufffdj\ufffd\\Re=\ufffd\ufffd\ufffdW4\ufffd"
+   }
+  },
+  {
+   "hex": "14775cf13d68f0b87eee55f69ee8fd282716ffb6",
+   "name": "pid 20 random 2",
+   "raw": {
+    "ctrl_hw": "w\\\ufffd=h\ufffd\ufffd~\ufffdU\ufffd\ufffd\ufffd\ufffd('"
+   },
+   "stripped": {
+    "ctrl_hw": "w\\\ufffd=h\ufffd\ufffd~\ufffdU\ufffd\ufffd\ufffd\ufffd('"
+   }
+  },
+  {
+   "hex": "14aa29838f71642ee2bcd4e291f5f1f366035cbb",
+   "name": "pid 20 random 3",
+   "raw": {
+    "ctrl_hw": "\ufffd)\ufffd\ufffdqd.\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdf"
+   },
+   "stripped": {
+    "ctrl_hw": "\ufffd)\ufffd\ufffdqd.\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdf"
+   }
+  },
+  {
+   "hex": "14",
+   "name": "pid 20 short 1",
+   "raw": {
+    "ctrl_hw": ""
+   },
+   "stripped": {
+    "ctrl_hw": ""
+   }
+  },
+  {
+   "hex": "1449",
+   "name": "pid 20 short 2",
+   "raw": {
+    "ctrl_hw": "I"
+   },
+   "stripped": {
+    "ctrl_hw": "I"
+   }
+  },
+  {
+   "hex": "14dc9f0c3b",
+   "name": "pid 20 short 5",
+   "raw": {
+    "ctrl_hw": "\ufffd\ufffd\f;"
+   },
+   "stripped": {
+    "ctrl_hw": "\ufffd\ufffd\f;"
+   }
+  },
+  {
+   "hex": "1440e444e1e75801a1",
+   "name": "pid 20 short 9",
+   "raw": {
+    "ctrl_hw": "@\ufffdD\ufffd\ufffdX\u0001\ufffd"
+   },
+   "stripped": {
+    "ctrl_hw": "@\ufffdD\ufffd\ufffdX\u0001\ufffd"
+   }
+  },
+  {
+   "hex": "14df80a5f4e778aed876a623655d8c",
+   "name": "pid 20 short 15",
+   "raw": {
+    "ctrl_hw": "\ufffd\ufffd\ufffd\ufffd\ufffdx\ufffd\ufffdv\ufffd#e]\ufffd"
+   },
+   "stripped": {
+    "ctrl_hw": "\ufffd\ufffd\ufffd\ufffd\ufffdx\ufffd\ufffdv\ufffd#e]\ufffd"
+   }
+  },
+  {
+   "hex": "14719ec1db9bf8c7fbbcb166531a2ecb819b45",
+   "name": "pid 20 short 19",
+   "raw": {
+    "ctrl_hw": "q\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdfS\u001a.\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_hw": "q\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdfS\u001a.\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1500000000000000000000000000000000000000",
+   "name": "pid 21 zeros",
+   "raw": {
+    "batt_serial1": ""
+   },
+   "stripped": {
+    "batt_serial1": ""
+   }
+  },
+  {
+   "hex": "15ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 21 ff",
+   "raw": {
+    "batt_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "155d3dac69570216bc5735060209a8e85d09598c",
+   "name": "pid 21 random 0",
+   "raw": {
+    "batt_serial1": "]=\ufffdiW\u0002\u0016\ufffdW5\u0006\u0002\t\ufffd\ufffd]"
+   },
+   "stripped": {
+    "batt_serial1": "]=\ufffdiW\u0002\u0016\ufffdW5\u0006\u0002\t\ufffd\ufffd]"
+   }
+  },
+  {
+   "hex": "1505f518f9a75186c76dd678363a4a08d8f81f47",
+   "name": "pid 21 random 1",
+   "raw": {
+    "batt_serial1": "\u0005\ufffd\u0018\ufffd\ufffdQ\ufffd\ufffdm\ufffdx6:J\b\ufffd"
+   },
+   "stripped": {
+    "batt_serial1": "\u0005\ufffd\u0018\ufffd\ufffdQ\ufffd\ufffdm\ufffdx6:J\b\ufffd"
+   }
+  },
+  {
+   "hex": "15b58456dab0d8be346b0c8cd0d2ac5071d2cf39",
+   "name": "pid 21 random 2",
+   "raw": {
+    "batt_serial1": "\ufffd\ufffdV\ufffd\ufffd\ufffd\ufffd4k\f\ufffd\ufffd\ufffd\ufffdPq"
+   },
+   "stripped": {
+    "batt_serial1": "\ufffd\ufffdV\ufffd\ufffd\ufffd\ufffd4k\f\ufffd\ufffd\ufffd\ufffdPq"
+   }
+  },
+  {
+   "hex": "15db5ca378fd5faafc8a5b36cd1ba2f945e8a976",
+   "name": "pid 21 random 3",
+   "raw": {
+    "batt_serial1": "\ufffd\\\ufffdx\ufffd_\ufffd\ufffd\ufffd[6\ufffd\u001b\ufffd\ufffdE"
+   },
+   "stripped": {
+    "batt_serial1": "\ufffd\\\ufffdx\ufffd_\ufffd\ufffd\ufffd[6\ufffd\u001b\ufffd\ufffdE"
+   }
+  },
+  {
+   "hex": "15",
+   "name": "pid 21 short 1",
+   "raw": {
+    "batt_serial1": ""
+   },
+   "stripped": {
+    "batt_serial1": ""
+   }
+  },
+  {
+   "hex": "1559",
+   "name": "pid 21 short 2",
+   "raw": {
+    "batt_serial1": "Y"
+   },
+   "stripped": {
+    "batt_serial1": "Y"
+   }
+  },
+  {
+   "hex": "15e1b4c0ae",
+   "name": "pid 21 short 5",
+   "raw": {
+    "batt_serial1": "\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_serial1": "\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "15b9225a31ccd4e5cc",
+   "name": "pid 21 short 9",
+   "raw": {
+    "batt_serial1": "\ufffd\"Z1\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_serial1": "\ufffd\"Z1\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "150ad2d7ba307a4ad876ede17b42e7",
+   "name": "pid 21 short 15",
+   "raw": {
+    "batt_serial1": "\ufffd\ufffd\ufffd0zJ\ufffdv\ufffd\ufffd{B\ufffd"
+   },
+   "stripped": {
+    "batt_serial1": "\ufffd\ufffd\ufffd0zJ\ufffdv\ufffd\ufffd{B\ufffd"
+   }
+  },
+  {
+   "hex": "15e904e332adab08a46bd60c60a325a160636f",
+   "name": "pid 21 short 19",
+   "raw": {
+    "batt_serial1": "\ufffd\u0004\ufffd2\ufffd\ufffd\b\ufffdk\ufffd\f`\ufffd%\ufffd`"
+   },
+   "stripped": {
+    "batt_serial1": "\ufffd\u0004\ufffd2\ufffd\ufffd\b\ufffdk\ufffd\f`\ufffd%\ufffd`"
+   }
+  },
+  {
+   "hex": "1600000000000000000000000000000000000000",
+   "name": "pid 22 zeros",
+   "raw": {
+    "batt_serial2": ""
+   },
+   "stripped": {
+    "batt_serial2": ""
+   }
+  },
+  {
+   "hex": "16ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 22 ff",
+   "raw": {
+    "batt_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_serial2": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1619905f863c66d8841edfd7eb5e566a78fd829a",
+   "name": "pid 22 random 0",
+   "raw": {
+    "batt_serial2": "\u0019\ufffd_\ufffd<f\ufffd\ufffd\u001e\ufffd\ufffd\ufffd^Vjx"
+   },
+   "stripped": {
+    "batt_serial2": "\u0019\ufffd_\ufffd<f\ufffd\ufffd\u001e\ufffd\ufffd\ufffd^Vjx"
+   }
+  },
+  {
+   "hex": "16923d77e594be3cbab5a3ad0943a1f7522d7534",
+   "name": "pid 22 random 1",
+   "raw": {
+    "batt_serial2": "\ufffd=w\ufffd\ufffd\ufffd<\ufffd\ufffd\ufffd\ufffd\tC\ufffd\ufffdR"
+   },
+   "stripped": {
+    "batt_serial2": "\ufffd=w\ufffd\ufffd\ufffd<\ufffd\ufffd\ufffd\ufffd\tC\ufffd\ufffdR"
+   }
+  },
+  {
+   "hex": "16a9d0255fc8415c2dcd2a252f2fa96b138ff14e",
+   "name": "pid 22 random 2",
+   "raw": {
+    "batt_serial2": "\ufffd\ufffd%_\ufffdA\\-\ufffd*%//\ufffdk\u0013"
+   },
+   "stripped": {
+    "batt_serial2": "\ufffd\ufffd%_\ufffdA\\-\ufffd*%//\ufffdk\u0013"
+   }
+  },
+  {
+   "hex": "168dc74c005521d1ce58b457226a26b74c5d2d0a",
+   "name": "pid 22 random 3",
+   "raw": {
+    "batt_serial2": "\ufffd\ufffdL"
+   },
+   "stripped": {
+    "batt_serial2": "\ufffd\ufffdL"
+   }
+  },
+  {
+   "hex": "16",
+   "name": "pid 22 short 1",
+   "raw": {
+    "batt_serial2": ""
+   },
+   "stripped": {
+    "batt_serial2": ""
+   }
+  },
+  {
+   "hex": "1632",
+   "name": "pid 22 short 2",
+   "raw": {
+    "batt_serial2": "2"
+   },
+   "stripped": {
+    "batt_serial2": "2"
+   }
+  },
+  {
+   "hex": "16931eeffb",
+   "name": "pid 22 short 5",
+   "raw": {
+    "batt_serial2": "\ufffd\u001e\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_serial2": "\ufffd\u001e\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "16e9837ba5be2cf308",
+   "name": "pid 22 short 9",
+   "raw": {
+    "batt_serial2": "\ufffd\ufffd{\ufffd\ufffd,\ufffd\b"
+   },
+   "stripped": {
+    "batt_serial2": "\ufffd\ufffd{\ufffd\ufffd,\ufffd\b"
+   }
+  },
+  {
+   "hex": "1664e2034f6dddd6187bd7a49400d1",
+   "name": "pid 22 short 15",
+   "raw": {
+    "batt_serial2": "d\ufffd\u0003Om\ufffd\ufffd\u0018{\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_serial2": "d\ufffd\u0003Om\ufffd\ufffd\u0018{\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "163c7aac37faead2ee1a2bfed65a00e0bba01d",
+   "name": "pid 22 short 19",
+   "raw": {
+    "batt_serial2": "<z\ufffd7\ufffd\ufffd\ufffd\ufffd\u001a+\ufffd\ufffdZ"
+   },
+   "stripped": {
+    "batt_serial2": "<z\ufffd7\ufffd\ufffd\ufffd\ufffd\u001a+\ufffd\ufffdZ"
+   }
+  },
+  {
+   "hex": "1700000000000000000000000000000000000000",
+   "name": "pid 23 zeros",
+   "raw": {
+    "batt_model": ""
+   },
+   "stripped": {
+    "batt_model": ""
+   }
+  },
+  {
+   "hex": "17ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 23 ff",
+   "raw": {
+    "batt_model": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_model": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1766b9bf609c5f22de0f61a13633f0f28adae367",
+   "name": "pid 23 random 0",
+   "raw": {
+    "batt_model": "f\ufffd\ufffd`\ufffd_\"\ufffd\u000fa\ufffd63\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_model": "f\ufffd\ufffd`\ufffd_\"\ufffd\u000fa\ufffd63\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "170dd7c0a6f91d35d5dae3c3c31dfb461da36921",
+   "name": "pid 23 random 1",
+   "raw": {
+    "batt_model": "\ufffd\ufffd\ufffd\ufffd\u001d5\ufffd\ufffd\ufffd\ufffd\ufffd\u001d\ufffdF"
+   },
+   "stripped": {
+    "batt_model": "\ufffd\ufffd\ufffd\ufffd\u001d5\ufffd\ufffd\ufffd\ufffd\ufffd\u001d\ufffdF"
+   }
+  },
+  {
+   "hex": "176721fbfab899c3973a9b2d13caa61df969c089",
+   "name": "pid 23 random 2",
+   "raw": {
+    "batt_model": "g!\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd:\ufffd-\u0013\ufffd\ufffd\u001d\ufffd"
+   },
+   "stripped": {
+    "batt_model": "g!\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd:\ufffd-\u0013\ufffd\ufffd\u001d\ufffd"
+   }
+  },
+  {
+   "hex": "17b0ddf260acf3ba91c29ccbe8d4439a3ccf2004",
+   "name": "pid 23 random 3",
+   "raw": {
+    "batt_model": "\ufffd\ufffd\ufffd`\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdC\ufffd<"
+   },
+   "stripped": {
+    "batt_model": "\ufffd\ufffd\ufffd`\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdC\ufffd<"
+   }
+  },
+  {
+   "hex": "17",
+   "name": "pid 23 short 1",
+   "raw": {
+    "batt_model": ""
+   },
+   "stripped": {
+    "batt_model": ""
+   }
+  },
+  {
+   "hex": "1744",
+   "name": "pid 23 short 2",
+   "raw": {
+    "batt_model": "D"
+   },
+   "stripped": {
+    "batt_model": "D"
+   }
+  },
+  {
+   "hex": "1788df2065",
+   "name": "pid 23 short 5",
+   "raw": {
+    "batt_model": "\ufffd\ufffd e"
+   },
+   "stripped": {
+    "batt_model": "\ufffd\ufffd e"
+   }
+  },
+  {
+   "hex": "17dcc6c846f2f2cbe8",
+   "name": "pid 23 short 9",
+   "raw": {
+    "batt_model": "\ufffd\ufffd\ufffdF\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_model": "\ufffd\ufffd\ufffdF\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "179f2c79d59feeb5435bdde37776d4",
+   "name": "pid 23 short 15",
+   "raw": {
+    "batt_model": "\ufffd,y\ufffd\ufffd\ufffd\ufffdC[\ufffd\ufffdwv\ufffd"
+   },
+   "stripped": {
+    "batt_model": "\ufffd,y\ufffd\ufffd\ufffd\ufffdC[\ufffd\ufffdwv\ufffd"
+   }
+  },
+  {
+   "hex": "1701f49164989fa46350e3d12025e52eb196d4",
+   "name": "pid 23 short 19",
+   "raw": {
+    "batt_model": "\u0001\ufffd\ufffdd\ufffd\ufffd\ufffdcP\ufffd\ufffd %\ufffd.\ufffd"
+   },
+   "stripped": {
+    "batt_model": "\u0001\ufffd\ufffdd\ufffd\ufffd\ufffdcP\ufffd\ufffd %\ufffd.\ufffd"
+   }
+  },
+  {
+   "hex": "1800000000000000000000000000000000000000",
+   "name": "pid 24 zeros",
+   "raw": {
+    "batt_sw": ""
+   },
+   "stripped": {
+    "batt_sw": ""
+   }
+  },
+  {
+   "hex": "18ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 24 ff",
+   "raw": {
+    "batt_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1815f3030f7f2e37daa4b781ac8f4f21f92b644f",
+   "name": "pid 24 random 0",
+   "raw": {
+    "batt_sw": "\u0015\ufffd\u0003\u000f\u007f.7\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdO!\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\u0015\ufffd\u0003\u000f\u007f.7\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdO!\ufffd"
+   }
+  },
+  {
+   "hex": "180414214ae30488005818b60e0776365ca0c46a",
+   "name": "pid 24 random 1",
+   "raw": {
+    "batt_sw": "\u0004\u0014!J\ufffd\u0004\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\u0004\u0014!J\ufffd\u0004\ufffd"
+   }
+  },
+  {
+   "hex": "18a41b60f38c845f59e2b0f30988ab4ecaebaa18",
+   "name": "pid 24 random 2",
+   "raw": {
+    "batt_sw": "\ufffd\u001b`\ufffd\ufffd\ufffd_Y\ufffd\ufffd\ufffd\t\ufffd\ufffdN\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\ufffd\u001b`\ufffd\ufffd\ufffd_Y\ufffd\ufffd\ufffd\t\ufffd\ufffdN\ufffd"
+   }
+  },
+  {
+   "hex": "18ba5c01ad3d34efd3267d8a3c23dcce5c24ed6d",
+   "name": "pid 24 random 3",
+   "raw": {
+    "batt_sw": "\ufffd\\\u0001\ufffd=4\ufffd\ufffd&}\ufffd<#\ufffd\ufffd\\"
+   },
+   "stripped": {
+    "batt_sw": "\ufffd\\\u0001\ufffd=4\ufffd\ufffd&}\ufffd<#\ufffd\ufffd\\"
+   }
+  },
+  {
+   "hex": "18",
+   "name": "pid 24 short 1",
+   "raw": {
+    "batt_sw": ""
+   },
+   "stripped": {
+    "batt_sw": ""
+   }
+  },
+  {
+   "hex": "1821",
+   "name": "pid 24 short 2",
+   "raw": {
+    "batt_sw": "!"
+   },
+   "stripped": {
+    "batt_sw": "!"
+   }
+  },
+  {
+   "hex": "18e1bfab9c",
+   "name": "pid 24 short 5",
+   "raw": {
+    "batt_sw": "\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1804757cc26ff970e0",
+   "name": "pid 24 short 9",
+   "raw": {
+    "batt_sw": "\u0004u|\ufffdo\ufffdp\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\u0004u|\ufffdo\ufffdp\ufffd"
+   }
+  },
+  {
+   "hex": "18d6fa770f0ed0397e2758ef0cf998",
+   "name": "pid 24 short 15",
+   "raw": {
+    "batt_sw": "\ufffd\ufffdw\u000f\u000e\ufffd9~'X\ufffd\f\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\ufffd\ufffdw\u000f\u000e\ufffd9~'X\ufffd\f\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "188c68a041f5ad900c88e5f12f3572bc0d9f8a",
+   "name": "pid 24 short 19",
+   "raw": {
+    "batt_sw": "\ufffdh\ufffdA\ufffd\ufffd\ufffd\f\ufffd\ufffd\ufffd/5r\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\ufffdh\ufffdA\ufffd\ufffd\ufffd\f\ufffd\ufffd\ufffd/5r\ufffd"
+   }
+  },
+  {
+   "hex": "1900000000000000000000000000000000000000",
+   "name": "pid 25 zeros",
+   "raw": {
+    "batt_hw": ""
+   },
+   "stripped": {
+    "batt_hw": ""
+   }
+  },
+  {
+   "hex": "19ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 25 ff",
+   "raw": {
+    "batt_hw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_hw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "196987d406d1943091b3e4002fb2e57bcf4fd175",
+   "name": "pid 25 random 0",
+   "raw": {
+    "batt_hw": "i\ufffd\ufffd\u0006\ufffd\ufffd0\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_hw": "i\ufffd\ufffd\u0006\ufffd\ufffd0\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "19bd2ec94243061447487250262db110cc06cbc5",
+   "name": "pid 25 random 1",
+   "raw": {
+    "batt_hw": "\ufffd.\ufffdBC\u0006\u0014GHrP&-\ufffd\u0010\ufffd"
+   },
+   "stripped": {
+    "batt_hw": "\ufffd.\ufffdBC\u0006\u0014GHrP&-\ufffd\u0010\ufffd"
+   }
+  },
+  {
+   "hex": "1931b6f89ba17756e94d7f0c53995339f9bf6d66",
+   "name": "pid 25 random 2",
+   "raw": {
+    "batt_hw": "1\ufffd\ufffd\ufffd\ufffdwV\ufffdM\u007f\fS\ufffdS9\ufffd"
+   },
+   "stripped": {
+    "batt_hw": "1\ufffd\ufffd\ufffd\ufffdwV\ufffdM\u007f\fS\ufffdS9\ufffd"
+   }
+  },
+  {
+   "hex": "1992e03cbda958f1337818d3995c3038b199901e",
+   "name": "pid 25 random 3",
+   "raw": {
+    "batt_hw": "\ufffd\ufffd<\ufffd\ufffdX\ufffd3x\u0018\ufffd\ufffd\\08\ufffd"
+   },
+   "stripped": {
+    "batt_hw": "\ufffd\ufffd<\ufffd\ufffdX\ufffd3x\u0018\ufffd\ufffd\\08\ufffd"
+   }
+  },
+  {
+   "hex": "19",
+   "name": "pid 25 short 1",
+   "raw": {
+    "batt_hw": ""
+   },
+   "stripped": {
+    "batt_hw": ""
+   }
+  },
+  {
+   "hex": "198d",
+   "name": "pid 25 short 2",
+   "raw": {
+    "batt_hw": "\ufffd"
+   },
+   "stripped": {
+    "batt_hw": "\ufffd"
+   }
+  },
+  {
+   "hex": "190e5f7b6e",
+   "name": "pid 25 short 5",
+   "raw": {
+    "batt_hw": "\u000e_{n"
+   },
+   "stripped": {
+    "batt_hw": "\u000e_{n"
+   }
+  },
+  {
+   "hex": "19e7a072c47c11e937",
+   "name": "pid 25 short 9",
+   "raw": {
+    "batt_hw": "\ufffd\ufffdr\ufffd|\u0011\ufffd7"
+   },
+   "stripped": {
+    "batt_hw": "\ufffd\ufffdr\ufffd|\u0011\ufffd7"
+   }
+  },
+  {
+   "hex": "19cf6c2c5e85215bc174bc57ccb36e",
+   "name": "pid 25 short 15",
+   "raw": {
+    "batt_hw": "\ufffdl,^\ufffd![\ufffdt\ufffdW\ufffd\ufffdn"
+   },
+   "stripped": {
+    "batt_hw": "\ufffdl,^\ufffd![\ufffdt\ufffdW\ufffd\ufffdn"
+   }
+  },
+  {
+   "hex": "19a3226bfce9e8ba22c140d401093fd8b09059",
+   "name": "pid 25 short 19",
+   "raw": {
+    "batt_hw": "\ufffd\"k\ufffd\ufffd\ufffd\ufffd\"\ufffd@\ufffd\u0001\t?\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_hw": "\ufffd\"k\ufffd\ufffd\ufffd\ufffd\"\ufffd@\ufffd\u0001\t?\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1a00000000000000000000000000000000000000",
+   "name": "pid 26 zeros",
+   "raw": {
+    "motor_mfr": ""
+   },
+   "stripped": {
+    "motor_mfr": ""
+   }
+  },
+  {
+   "hex": "1affffffffffffffffffffffffffffffffffffff",
+   "name": "pid 26 ff",
+   "raw": {
+    "motor_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1a88dd15a794a4e90df7cc9aa8c23b45133659a8",
+   "name": "pid 26 random 0",
+   "raw": {
+    "motor_mfr": "\ufffd\ufffd\u0015\ufffd\ufffd\ufffd\ufffd\r\ufffd\ufffd\ufffd\ufffd\ufffd;E\u0013"
+   },
+   "stripped": {
+    "motor_mfr": "\ufffd\ufffd\u0015\ufffd\ufffd\ufffd\ufffd\r\ufffd\ufffd\ufffd\ufffd\ufffd;E\u0013"
+   }
+  },
+  {
+   "hex": "1a03fc4499ff24a26b0f03955c005f2f6687c2eb",
+   "name": "pid 26 random 1",
+   "raw": {
+    "motor_mfr": "\u0003\ufffdD\ufffd\ufffd$\ufffdk\u000f\u0003\ufffd\\"
+   },
+   "stripped": {
+    "motor_mfr": "\u0003\ufffdD\ufffd\ufffd$\ufffdk\u000f\u0003\ufffd\\"
+   }
+  },
+  {
+   "hex": "1afc415cdcf51e2bc8e87b866a4b55ebb4324c75",
+   "name": "pid 26 random 2",
+   "raw": {
+    "motor_mfr": "\ufffdA\\\ufffd\ufffd\u001e+\ufffd\ufffd{\ufffdjKU\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_mfr": "\ufffdA\\\ufffd\ufffd\u001e+\ufffd\ufffd{\ufffdjKU\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1af02f839725614091ee5d83d1d165a844871197",
+   "name": "pid 26 random 3",
+   "raw": {
+    "motor_mfr": "\ufffd/\ufffd\ufffd%a@\ufffd\ufffd]\ufffd\ufffd\ufffde\ufffdD"
+   },
+   "stripped": {
+    "motor_mfr": "\ufffd/\ufffd\ufffd%a@\ufffd\ufffd]\ufffd\ufffd\ufffde\ufffdD"
+   }
+  },
+  {
+   "hex": "1a",
+   "name": "pid 26 short 1",
+   "raw": {
+    "motor_mfr": ""
+   },
+   "stripped": {
+    "motor_mfr": ""
+   }
+  },
+  {
+   "hex": "1a45",
+   "name": "pid 26 short 2",
+   "raw": {
+    "motor_mfr": "E"
+   },
+   "stripped": {
+    "motor_mfr": "E"
+   }
+  },
+  {
+   "hex": "1a890b51f2",
+   "name": "pid 26 short 5",
+   "raw": {
+    "motor_mfr": "\ufffd\u000bQ\ufffd"
+   },
+   "stripped": {
+    "motor_mfr": "\ufffd\u000bQ\ufffd"
+   }
+  },
+  {
+   "hex": "1a44823ca84da3afe9",
+   "name": "pid 26 short 9",
+   "raw": {
+    "motor_mfr": "D\ufffd<\ufffdM\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "motor_mfr": "D\ufffd<\ufffdM\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1a47661728daf60909310236c8b732",
+   "name": "pid 26 short 15",
+   "raw": {
+    "motor_mfr": "Gf\u0017(\ufffd\ufffd\t\t1\u00026\ufffd\ufffd2"
+   },
+   "stripped": {
+    "motor_mfr": "Gf\u0017(\ufffd\ufffd\t\t1\u00026\ufffd\ufffd2"
+   }
+  },
+  {
+   "hex": "1aa44a9f481f9f1b9f5e7621f63d4312321711",
+   "name": "pid 26 short 19",
+   "raw": {
+    "motor_mfr": "\ufffdJ\ufffdH\u001f\ufffd\u001b\ufffd^v!\ufffd=C\u00122"
+   },
+   "stripped": {
+    "motor_mfr": "\ufffdJ\ufffdH\u001f\ufffd\u001b\ufffd^v!\ufffd=C\u00122"
+   }
+  },
+  {
+   "hex": "1b00000000000000000000000000000000000000",
+   "name": "pid 27 zeros",
+   "raw": {
+    "ctrl_mfr": ""
+   },
+   "stripped": {
+    "ctrl_mfr": ""
+   }
+  },
+  {
+   "hex": "1bffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 27 ff",
+   "raw": {
+    "ctrl_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1b8857f6efe7816052faf28ef36788a9c48125bf",
+   "name": "pid 27 random 0",
+   "raw": {
+    "ctrl_mfr": "\ufffdW\ufffd\ufffd\ufffd\ufffd`R\ufffd\ufffd\ufffd\ufffdg\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_mfr": "\ufffdW\ufffd\ufffd\ufffd\ufffd`R\ufffd\ufffd\ufffd\ufffdg\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1bf6b0c54db54ce4db07015b2fb0e7d2d2bb18ad",
+   "name": "pid 27 random 1",
+   "raw": {
+    "ctrl_mfr": "\ufffd\ufffd\ufffdM\ufffdL\ufffd\ufffd\u0007\u0001[/\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_mfr": "\ufffd\ufffd\ufffdM\ufffdL\ufffd\ufffd\u0007\u0001[/\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1bd0cab4891cd3231f27edcdcf5d3ed4b04d1735",
+   "name": "pid 27 random 2",
+   "raw": {
+    "ctrl_mfr": "\ufffd\ufffd\ufffd\ufffd\u001c\ufffd#\u001f'\ufffd\ufffd\ufffd]>\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_mfr": "\ufffd\ufffd\ufffd\ufffd\u001c\ufffd#\u001f'\ufffd\ufffd\ufffd]>\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1b6c53df83e5dae695d58c6dcc85778c977d2c3e",
+   "name": "pid 27 random 3",
+   "raw": {
+    "ctrl_mfr": "lS\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdm\ufffd\ufffdw\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_mfr": "lS\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffdm\ufffd\ufffdw\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1b",
+   "name": "pid 27 short 1",
+   "raw": {
+    "ctrl_mfr": ""
+   },
+   "stripped": {
+    "ctrl_mfr": ""
+   }
+  },
+  {
+   "hex": "1b41",
+   "name": "pid 27 short 2",
+   "raw": {
+    "ctrl_mfr": "A"
+   },
+   "stripped": {
+    "ctrl_mfr": "A"
+   }
+  },
+  {
+   "hex": "1b4d025a22",
+   "name": "pid 27 short 5",
+   "raw": {
+    "ctrl_mfr": "M\u0002Z\""
+   },
+   "stripped": {
+    "ctrl_mfr": "M\u0002Z\""
+   }
+  },
+  {
+   "hex": "1be900d2083f8c6a76",
+   "name": "pid 27 short 9",
+   "raw": {
+    "ctrl_mfr": "\ufffd"
+   },
+   "stripped": {
+    "ctrl_mfr": "\ufffd"
+   }
+  },
+  {
+   "hex": "1b02d3dac5849b64ebff48b15b70ba",
+   "name": "pid 27 short 15",
+   "raw": {
+    "ctrl_mfr": "\u0002\ufffd\ufffd\ufffd\ufffd\ufffdd\ufffd\ufffdH\ufffd[p\ufffd"
+   },
+   "stripped": {
+    "ctrl_mfr": "\u0002\ufffd\ufffd\ufffd\ufffd\ufffdd\ufffd\ufffdH\ufffd[p\ufffd"
+   }
+  },
+  {
+   "hex": "1b0fc465721ce2fa70386612911f2e5943187a",
+   "name": "pid 27 short 19",
+   "raw": {
+    "ctrl_mfr": "\u000f\ufffder\u001c\ufffd\ufffdp8f\u0012\ufffd\u001f.YC"
+   },
+   "stripped": {
+    "ctrl_mfr": "\u000f\ufffder\u001c\ufffd\ufffdp8f\u0012\ufffd\u001f.YC"
+   }
+  },
+  {
+   "hex": "1c00000000000000000000000000000000000000",
+   "name": "pid 28 zeros",
+   "raw": {
+    "batt_mfr": ""
+   },
+   "stripped": {
+    "batt_mfr": ""
+   }
+  },
+  {
+   "hex": "1cffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 28 ff",
+   "raw": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1cf8dec9b29d028b14e78bb2b0cc708c64fa289a",
+   "name": "pid 28 random 0",
+   "raw": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\u0002\ufffd\u0014\ufffd\ufffd\ufffd\ufffd\ufffdp\ufffdd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\u0002\ufffd\u0014\ufffd\ufffd\ufffd\ufffd\ufffdp\ufffdd"
+   }
+  },
+  {
+   "hex": "1c9dfb0f327ad4f80d7c388324576995fa8b5676",
+   "name": "pid 28 random 1",
+   "raw": {
+    "batt_mfr": "\ufffd\ufffd\u000f2z\ufffd\ufffd\r|8\ufffd$Wi\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\ufffd\u000f2z\ufffd\ufffd\r|8\ufffd$Wi\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1cc68125286942f4e788a8a34669fee3da35e938",
+   "name": "pid 28 random 2",
+   "raw": {
+    "batt_mfr": "\ufffd\ufffd%(iB\ufffd\ufffd\ufffd\ufffd\ufffdFi\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\ufffd%(iB\ufffd\ufffd\ufffd\ufffd\ufffdFi\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1c58c1aea7fa7aa7b567bfb073e4743e79483946",
+   "name": "pid 28 random 3",
+   "raw": {
+    "batt_mfr": "X\ufffd\ufffd\ufffd\ufffdz\ufffd\ufffdg\ufffd\ufffds\ufffdt>y"
+   },
+   "stripped": {
+    "batt_mfr": "X\ufffd\ufffd\ufffd\ufffdz\ufffd\ufffdg\ufffd\ufffds\ufffdt>y"
+   }
+  },
+  {
+   "hex": "1c",
+   "name": "pid 28 short 1",
+   "raw": {
+    "batt_mfr": ""
+   },
+   "stripped": {
+    "batt_mfr": ""
+   }
+  },
+  {
+   "hex": "1ca4",
+   "name": "pid 28 short 2",
+   "raw": {
+    "batt_mfr": "\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd"
+   }
+  },
+  {
+   "hex": "1c09cde992",
+   "name": "pid 28 short 5",
+   "raw": {
+    "batt_mfr": "\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1ce0019392320f5a70",
+   "name": "pid 28 short 9",
+   "raw": {
+    "batt_mfr": "\ufffd\u0001\ufffd\ufffd2\u000fZp"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\u0001\ufffd\ufffd2\u000fZp"
+   }
+  },
+  {
+   "hex": "1c5f9026c316a6f8bd267c8ee1a666",
+   "name": "pid 28 short 15",
+   "raw": {
+    "batt_mfr": "_\ufffd&\ufffd\u0016\ufffd\ufffd\ufffd&|\ufffd\ufffd\ufffdf"
+   },
+   "stripped": {
+    "batt_mfr": "_\ufffd&\ufffd\u0016\ufffd\ufffd\ufffd&|\ufffd\ufffd\ufffdf"
+   }
+  },
+  {
+   "hex": "1cc6b9e885ad6f71a1641e79b69689eef226d3",
+   "name": "pid 28 short 19",
+   "raw": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffdoq\ufffdd\u001ey\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffdoq\ufffdd\u001ey\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "0500000000000000000000000000000000000000",
+   "name": "pid 5 zeros",
+   "raw": {
+    "assist_levels": 0,
+    "charge_cycles": 0,
+    "headlight": 0,
+    "last_charge_duration_raw": 0,
+    "sensitivity": 0,
+    "shutdown_timer_s": 0,
+    "wheel_circ_mm": 0
+   },
+   "stripped": {
+    "assist_levels": 0,
+    "charge_cycles": 0,
+    "headlight": 0,
+    "last_charge_duration_raw": 0,
+    "sensitivity": 0,
+    "shutdown_timer_s": 0,
+    "wheel_circ_mm": 0
+   }
+  },
+  {
+   "hex": "05ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 5 ff",
+   "raw": {
+    "assist_levels": 255,
+    "charge_cycles": 65535,
+    "headlight": 255,
+    "last_charge_duration_raw": 4294967295,
+    "sensitivity": 255,
+    "shutdown_timer_s": 4294967295,
+    "wheel_circ_mm": 65535
+   },
+   "stripped": {
+    "assist_levels": 255
+   }
+  },
+  {
+   "hex": "0552226091aff6e8416bedfad2e8951e87daea21",
+   "name": "pid 5 random 0",
+   "raw": {
+    "assist_levels": 33,
+    "charge_cycles": 60779,
+    "headlight": 232,
+    "last_charge_duration_raw": 3940189982,
+    "sensitivity": 65,
+    "shutdown_timer_s": 2438996562,
+    "wheel_circ_mm": 63151
+   },
+   "stripped": {
+    "assist_levels": 33,
+    "charge_cycles": 60779,
+    "headlight": 232,
+    "last_charge_duration_raw": 3940189982,
+    "sensitivity": 65,
+    "shutdown_timer_s": 2438996562,
+    "wheel_circ_mm": 63151
+   }
+  },
+  {
+   "hex": "051eae6d1e6671d6328c39f1326f082fb579dc4c",
+   "name": "pid 5 random 1",
+   "raw": {
+    "assist_levels": 76,
+    "charge_cycles": 14732,
+    "headlight": 214,
+    "last_charge_duration_raw": 3698963759,
+    "sensitivity": 50,
+    "shutdown_timer_s": 510504478,
+    "wheel_circ_mm": 29030
+   },
+   "stripped": {
+    "assist_levels": 76,
+    "charge_cycles": 14732,
+    "headlight": 214,
+    "last_charge_duration_raw": 3698963759,
+    "sensitivity": 50,
+    "shutdown_timer_s": 510504478,
+    "wheel_circ_mm": 29030
+   }
+  },
+  {
+   "hex": "055d1b8e3c4b56c72dc9b1440d794b84a84dd5d8",
+   "name": "pid 5 random 2",
+   "raw": {
+    "assist_levels": 216,
+    "charge_cycles": 45513,
+    "headlight": 199,
+    "last_charge_duration_raw": 3578636420,
+    "sensitivity": 45,
+    "shutdown_timer_s": 1015946077,
+    "wheel_circ_mm": 22091
+   },
+   "stripped": {
+    "assist_levels": 216,
+    "charge_cycles": 45513,
+    "headlight": 199,
+    "last_charge_duration_raw": 3578636420,
+    "sensitivity": 45,
+    "shutdown_timer_s": 1015946077,
+    "wheel_circ_mm": 22091
+   }
+  },
+  {
+   "hex": "05397ec05e1eb9b68607663deb259685fff9bf15",
+   "name": "pid 5 random 3",
+   "raw": {
+    "assist_levels": 21,
+    "charge_cycles": 26119,
+    "headlight": 182,
+    "last_charge_duration_raw": 3220832133,
+    "sensitivity": 134,
+    "shutdown_timer_s": 1589673529,
+    "wheel_circ_mm": 47390
+   },
+   "stripped": {
+    "assist_levels": 21,
+    "charge_cycles": 26119,
+    "headlight": 182,
+    "last_charge_duration_raw": 3220832133,
+    "sensitivity": 134,
+    "shutdown_timer_s": 1589673529,
+    "wheel_circ_mm": 47390
+   }
+  },
+  {
+   "hex": "05",
+   "name": "pid 5 short 1",
+   "raw": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": null,
+    "last_charge_duration_raw": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null,
+    "wheel_circ_mm": null
+   },
+   "stripped": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": null,
+    "last_charge_duration_raw": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null,
+    "wheel_circ_mm": null
+   }
+  },
+  {
+   "hex": "05e4",
+   "name": "pid 5 short 2",
+   "raw": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": null,
+    "last_charge_duration_raw": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null,
+    "wheel_circ_mm": null
+   },
+   "stripped": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": null,
+    "last_charge_duration_raw": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null,
+    "wheel_circ_mm": null
+   }
+  },
+  {
+   "hex": "05959ffd31",
+   "name": "pid 5 short 5",
+   "raw": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": null,
+    "last_charge_duration_raw": null,
+    "sensitivity": null,
+    "shutdown_timer_s": 838705045,
+    "wheel_circ_mm": null
+   },
+   "stripped": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": null,
+    "last_charge_duration_raw": null,
+    "sensitivity": null,
+    "shutdown_timer_s": 838705045,
+    "wheel_circ_mm": null
+   }
+  },
+  {
+   "hex": "0526eb0825e88e9378",
+   "name": "pid 5 short 9",
+   "raw": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": 147,
+    "last_charge_duration_raw": null,
+    "sensitivity": 120,
+    "shutdown_timer_s": 621341478,
+    "wheel_circ_mm": 36584
+   },
+   "stripped": {
+    "assist_levels": null,
+    "charge_cycles": null,
+    "headlight": 147,
+    "last_charge_duration_raw": null,
+    "sensitivity": 120,
+    "shutdown_timer_s": 621341478,
+    "wheel_circ_mm": 36584
+   }
+  },
+  {
+   "hex": "0564b27247b0d47f37c027726faaa3",
+   "name": "pid 5 short 15",
+   "raw": {
+    "assist_levels": null,
+    "charge_cycles": 10176,
+    "headlight": 127,
+    "last_charge_duration_raw": null,
+    "sensitivity": 55,
+    "shutdown_timer_s": 1198699108,
+    "wheel_circ_mm": 54448
+   },
+   "stripped": {
+    "assist_levels": null,
+    "charge_cycles": 10176,
+    "headlight": 127,
+    "last_charge_duration_raw": null,
+    "sensitivity": 55,
+    "shutdown_timer_s": 1198699108,
+    "wheel_circ_mm": 54448
+   }
+  },
+  {
+   "hex": "05f33318e40c54793592a02b6eac5b70db1985",
+   "name": "pid 5 short 19",
+   "raw": {
+    "assist_levels": null,
+    "charge_cycles": 41106,
+    "headlight": 121,
+    "last_charge_duration_raw": 2233064304,
+    "sensitivity": 53,
+    "shutdown_timer_s": 3826791411,
+    "wheel_circ_mm": 21516
+   },
+   "stripped": {
+    "assist_levels": null,
+    "charge_cycles": 41106,
+    "headlight": 121,
+    "last_charge_duration_raw": 2233064304,
+    "sensitivity": 53,
+    "shutdown_timer_s": 3826791411,
+    "wheel_circ_mm": 21516
+   }
+  },
+  {
+   "hex": "0600000000000000000000000000000000000000",
+   "name": "pid 6 zeros",
+   "raw": {
+    "batt_err_code": 0,
+    "ctrl_err_code": 0,
+    "ctrl_temp_raw": 0,
+    "motor_err_code": 0,
+    "motor_on": 0,
+    "speed_limit": 0.0
+   },
+   "stripped": {
+    "batt_err_code": 0,
+    "ctrl_err_code": 0,
+    "ctrl_temp_raw": 0,
+    "motor_err_code": 0,
+    "motor_on": 0,
+    "speed_limit": 0.0
+   }
+  },
+  {
+   "hex": "06ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 6 ff",
+   "raw": {
+    "batt_err_code": 65535,
+    "ctrl_err_code": 65535,
+    "ctrl_temp_raw": 255,
+    "motor_err_code": 65535,
+    "motor_on": 255,
+    "speed_limit": 6553.5
+   },
+   "stripped": {
+    "ctrl_temp_raw": 255,
+    "motor_on": 255
+   }
+  },
+  {
+   "hex": "06b739dde6b0e40340d42b1b9d2c53028aa9c56d",
+   "name": "pid 6 random 0",
+   "raw": {
+    "batt_err_code": 28101,
+    "ctrl_err_code": 43402,
+    "ctrl_temp_raw": 230,
+    "motor_err_code": 595,
+    "motor_on": 183,
+    "speed_limit": 5663.3
+   },
+   "stripped": {
+    "batt_err_code": 28101,
+    "ctrl_err_code": 43402,
+    "ctrl_temp_raw": 230,
+    "motor_err_code": 595,
+    "motor_on": 183,
+    "speed_limit": 5663.3
+   }
+  },
+  {
+   "hex": "06001365ea7e425b5e5f759a821ff99c0cbe1656",
+   "name": "pid 6 random 1",
+   "raw": {
+    "batt_err_code": 22038,
+    "ctrl_err_code": 48652,
+    "ctrl_temp_raw": 234,
+    "motor_err_code": 40185,
+    "motor_on": 0,
+    "speed_limit": 2587.5
+   },
+   "stripped": {
+    "batt_err_code": 22038,
+    "ctrl_err_code": 48652,
+    "ctrl_temp_raw": 234,
+    "motor_err_code": 40185,
+    "motor_on": 0,
+    "speed_limit": 2587.5
+   }
+  },
+  {
+   "hex": "06dea2a7389dbba8143c532893eb2af7de0df956",
+   "name": "pid 6 random 2",
+   "raw": {
+    "batt_err_code": 22265,
+    "ctrl_err_code": 3550,
+    "ctrl_temp_raw": 56,
+    "motor_err_code": 63274,
+    "motor_on": 222,
+    "speed_limit": 4291.4
+   },
+   "stripped": {
+    "batt_err_code": 22265,
+    "ctrl_err_code": 3550,
+    "ctrl_temp_raw": 56,
+    "motor_err_code": 63274,
+    "motor_on": 222,
+    "speed_limit": 4291.4
+   }
+  },
+  {
+   "hex": "063943ea6a1c17169c7a9a5904abf83e9639a250",
+   "name": "pid 6 random 3",
+   "raw": {
+    "batt_err_code": 20642,
+    "ctrl_err_code": 14742,
+    "ctrl_temp_raw": 106,
+    "motor_err_code": 16120,
+    "motor_on": 57,
+    "speed_limit": 5997.1
+   },
+   "stripped": {
+    "batt_err_code": 20642,
+    "ctrl_err_code": 14742,
+    "ctrl_temp_raw": 106,
+    "motor_err_code": 16120,
+    "motor_on": 57,
+    "speed_limit": 5997.1
+   }
+  },
+  {
+   "hex": "06",
+   "name": "pid 6 short 1",
+   "raw": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": null,
+    "motor_err_code": null,
+    "motor_on": null,
+    "speed_limit": null
+   },
+   "stripped": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": null,
+    "motor_err_code": null,
+    "motor_on": null,
+    "speed_limit": null
+   }
+  },
+  {
+   "hex": "0693",
+   "name": "pid 6 short 2",
+   "raw": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": null,
+    "motor_err_code": null,
+    "motor_on": 147,
+    "speed_limit": null
+   },
+   "stripped": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": null,
+    "motor_err_code": null,
+    "motor_on": 147,
+    "speed_limit": null
+   }
+  },
+  {
+   "hex": "0627499115",
+   "name": "pid 6 short 5",
+   "raw": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": 21,
+    "motor_err_code": null,
+    "motor_on": 39,
+    "speed_limit": 3719.3
+   },
+   "stripped": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": 21,
+    "motor_err_code": null,
+    "motor_on": 39,
+    "speed_limit": 3719.3
+   }
+  },
+  {
+   "hex": "0694d3469bd7ce84cb",
+   "name": "pid 6 short 9",
+   "raw": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": 155,
+    "motor_err_code": null,
+    "motor_on": 148,
+    "speed_limit": 1813.1
+   },
+   "stripped": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": 155,
+    "motor_err_code": null,
+    "motor_on": 148,
+    "speed_limit": 1813.1
+   }
+  },
+  {
+   "hex": "064a4d241c6515ed90fca7e05a0f52",
+   "name": "pid 6 short 15",
+   "raw": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": 28,
+    "motor_err_code": null,
+    "motor_on": 74,
+    "speed_limit": 929.3
+   },
+   "stripped": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "ctrl_temp_raw": 28,
+    "motor_err_code": null,
+    "motor_on": 74,
+    "speed_limit": 929.3
+   }
+  },
+  {
+   "hex": "06da159fa1e34127d58ceed5b1f1f23e0c7bce",
+   "name": "pid 6 short 19",
+   "raw": {
+    "batt_err_code": null,
+    "ctrl_err_code": 31500,
+    "ctrl_temp_raw": 161,
+    "motor_err_code": 16114,
+    "motor_on": 218,
+    "speed_limit": 4072.5
+   },
+   "stripped": {
+    "batt_err_code": null,
+    "ctrl_err_code": 31500,
+    "ctrl_temp_raw": 161,
+    "motor_err_code": 16114,
+    "motor_on": 218,
+    "speed_limit": 4072.5
+   }
+  },
+  {
+   "hex": "0700000000000000000000000000000000000000",
+   "name": "pid 7 zeros",
+   "raw": {
+    "assist": 0,
+    "odometer_m": 0,
+    "range_est": 0,
+    "ride_time_s": 0,
+    "speed": 0.0,
+    "trip_m": 0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 0,
+    "odometer_m": 0,
+    "range_est": 0,
+    "ride_time_s": 0,
+    "speed": 0.0,
+    "trip_m": 0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 7 ff",
+   "raw": {
+    "odometer_m": 4294967295,
+    "range_est": 65535,
+    "ride_time_s": 4294967295,
+    "speed": 6553.5,
+    "trip_m": 4294967295,
+    "walk_mode": true
+   },
+   "stripped": {
+    "walk_mode": true
+   }
+  },
+  {
+   "hex": "07b8ecae5c6545a0bae9f05ec7b2a80bec1eeecf",
+   "name": "pid 7 random 0",
+   "raw": {
+    "assist": 184,
+    "odometer_m": 518785960,
+    "range_est": 53230,
+    "ride_time_s": 3921322053,
+    "speed": 4478.0,
+    "trip_m": 2999410416,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 184,
+    "odometer_m": 518785960,
+    "range_est": 53230,
+    "ride_time_s": 3921322053,
+    "speed": 4478.0,
+    "trip_m": 2999410416,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07c668ee9ecde4bab616c382348f1912706a0302",
+   "name": "pid 7 random 1",
+   "raw": {
+    "assist": 198,
+    "odometer_m": 1785729561,
+    "range_est": 515,
+    "ride_time_s": 381074148,
+    "speed": 6103.2,
+    "trip_m": 2402583235,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 198,
+    "odometer_m": 1785729561,
+    "range_est": 515,
+    "ride_time_s": 381074148,
+    "speed": 6103.2,
+    "trip_m": 2402583235,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07b86dec4e164e6f56ea15e48f9ee6c4786e58a2",
+   "name": "pid 7 random 2",
+   "raw": {
+    "assist": 184,
+    "odometer_m": 1853408486,
+    "range_est": 41560,
+    "ride_time_s": 3931533134,
+    "speed": 6052.5,
+    "trip_m": 2660230165,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 184,
+    "odometer_m": 1853408486,
+    "range_est": 41560,
+    "ride_time_s": 3931533134,
+    "speed": 6052.5,
+    "trip_m": 2660230165,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07a3da0347383c60c2e1b9e054ded8495436382a",
+   "name": "pid 7 random 3",
+   "raw": {
+    "assist": 163,
+    "odometer_m": 911493592,
+    "range_est": 10808,
+    "ride_time_s": 3787612220,
+    "speed": 98.6,
+    "trip_m": 3730104505,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 163,
+    "odometer_m": 911493592,
+    "range_est": 10808,
+    "ride_time_s": 3787612220,
+    "speed": 98.6,
+    "trip_m": 3730104505,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07",
+   "name": "pid 7 short 1",
+   "raw": {
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": null,
+    "trip_m": null
+   },
+   "stripped": {
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": null,
+    "trip_m": null
+   }
+  },
+  {
+   "hex": "073b",
+   "name": "pid 7 short 2",
+   "raw": {
+    "assist": 59,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": null,
+    "trip_m": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 59,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": null,
+    "trip_m": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07a22717f0",
+   "name": "pid 7 short 5",
+   "raw": {
+    "assist": 162,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": 592.7,
+    "trip_m": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 162,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": 592.7,
+    "trip_m": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07341f551634f53ba9",
+   "name": "pid 7 short 9",
+   "raw": {
+    "assist": 52,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": 2179.1,
+    "trip_m": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 52,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": null,
+    "speed": 2179.1,
+    "trip_m": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "07af71bbb5d806df1733b9f6619001",
+   "name": "pid 7 short 15",
+   "raw": {
+    "assist": 175,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": 857202438,
+    "speed": 4798.5,
+    "trip_m": 2422339257,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 175,
+    "odometer_m": null,
+    "range_est": null,
+    "ride_time_s": 857202438,
+    "speed": 4798.5,
+    "trip_m": 2422339257,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0791b6a0552fd0fbfde2f734fdb721da6743a0",
+   "name": "pid 7 short 19",
+   "raw": {
+    "assist": 145,
+    "odometer_m": 1130879521,
+    "range_est": null,
+    "ride_time_s": 3808295888,
+    "speed": 4114.2,
+    "trip_m": 3086824695,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 145,
+    "odometer_m": 1130879521,
+    "range_est": null,
+    "ride_time_s": 3808295888,
+    "speed": 4114.2,
+    "trip_m": 3086824695,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0800000000000000000000000000000000000000",
+   "name": "pid 8 zeros",
+   "raw": {
+    "assist": 0,
+    "cadence_raw": 0,
+    "pedal_power_raw": 0,
+    "ride_time_s": 0,
+    "speed": 0.0,
+    "torque_nm": 0.0,
+    "trip_m": 0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 0,
+    "cadence_raw": 0,
+    "pedal_power_raw": 0,
+    "ride_time_s": 0,
+    "speed": 0.0,
+    "torque_nm": 0.0,
+    "trip_m": 0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 8 ff",
+   "raw": {
+    "cadence_raw": 65535,
+    "pedal_power_raw": 4294967295,
+    "ride_time_s": 4294967295,
+    "speed": 6553.5,
+    "torque_nm": 6553.5,
+    "trip_m": 4294967295,
+    "walk_mode": true
+   },
+   "stripped": {
+    "walk_mode": true
+   }
+  },
+  {
+   "hex": "08ece16bc4e108573ca65174bfd925e04619ca9a",
+   "name": "pid 8 random 0",
+   "raw": {
+    "assist": 236,
+    "cadence_raw": 39626,
+    "pedal_power_raw": 424075301,
+    "ride_time_s": 2788972296,
+    "speed": 2761.7,
+    "torque_nm": 5779.6,
+    "trip_m": 3653203025,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 236,
+    "cadence_raw": 39626,
+    "pedal_power_raw": 424075301,
+    "ride_time_s": 2788972296,
+    "speed": 2761.7,
+    "torque_nm": 5779.6,
+    "trip_m": 3653203025,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08570cac408a6bd40c30553cdd7e2c672750e30b",
+   "name": "pid 8 random 1",
+   "raw": {
+    "assist": 87,
+    "cadence_raw": 3043,
+    "pedal_power_raw": 1344759596,
+    "ride_time_s": 806147179,
+    "speed": 4404.4,
+    "torque_nm": 3539.2,
+    "trip_m": 2128428117,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 87,
+    "cadence_raw": 3043,
+    "pedal_power_raw": 1344759596,
+    "ride_time_s": 806147179,
+    "speed": 4404.4,
+    "torque_nm": 3539.2,
+    "trip_m": 2128428117,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08dbc35c933d647ccf4cee34a841e33e0b641a24",
+   "name": "pid 8 random 2",
+   "raw": {
+    "assist": 219,
+    "cadence_raw": 9242,
+    "pedal_power_raw": 1678458595,
+    "ride_time_s": 1288666212,
+    "speed": 2374.7,
+    "torque_nm": 1576.3,
+    "trip_m": 1101542638,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 219,
+    "cadence_raw": 9242,
+    "pedal_power_raw": 1678458595,
+    "ride_time_s": 1288666212,
+    "speed": 2374.7,
+    "torque_nm": 1576.3,
+    "trip_m": 1101542638,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08bd0e936905394bf496417662fc61734faca141",
+   "name": "pid 8 random 3",
+   "raw": {
+    "assist": 189,
+    "cadence_raw": 16801,
+    "pedal_power_raw": 2890888033,
+    "ride_time_s": 2532592441,
+    "speed": 3764.6,
+    "torque_nm": 138.5,
+    "trip_m": 4234311233,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 189,
+    "cadence_raw": 16801,
+    "pedal_power_raw": 2890888033,
+    "ride_time_s": 2532592441,
+    "speed": 3764.6,
+    "torque_nm": 138.5,
+    "trip_m": 4234311233,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08",
+   "name": "pid 8 short 1",
+   "raw": {
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": null,
+    "torque_nm": null,
+    "trip_m": null
+   },
+   "stripped": {
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": null,
+    "torque_nm": null,
+    "trip_m": null
+   }
+  },
+  {
+   "hex": "0887",
+   "name": "pid 8 short 2",
+   "raw": {
+    "assist": 135,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": null,
+    "torque_nm": null,
+    "trip_m": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 135,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": null,
+    "torque_nm": null,
+    "trip_m": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "088a101d2f",
+   "name": "pid 8 short 5",
+   "raw": {
+    "assist": 138,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": 744.0,
+    "torque_nm": null,
+    "trip_m": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 138,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": 744.0,
+    "torque_nm": null,
+    "trip_m": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08159bfdd9cb12086e",
+   "name": "pid 8 short 9",
+   "raw": {
+    "assist": 21,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": 6492.3,
+    "torque_nm": 5218.5,
+    "trip_m": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 21,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": null,
+    "speed": 6492.3,
+    "torque_nm": 5218.5,
+    "trip_m": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08ac86f5072b3a920aacb46a66999d",
+   "name": "pid 8 short 15",
+   "raw": {
+    "assist": 172,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": 2886373946,
+    "speed": 6285.4,
+    "torque_nm": 1101.5,
+    "trip_m": 2573626036,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 172,
+    "cadence_raw": null,
+    "pedal_power_raw": null,
+    "ride_time_s": 2886373946,
+    "speed": 6285.4,
+    "torque_nm": 1101.5,
+    "trip_m": 2573626036,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "08b66844c883f4215c08aaa2a071b635f45053",
+   "name": "pid 8 short 19",
+   "raw": {
+    "assist": 182,
+    "cadence_raw": null,
+    "pedal_power_raw": 1358181814,
+    "ride_time_s": 140255732,
+    "speed": 1751.2,
+    "torque_nm": 3373.6,
+    "trip_m": 1906352810,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 182,
+    "cadence_raw": null,
+    "pedal_power_raw": 1358181814,
+    "ride_time_s": 140255732,
+    "speed": 1751.2,
+    "torque_nm": 3373.6,
+    "trip_m": 1906352810,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0900000000000000000000000000000000000000",
+   "name": "pid 9 zeros",
+   "raw": {
+    "assist": 0,
+    "batt_current_ma": 0,
+    "batt_mv": 0,
+    "batt_remaining_cap_raw": 0,
+    "batt_temp_c": 0,
+    "motor_rpm": 0,
+    "motor_temp_c": 0,
+    "speed": 0.0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 0,
+    "batt_current_ma": 0,
+    "batt_mv": 0,
+    "batt_remaining_cap_raw": 0,
+    "batt_temp_c": 0,
+    "motor_rpm": 0,
+    "motor_temp_c": 0,
+    "speed": 0.0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "09ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 9 ff",
+   "raw": {
+    "batt_current_ma": -1,
+    "batt_mv": 65535,
+    "batt_remaining_cap_raw": 65535,
+    "batt_temp_c": 255,
+    "motor_rpm": 65535,
+    "motor_temp_c": 255,
+    "speed": 6553.5,
+    "walk_mode": true
+   },
+   "stripped": {
+    "batt_current_ma": -1,
+    "batt_temp_c": 255,
+    "walk_mode": true
+   }
+  },
+  {
+   "hex": "0949a6478faadaa2d0da9944ab3b471838ad69eb",
+   "name": "pid 9 random 0",
+   "raw": {
+    "assist": 73,
+    "batt_current_ma": -12126,
+    "batt_mv": 39386,
+    "batt_remaining_cap_raw": 43663,
+    "batt_temp_c": 218,
+    "motor_rpm": 6215,
+    "motor_temp_c": 68,
+    "speed": 1834.2,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 73,
+    "batt_current_ma": -12126,
+    "batt_mv": 39386,
+    "batt_remaining_cap_raw": 43663,
+    "batt_temp_c": 218,
+    "motor_rpm": 6215,
+    "motor_temp_c": 68,
+    "speed": 1834.2,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "097bef1a7a8c0d76a9dc57805e85b8ca62ad38de",
+   "name": "pid 9 random 1",
+   "raw": {
+    "assist": 123,
+    "batt_current_ma": -22154,
+    "batt_mv": 22492,
+    "batt_remaining_cap_raw": 35962,
+    "batt_temp_c": 13,
+    "motor_rpm": 51896,
+    "motor_temp_c": 128,
+    "speed": 689.5,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 123,
+    "batt_current_ma": -22154,
+    "batt_mv": 22492,
+    "batt_remaining_cap_raw": 35962,
+    "batt_temp_c": 13,
+    "motor_rpm": 51896,
+    "motor_temp_c": 128,
+    "speed": 689.5,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0996e83ea6cb6338a0ed8a0f2a5a0c0a47777b63",
+   "name": "pid 9 random 2",
+   "raw": {
+    "assist": 150,
+    "batt_current_ma": -24520,
+    "batt_mv": 35565,
+    "batt_remaining_cap_raw": 52134,
+    "batt_temp_c": 99,
+    "motor_rpm": 2572,
+    "motor_temp_c": 15,
+    "speed": 1610.4,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 150,
+    "batt_current_ma": -24520,
+    "batt_mv": 35565,
+    "batt_remaining_cap_raw": 52134,
+    "batt_temp_c": 99,
+    "motor_rpm": 2572,
+    "motor_temp_c": 15,
+    "speed": 1610.4,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0905c59fc5df1285e6b4f8a421f7e603b4ff7b0c",
+   "name": "pid 9 random 3",
+   "raw": {
+    "assist": 5,
+    "batt_current_ma": -6523,
+    "batt_mv": 63668,
+    "batt_remaining_cap_raw": 57285,
+    "batt_temp_c": 18,
+    "motor_rpm": 998,
+    "motor_temp_c": 164,
+    "speed": 4090.1,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 5,
+    "batt_current_ma": -6523,
+    "batt_mv": 63668,
+    "batt_remaining_cap_raw": 57285,
+    "batt_temp_c": 18,
+    "motor_rpm": 998,
+    "motor_temp_c": 164,
+    "speed": 4090.1,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "09",
+   "name": "pid 9 short 1",
+   "raw": {
+    "batt_current_ma": null,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_c": null,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": null
+   },
+   "stripped": {
+    "batt_current_ma": null,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_c": null,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": null
+   }
+  },
+  {
+   "hex": "09f8",
+   "name": "pid 9 short 2",
+   "raw": {
+    "assist": 248,
+    "batt_current_ma": null,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_c": null,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 248,
+    "batt_current_ma": null,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_c": null,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "094545cd11",
+   "name": "pid 9 short 5",
+   "raw": {
+    "assist": 69,
+    "batt_current_ma": null,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_c": null,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": 5254.9,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 69,
+    "batt_current_ma": null,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_c": null,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": 5254.9,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "09e32b885abdc584f4",
+   "name": "pid 9 short 9",
+   "raw": {
+    "assist": 227,
+    "batt_current_ma": -2940,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": 48474,
+    "batt_temp_c": 197,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": 3485.9,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 227,
+    "batt_current_ma": -2940,
+    "batt_mv": null,
+    "batt_remaining_cap_raw": 48474,
+    "batt_temp_c": 197,
+    "motor_rpm": null,
+    "motor_temp_c": null,
+    "speed": 3485.9,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "09628926568927e11a82cdd7cd70b3",
+   "name": "pid 9 short 15",
+   "raw": {
+    "assist": 98,
+    "batt_current_ma": 6881,
+    "batt_mv": 52610,
+    "batt_remaining_cap_raw": 35158,
+    "batt_temp_c": 39,
+    "motor_rpm": null,
+    "motor_temp_c": 215,
+    "speed": 986.5,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 98,
+    "batt_current_ma": 6881,
+    "batt_mv": 52610,
+    "batt_remaining_cap_raw": 35158,
+    "batt_temp_c": 39,
+    "motor_rpm": null,
+    "motor_temp_c": 215,
+    "speed": 986.5,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "09a9243d8b4cbed928c87a5a8cc063cec31fdd",
+   "name": "pid 9 short 19",
+   "raw": {
+    "assist": 169,
+    "batt_current_ma": 10457,
+    "batt_mv": 31432,
+    "batt_remaining_cap_raw": 19595,
+    "batt_temp_c": 190,
+    "motor_rpm": 52835,
+    "motor_temp_c": 90,
+    "speed": 1565.2,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 169,
+    "batt_current_ma": 10457,
+    "batt_mv": 31432,
+    "batt_remaining_cap_raw": 19595,
+    "batt_temp_c": 190,
+    "motor_rpm": 52835,
+    "motor_temp_c": 90,
+    "speed": 1565.2,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0a00000000000000000000000000000000000000",
+   "name": "pid 10 zeros",
+   "raw": {
+    "assist": 0,
+    "assist_levels": 0,
+    "batt_full_cap_raw": 0,
+    "batt_pct": 0,
+    "headlight": 0,
+    "key_flags": "000000000000",
+    "speed": 0.0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 0,
+    "assist_levels": 0,
+    "batt_full_cap_raw": 0,
+    "batt_pct": 0,
+    "headlight": 0,
+    "key_flags": "000000000000",
+    "speed": 0.0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0affffffffffffffffffffffffffffffffffffff",
+   "name": "pid 10 ff",
+   "raw": {
+    "assist_levels": 255,
+    "batt_full_cap_raw": 65535,
+    "batt_pct": 255,
+    "headlight": 255,
+    "key_flags": "ffffffffffff",
+    "speed": 6553.5,
+    "walk_mode": true
+   },
+   "stripped": {
+    "assist_levels": 255,
+    "batt_pct": 255,
+    "key_flags": "ffffffffffff",
+    "walk_mode": true
+   }
+  },
+  {
+   "hex": "0a5eaca1811a06ddaf3d615a17904de007ee91dd",
+   "name": "pid 10 random 0",
+   "raw": {
+    "assist": 94,
+    "assist_levels": 129,
+    "batt_full_cap_raw": 56582,
+    "batt_pct": 26,
+    "headlight": 77,
+    "key_flags": "af3d615a1790",
+    "speed": 4138.8,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 94,
+    "assist_levels": 129,
+    "batt_full_cap_raw": 56582,
+    "batt_pct": 26,
+    "headlight": 77,
+    "key_flags": "af3d615a1790",
+    "speed": 4138.8,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0ac73a10be8a298e2180d60b632af9fb2cc079e7",
+   "name": "pid 10 random 1",
+   "raw": {
+    "assist": 199,
+    "assist_levels": 190,
+    "batt_full_cap_raw": 36393,
+    "batt_pct": 138,
+    "headlight": 249,
+    "key_flags": "2180d60b632a",
+    "speed": 415.4,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 199,
+    "assist_levels": 190,
+    "batt_full_cap_raw": 36393,
+    "batt_pct": 138,
+    "headlight": 249,
+    "key_flags": "2180d60b632a",
+    "speed": 415.4,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0acd8a9881f725da777f07f2868213caf1c251a1",
+   "name": "pid 10 random 2",
+   "raw": {
+    "assist": 205,
+    "assist_levels": 129,
+    "batt_full_cap_raw": 55845,
+    "batt_pct": 247,
+    "headlight": 19,
+    "key_flags": "777f07f28682",
+    "speed": 3905.0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 205,
+    "assist_levels": 129,
+    "batt_full_cap_raw": 55845,
+    "batt_pct": 247,
+    "headlight": 19,
+    "key_flags": "777f07f28682",
+    "speed": 3905.0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0acf64ee7d845e310094c79a3afce5eff8ea48e0",
+   "name": "pid 10 random 3",
+   "raw": {
+    "assist": 207,
+    "assist_levels": 125,
+    "batt_full_cap_raw": 12638,
+    "batt_pct": 132,
+    "headlight": 229,
+    "key_flags": "0094c79a3afc",
+    "speed": 6102.8,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 207,
+    "assist_levels": 125,
+    "batt_full_cap_raw": 12638,
+    "batt_pct": 132,
+    "headlight": 229,
+    "key_flags": "0094c79a3afc",
+    "speed": 6102.8,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0a",
+   "name": "pid 10 short 1",
+   "raw": {
+    "assist_levels": null,
+    "batt_full_cap_raw": null,
+    "batt_pct": null,
+    "headlight": null,
+    "key_flags": "",
+    "speed": null
+   },
+   "stripped": {
+    "assist_levels": null,
+    "batt_full_cap_raw": null,
+    "batt_pct": null,
+    "headlight": null,
+    "key_flags": "",
+    "speed": null
+   }
+  },
+  {
+   "hex": "0a01",
+   "name": "pid 10 short 2",
+   "raw": {
+    "assist": 1,
+    "assist_levels": null,
+    "batt_full_cap_raw": null,
+    "batt_pct": null,
+    "headlight": null,
+    "key_flags": "",
+    "speed": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 1,
+    "assist_levels": null,
+    "batt_full_cap_raw": null,
+    "batt_pct": null,
+    "headlight": null,
+    "key_flags": "",
+    "speed": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0aad2810ea",
+   "name": "pid 10 short 5",
+   "raw": {
+    "assist": 173,
+    "assist_levels": 234,
+    "batt_full_cap_raw": null,
+    "batt_pct": null,
+    "headlight": null,
+    "key_flags": "",
+    "speed": 413.6,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 173,
+    "assist_levels": 234,
+    "batt_full_cap_raw": null,
+    "batt_pct": null,
+    "headlight": null,
+    "key_flags": "",
+    "speed": 413.6,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0a3b07d3f4c8c89fc9",
+   "name": "pid 10 short 9",
+   "raw": {
+    "assist": 59,
+    "assist_levels": 244,
+    "batt_full_cap_raw": 40904,
+    "batt_pct": 200,
+    "headlight": null,
+    "key_flags": "c9",
+    "speed": 5402.3,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 59,
+    "assist_levels": 244,
+    "batt_full_cap_raw": 40904,
+    "batt_pct": 200,
+    "headlight": null,
+    "key_flags": "c9",
+    "speed": 5402.3,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0a4584c659a05e5dda7db715eae8b7",
+   "name": "pid 10 short 15",
+   "raw": {
+    "assist": 69,
+    "assist_levels": 89,
+    "batt_full_cap_raw": 23902,
+    "batt_pct": 160,
+    "headlight": 183,
+    "key_flags": "da7db715eae8",
+    "speed": 5082.0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 69,
+    "assist_levels": 89,
+    "batt_full_cap_raw": 23902,
+    "batt_pct": 160,
+    "headlight": 183,
+    "key_flags": "da7db715eae8",
+    "speed": 5082.0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "0a1eca62d807a1de5585090f8c6cc6bf6455f7",
+   "name": "pid 10 short 19",
+   "raw": {
+    "assist": 30,
+    "assist_levels": 216,
+    "batt_full_cap_raw": 56993,
+    "batt_pct": 7,
+    "headlight": 198,
+    "key_flags": "5585090f8c6c",
+    "speed": 2529.0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 30,
+    "assist_levels": 216,
+    "batt_full_cap_raw": 56993,
+    "batt_pct": 7,
+    "headlight": 198,
+    "key_flags": "5585090f8c6c",
+    "speed": 2529.0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "2800000000000000000000000000000000000000",
+   "name": "pid 40 zeros",
+   "raw": {
+    "assist": 0,
+    "ccw_raw": 0,
+    "cw_raw": 0,
+    "error_bits": 0,
+    "last_charge_epoch": 0,
+    "motor_voltage_raw": 0,
+    "speed": 0.0,
+    "throttle_raw": 0,
+    "torque_voltage_raw": 0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 0,
+    "ccw_raw": 0,
+    "cw_raw": 0,
+    "error_bits": 0,
+    "last_charge_epoch": 0,
+    "motor_voltage_raw": 0,
+    "speed": 0.0,
+    "throttle_raw": 0,
+    "torque_voltage_raw": 0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "28ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 40 ff",
+   "raw": {
+    "ccw_raw": 255,
+    "cw_raw": 255,
+    "error_bits": 4294967295,
+    "last_charge_epoch": 4294967295,
+    "motor_voltage_raw": 65535,
+    "speed": 6553.5,
+    "throttle_raw": 255,
+    "torque_voltage_raw": 65535,
+    "walk_mode": true
+   },
+   "stripped": {
+    "walk_mode": true
+   }
+  },
+  {
+   "hex": "289aae783cc532093d7d8897a35d2dc5926a06a4",
+   "name": "pid 40 random 0",
+   "raw": {
+    "assist": 154,
+    "ccw_raw": 151,
+    "cw_raw": 136,
+    "error_bits": 154322236,
+    "last_charge_epoch": 2751883922,
+    "motor_voltage_raw": 23971,
+    "speed": 3089.4,
+    "throttle_raw": 45,
+    "torque_voltage_raw": 32061,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 154,
+    "ccw_raw": 151,
+    "cw_raw": 136,
+    "error_bits": 154322236,
+    "last_charge_epoch": 2751883922,
+    "motor_voltage_raw": 23971,
+    "speed": 3089.4,
+    "throttle_raw": 45,
+    "torque_voltage_raw": 32061,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "28b90bba28defafd49a14a1569b28938844a1287",
+   "name": "pid 40 random 1",
+   "raw": {
+    "assist": 185,
+    "ccw_raw": 21,
+    "cw_raw": 74,
+    "error_bits": 4261076520,
+    "last_charge_epoch": 2266122884,
+    "motor_voltage_raw": 45673,
+    "speed": 4762.7,
+    "throttle_raw": 137,
+    "torque_voltage_raw": 41289,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 185,
+    "ccw_raw": 21,
+    "cw_raw": 74,
+    "error_bits": 4261076520,
+    "last_charge_epoch": 2266122884,
+    "motor_voltage_raw": 45673,
+    "speed": 4762.7,
+    "throttle_raw": 137,
+    "torque_voltage_raw": 41289,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "28139e77a355f3ec60f9e0b82b2bdf40d576fb40",
+   "name": "pid 40 random 2",
+   "raw": {
+    "assist": 19,
+    "ccw_raw": 184,
+    "cw_raw": 224,
+    "error_bits": 3975370147,
+    "last_charge_epoch": 1090221781,
+    "motor_voltage_raw": 11051,
+    "speed": 3062.2,
+    "throttle_raw": 223,
+    "torque_voltage_raw": 63840,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 19,
+    "ccw_raw": 184,
+    "cw_raw": 224,
+    "error_bits": 3975370147,
+    "last_charge_epoch": 1090221781,
+    "motor_voltage_raw": 11051,
+    "speed": 3062.2,
+    "throttle_raw": 223,
+    "torque_voltage_raw": 63840,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "28da01aa3d2695e280cf0e64a9f6fd4eda88546e",
+   "name": "pid 40 random 3",
+   "raw": {
+    "assist": 218,
+    "ccw_raw": 100,
+    "cw_raw": 14,
+    "error_bits": 3801425469,
+    "last_charge_epoch": 1851033818,
+    "motor_voltage_raw": 63145,
+    "speed": 4352.1,
+    "throttle_raw": 253,
+    "torque_voltage_raw": 53120,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 218,
+    "ccw_raw": 100,
+    "cw_raw": 14,
+    "error_bits": 3801425469,
+    "last_charge_epoch": 1851033818,
+    "motor_voltage_raw": 63145,
+    "speed": 4352.1,
+    "throttle_raw": 253,
+    "torque_voltage_raw": 53120,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "28",
+   "name": "pid 40 short 1",
+   "raw": {
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": null,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": null,
+    "throttle_raw": null,
+    "torque_voltage_raw": null
+   },
+   "stripped": {
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": null,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": null,
+    "throttle_raw": null,
+    "torque_voltage_raw": null
+   }
+  },
+  {
+   "hex": "2860",
+   "name": "pid 40 short 2",
+   "raw": {
+    "assist": 96,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": null,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": null,
+    "throttle_raw": null,
+    "torque_voltage_raw": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 96,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": null,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": null,
+    "throttle_raw": null,
+    "torque_voltage_raw": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "286f51c38f",
+   "name": "pid 40 short 5",
+   "raw": {
+    "assist": 111,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": null,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": 5000.1,
+    "throttle_raw": null,
+    "torque_voltage_raw": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 111,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": null,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": 5000.1,
+    "throttle_raw": null,
+    "torque_voltage_raw": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "28d924e920c6a129f5",
+   "name": "pid 40 short 9",
+   "raw": {
+    "assist": 217,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": 698467872,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": 5968.4,
+    "throttle_raw": null,
+    "torque_voltage_raw": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 217,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "error_bits": 698467872,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": null,
+    "speed": 5968.4,
+    "throttle_raw": null,
+    "torque_voltage_raw": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "2804e0fbe9a3ba3cba69469efc9dc4",
+   "name": "pid 40 short 15",
+   "raw": {
+    "assist": 4,
+    "ccw_raw": 158,
+    "cw_raw": 70,
+    "error_bits": 1018864617,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": 40444,
+    "speed": 6448.0,
+    "throttle_raw": 196,
+    "torque_voltage_raw": 27066,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 4,
+    "ccw_raw": 158,
+    "cw_raw": 70,
+    "error_bits": 1018864617,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": 40444,
+    "speed": 6448.0,
+    "throttle_raw": 196,
+    "torque_voltage_raw": 27066,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "2894be4d78ed15813a10ba313abcca3dd5ef20",
+   "name": "pid 40 short 19",
+   "raw": {
+    "assist": 148,
+    "ccw_raw": 49,
+    "cw_raw": 186,
+    "error_bits": 2165697912,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": 48186,
+    "speed": 1990.2,
+    "throttle_raw": 202,
+    "torque_voltage_raw": 4154,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 148,
+    "ccw_raw": 49,
+    "cw_raw": 186,
+    "error_bits": 2165697912,
+    "last_charge_epoch": null,
+    "motor_voltage_raw": 48186,
+    "speed": 1990.2,
+    "throttle_raw": 202,
+    "torque_voltage_raw": 4154,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "3300000000000000000000000000000000000000",
+   "name": "pid 51 zeros",
+   "raw": {
+    "batt_pct": 0,
+    "odometer_raw": 0,
+    "range_raw": 0,
+    "ride_time_raw": 0,
+    "speed": 0.0,
+    "speed_x10": 0,
+    "trip_raw": 0
+   },
+   "stripped": {
+    "batt_pct": 0,
+    "odometer_raw": 0,
+    "range_raw": 0,
+    "ride_time_raw": 0,
+    "speed": 0.0,
+    "speed_x10": 0,
+    "trip_raw": 0
+   }
+  },
+  {
+   "hex": "33ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 51 ff",
+   "raw": {
+    "batt_pct": 255,
+    "odometer_raw": 4294967295,
+    "range_raw": 65535,
+    "ride_time_raw": 4294967295,
+    "speed": 6553.5,
+    "speed_x10": 65535,
+    "trip_raw": 4294967295
+   },
+   "stripped": {
+    "batt_pct": 255
+   }
+  },
+  {
+   "hex": "33c92714f8ab928ac6c599d2480c06fd21504730",
+   "name": "pid 51 random 0",
+   "raw": {
+    "batt_pct": 201,
+    "odometer_raw": 2324868088,
+    "range_raw": 3144,
+    "ride_time_raw": 1344404742,
+    "speed": 515.9,
+    "speed_x10": 5159,
+    "trip_raw": 3533292998
+   },
+   "stripped": {
+    "batt_pct": 201,
+    "odometer_raw": 2324868088,
+    "range_raw": 3144,
+    "ride_time_raw": 1344404742,
+    "speed": 515.9,
+    "speed_x10": 5159,
+    "trip_raw": 3533292998
+   }
+  },
+  {
+   "hex": "33da5846cdf69a2412a132083c2e0746516db1fe",
+   "name": "pid 51 random 1",
+   "raw": {
+    "batt_pct": 218,
+    "odometer_raw": 614135501,
+    "range_raw": 11836,
+    "ride_time_raw": 1834042887,
+    "speed": 1800.8,
+    "speed_x10": 18008,
+    "trip_raw": 137535762
+   },
+   "stripped": {
+    "batt_pct": 218,
+    "odometer_raw": 614135501,
+    "range_raw": 11836,
+    "ride_time_raw": 1834042887,
+    "speed": 1800.8,
+    "speed_x10": 18008,
+    "trip_raw": 137535762
+   }
+  },
+  {
+   "hex": "33226939b0b1d35348c6841316cd226c895f26eb",
+   "name": "pid 51 random 2",
+   "raw": {
+    "batt_pct": 34,
+    "odometer_raw": 1406382512,
+    "range_raw": 52502,
+    "ride_time_raw": 1602841634,
+    "speed": 1469.7,
+    "speed_x10": 14697,
+    "trip_raw": 327468616
+   },
+   "stripped": {
+    "batt_pct": 34,
+    "odometer_raw": 1406382512,
+    "range_raw": 52502,
+    "ride_time_raw": 1602841634,
+    "speed": 1469.7,
+    "speed_x10": 14697,
+    "trip_raw": 327468616
+   }
+  },
+  {
+   "hex": "33b1e10e7639ec9d7b0894a1a3309d911a169533",
+   "name": "pid 51 random 3",
+   "raw": {
+    "batt_pct": 177,
+    "odometer_raw": 2649504118,
+    "range_raw": 12451,
+    "ride_time_raw": 370839965,
+    "speed": 380.9,
+    "speed_x10": 3809,
+    "trip_raw": 2710833275
+   },
+   "stripped": {
+    "batt_pct": 177,
+    "odometer_raw": 2649504118,
+    "range_raw": 12451,
+    "ride_time_raw": 370839965,
+    "speed": 380.9,
+    "speed_x10": 3809,
+    "trip_raw": 2710833275
+   }
+  },
+  {
+   "hex": "33",
+   "name": "pid 51 short 1",
+   "raw": {
+    "batt_pct": null,
+    "odometer_raw": null,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": null,
+    "speed_x10": null,
+    "trip_raw": null
+   },
+   "stripped": {
+    "batt_pct": null,
+    "odometer_raw": null,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": null,
+    "speed_x10": null,
+    "trip_raw": null
+   }
+  },
+  {
+   "hex": "332c",
+   "name": "pid 51 short 2",
+   "raw": {
+    "batt_pct": 44,
+    "odometer_raw": null,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": null,
+    "speed_x10": null,
+    "trip_raw": null
+   },
+   "stripped": {
+    "batt_pct": 44,
+    "odometer_raw": null,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": null,
+    "speed_x10": null,
+    "trip_raw": null
+   }
+  },
+  {
+   "hex": "33fd10e956",
+   "name": "pid 51 short 5",
+   "raw": {
+    "batt_pct": 253,
+    "odometer_raw": null,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": 5966.4,
+    "speed_x10": 59664,
+    "trip_raw": null
+   },
+   "stripped": {
+    "batt_pct": 253,
+    "odometer_raw": null,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": 5966.4,
+    "speed_x10": 59664,
+    "trip_raw": null
+   }
+  },
+  {
+   "hex": "33df3a468258e3ab8a",
+   "name": "pid 51 short 9",
+   "raw": {
+    "batt_pct": 223,
+    "odometer_raw": 2883803266,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": 1797.8,
+    "speed_x10": 17978,
+    "trip_raw": null
+   },
+   "stripped": {
+    "batt_pct": 223,
+    "odometer_raw": 2883803266,
+    "range_raw": null,
+    "ride_time_raw": null,
+    "speed": 1797.8,
+    "speed_x10": 17978,
+    "trip_raw": null
+   }
+  },
+  {
+   "hex": "335d9054eeb4ef71131c90df9fbbbb",
+   "name": "pid 51 short 15",
+   "raw": {
+    "batt_pct": 93,
+    "odometer_raw": 1911534830,
+    "range_raw": 48031,
+    "ride_time_raw": null,
+    "speed": 2164.8,
+    "speed_x10": 21648,
+    "trip_raw": 3750763539
+   },
+   "stripped": {
+    "batt_pct": 93,
+    "odometer_raw": 1911534830,
+    "range_raw": 48031,
+    "ride_time_raw": null,
+    "speed": 2164.8,
+    "speed_x10": 21648,
+    "trip_raw": 3750763539
+   }
+  },
+  {
+   "hex": "332893ab2d9698f279b2d16b97d150d964963c",
+   "name": "pid 51 short 19",
+   "raw": {
+    "batt_pct": 40,
+    "odometer_raw": 4070086189,
+    "range_raw": 53655,
+    "ride_time_raw": 2523191632,
+    "speed": 4392.3,
+    "speed_x10": 43923,
+    "trip_raw": 1808904825
+   },
+   "stripped": {
+    "batt_pct": 40,
+    "odometer_raw": 4070086189,
+    "range_raw": 53655,
+    "ride_time_raw": 2523191632,
+    "speed": 4392.3,
+    "speed_x10": 43923,
+    "trip_raw": 1808904825
+   }
+  },
+  {
+   "hex": "3400000000000000000000000000000000000000",
+   "name": "pid 52 zeros",
+   "raw": {
+    "batt_current_raw": 0,
+    "batt_remaining_cap_raw": 0,
+    "batt_temp_raw": 0,
+    "batt_voltage_raw": 0,
+    "ctrl_temp_raw": 0,
+    "motor_rpm": 0,
+    "motor_temp_raw": 0,
+    "motor_voltage_raw": 0,
+    "throttle_raw": 0
+   },
+   "stripped": {
+    "batt_current_raw": 0,
+    "batt_remaining_cap_raw": 0,
+    "batt_temp_raw": 0,
+    "batt_voltage_raw": 0,
+    "ctrl_temp_raw": 0,
+    "motor_rpm": 0,
+    "motor_temp_raw": 0,
+    "motor_voltage_raw": 0,
+    "throttle_raw": 0
+   }
+  },
+  {
+   "hex": "34ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 52 ff",
+   "raw": {
+    "batt_current_raw": -1,
+    "batt_remaining_cap_raw": 65535,
+    "batt_temp_raw": 255,
+    "batt_voltage_raw": 65535,
+    "ctrl_temp_raw": 255,
+    "motor_rpm": 65535,
+    "motor_temp_raw": 255,
+    "motor_voltage_raw": 65535,
+    "throttle_raw": 255
+   },
+   "stripped": {
+    "batt_current_raw": -1,
+    "ctrl_temp_raw": 255
+   }
+  },
+  {
+   "hex": "342bf56cbc96a443dcf225d0098ec7f6b00d4a78",
+   "name": "pid 52 random 0",
+   "raw": {
+    "batt_current_raw": 27893,
+    "batt_remaining_cap_raw": 17316,
+    "batt_temp_raw": 43,
+    "batt_voltage_raw": 38588,
+    "ctrl_temp_raw": 220,
+    "motor_rpm": 36361,
+    "motor_temp_raw": 242,
+    "motor_voltage_raw": 53285,
+    "throttle_raw": 199
+   },
+   "stripped": {
+    "batt_current_raw": 27893,
+    "batt_remaining_cap_raw": 17316,
+    "batt_temp_raw": 43,
+    "batt_voltage_raw": 38588,
+    "ctrl_temp_raw": 220,
+    "motor_rpm": 36361,
+    "motor_temp_raw": 242,
+    "motor_voltage_raw": 53285,
+    "throttle_raw": 199
+   }
+  },
+  {
+   "hex": "343ed093f5dcfdf01a57c313e43950f4481ca1ca",
+   "name": "pid 52 random 1",
+   "raw": {
+    "batt_current_raw": -27696,
+    "batt_remaining_cap_raw": 61693,
+    "batt_temp_raw": 62,
+    "batt_voltage_raw": 56565,
+    "ctrl_temp_raw": 26,
+    "motor_rpm": 14820,
+    "motor_temp_raw": 87,
+    "motor_voltage_raw": 5059,
+    "throttle_raw": 80
+   },
+   "stripped": {
+    "batt_current_raw": -27696,
+    "batt_remaining_cap_raw": 61693,
+    "batt_temp_raw": 62,
+    "batt_voltage_raw": 56565,
+    "ctrl_temp_raw": 26,
+    "motor_rpm": 14820,
+    "motor_temp_raw": 87,
+    "motor_voltage_raw": 5059,
+    "throttle_raw": 80
+   }
+  },
+  {
+   "hex": "34268a9e97876e8ae45995365e486760148d203d",
+   "name": "pid 52 random 2",
+   "raw": {
+    "batt_current_raw": -24950,
+    "batt_remaining_cap_raw": 35438,
+    "batt_temp_raw": 38,
+    "batt_voltage_raw": 34711,
+    "ctrl_temp_raw": 228,
+    "motor_rpm": 18526,
+    "motor_temp_raw": 89,
+    "motor_voltage_raw": 13973,
+    "throttle_raw": 103
+   },
+   "stripped": {
+    "batt_current_raw": -24950,
+    "batt_remaining_cap_raw": 35438,
+    "batt_temp_raw": 38,
+    "batt_voltage_raw": 34711,
+    "ctrl_temp_raw": 228,
+    "motor_rpm": 18526,
+    "motor_temp_raw": 89,
+    "motor_voltage_raw": 13973,
+    "throttle_raw": 103
+   }
+  },
+  {
+   "hex": "34dbe32855c37f28ef683b819276314450ace1af",
+   "name": "pid 52 random 3",
+   "raw": {
+    "batt_current_raw": 10467,
+    "batt_remaining_cap_raw": 10367,
+    "batt_temp_raw": 219,
+    "batt_voltage_raw": 50005,
+    "ctrl_temp_raw": 239,
+    "motor_rpm": 30354,
+    "motor_temp_raw": 104,
+    "motor_voltage_raw": 33083,
+    "throttle_raw": 49
+   },
+   "stripped": {
+    "batt_current_raw": 10467,
+    "batt_remaining_cap_raw": 10367,
+    "batt_temp_raw": 219,
+    "batt_voltage_raw": 50005,
+    "ctrl_temp_raw": 239,
+    "motor_rpm": 30354,
+    "motor_temp_raw": 104,
+    "motor_voltage_raw": 33083,
+    "throttle_raw": 49
+   }
+  },
+  {
+   "hex": "34",
+   "name": "pid 52 short 1",
+   "raw": {
+    "batt_current_raw": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_raw": null,
+    "batt_voltage_raw": null,
+    "ctrl_temp_raw": null,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   },
+   "stripped": {
+    "batt_current_raw": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_raw": null,
+    "batt_voltage_raw": null,
+    "ctrl_temp_raw": null,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   }
+  },
+  {
+   "hex": "3404",
+   "name": "pid 52 short 2",
+   "raw": {
+    "batt_current_raw": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_raw": 4,
+    "batt_voltage_raw": null,
+    "ctrl_temp_raw": null,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   },
+   "stripped": {
+    "batt_current_raw": null,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_raw": 4,
+    "batt_voltage_raw": null,
+    "ctrl_temp_raw": null,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   }
+  },
+  {
+   "hex": "343dbc244a",
+   "name": "pid 52 short 5",
+   "raw": {
+    "batt_current_raw": 9404,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_raw": 61,
+    "batt_voltage_raw": null,
+    "ctrl_temp_raw": null,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   },
+   "stripped": {
+    "batt_current_raw": 9404,
+    "batt_remaining_cap_raw": null,
+    "batt_temp_raw": 61,
+    "batt_voltage_raw": null,
+    "ctrl_temp_raw": null,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   }
+  },
+  {
+   "hex": "34f8b23a05abc177a1",
+   "name": "pid 52 short 9",
+   "raw": {
+    "batt_current_raw": 15026,
+    "batt_remaining_cap_raw": 30657,
+    "batt_temp_raw": 248,
+    "batt_voltage_raw": 43781,
+    "ctrl_temp_raw": 161,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   },
+   "stripped": {
+    "batt_current_raw": 15026,
+    "batt_remaining_cap_raw": 30657,
+    "batt_temp_raw": 248,
+    "batt_voltage_raw": 43781,
+    "ctrl_temp_raw": 161,
+    "motor_rpm": null,
+    "motor_temp_raw": null,
+    "motor_voltage_raw": null,
+    "throttle_raw": null
+   }
+  },
+  {
+   "hex": "34061ae95309cf9e9e3b14ddfe2bd8",
+   "name": "pid 52 short 15",
+   "raw": {
+    "batt_current_raw": -5862,
+    "batt_remaining_cap_raw": 40655,
+    "batt_temp_raw": 6,
+    "batt_voltage_raw": 2387,
+    "ctrl_temp_raw": 158,
+    "motor_rpm": 11262,
+    "motor_temp_raw": 59,
+    "motor_voltage_raw": 56596,
+    "throttle_raw": 216
+   },
+   "stripped": {
+    "batt_current_raw": -5862,
+    "batt_remaining_cap_raw": 40655,
+    "batt_temp_raw": 6,
+    "batt_voltage_raw": 2387,
+    "ctrl_temp_raw": 158,
+    "motor_rpm": 11262,
+    "motor_temp_raw": 59,
+    "motor_voltage_raw": 56596,
+    "throttle_raw": 216
+   }
+  },
+  {
+   "hex": "34d0662cb44f4510a7f3710169e16804fb7168",
+   "name": "pid 52 short 19",
+   "raw": {
+    "batt_current_raw": 11366,
+    "batt_remaining_cap_raw": 4165,
+    "batt_temp_raw": 208,
+    "batt_voltage_raw": 20404,
+    "ctrl_temp_raw": 167,
+    "motor_rpm": 57705,
+    "motor_temp_raw": 243,
+    "motor_voltage_raw": 369,
+    "throttle_raw": 104
+   },
+   "stripped": {
+    "batt_current_raw": 11366,
+    "batt_remaining_cap_raw": 4165,
+    "batt_temp_raw": 208,
+    "batt_voltage_raw": 20404,
+    "ctrl_temp_raw": 167,
+    "motor_rpm": 57705,
+    "motor_temp_raw": 243,
+    "motor_voltage_raw": 369,
+    "throttle_raw": 104
+   }
+  },
+  {
+   "hex": "3500000000000000000000000000000000000000",
+   "name": "pid 53 zeros",
+   "raw": {
+    "cadence_app": 0,
+    "ccw_raw": 0,
+    "cw_raw": 0,
+    "pedal_power_raw": 0,
+    "torque_nm": 0.0,
+    "torque_voltage_raw": 0
+   },
+   "stripped": {
+    "cadence_app": 0,
+    "ccw_raw": 0,
+    "cw_raw": 0,
+    "pedal_power_raw": 0,
+    "torque_nm": 0.0,
+    "torque_voltage_raw": 0
+   }
+  },
+  {
+   "hex": "35ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 53 ff",
+   "raw": {
+    "cadence_app": 65535,
+    "ccw_raw": 255,
+    "cw_raw": 255,
+    "pedal_power_raw": 4294967295,
+    "torque_nm": 6553.5,
+    "torque_voltage_raw": 65535
+   },
+   "stripped": {}
+  },
+  {
+   "hex": "352289cc271998a3b7aef456e3cdff7e111e3be3",
+   "name": "pid 53 random 0",
+   "raw": {
+    "cadence_app": 38937,
+    "ccw_raw": 137,
+    "cw_raw": 34,
+    "pedal_power_raw": 4105090979,
+    "torque_nm": 1018.8,
+    "torque_voltage_raw": 38937
+   },
+   "stripped": {
+    "cadence_app": 38937,
+    "ccw_raw": 137,
+    "cw_raw": 34,
+    "pedal_power_raw": 4105090979,
+    "torque_nm": 1018.8,
+    "torque_voltage_raw": 38937
+   }
+  },
+  {
+   "hex": "35ffe80c9f9be775ff1cca2e6f0561f40ce7b3b7",
+   "name": "pid 53 random 1",
+   "raw": {
+    "cadence_app": 59291,
+    "ccw_raw": 232,
+    "cw_raw": 255,
+    "pedal_power_raw": 3390898037,
+    "torque_nm": 4071.6,
+    "torque_voltage_raw": 59291
+   },
+   "stripped": {
+    "cadence_app": 59291,
+    "ccw_raw": 232,
+    "pedal_power_raw": 3390898037,
+    "torque_nm": 4071.6,
+    "torque_voltage_raw": 59291
+   }
+  },
+  {
+   "hex": "35341d421966a90f6a4d50445cd36ff80ce6c733",
+   "name": "pid 53 random 2",
+   "raw": {
+    "cadence_app": 43366,
+    "ccw_raw": 29,
+    "cw_raw": 52,
+    "pedal_power_raw": 1347250703,
+    "torque_nm": 646.6,
+    "torque_voltage_raw": 43366
+   },
+   "stripped": {
+    "cadence_app": 43366,
+    "ccw_raw": 29,
+    "cw_raw": 52,
+    "pedal_power_raw": 1347250703,
+    "torque_nm": 646.6,
+    "torque_voltage_raw": 43366
+   }
+  },
+  {
+   "hex": "3596ed2c3937f1831ca0f307792226660cb73156",
+   "name": "pid 53 random 3",
+   "raw": {
+    "cadence_app": 61751,
+    "ccw_raw": 237,
+    "cw_raw": 150,
+    "pedal_power_raw": 4087356547,
+    "torque_nm": 1463.6,
+    "torque_voltage_raw": 61751
+   },
+   "stripped": {
+    "cadence_app": 61751,
+    "ccw_raw": 237,
+    "cw_raw": 150,
+    "pedal_power_raw": 4087356547,
+    "torque_nm": 1463.6,
+    "torque_voltage_raw": 61751
+   }
+  },
+  {
+   "hex": "35",
+   "name": "pid 53 short 1",
+   "raw": {
+    "cadence_app": null,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "pedal_power_raw": null,
+    "torque_nm": null,
+    "torque_voltage_raw": null
+   },
+   "stripped": {
+    "cadence_app": null,
+    "ccw_raw": null,
+    "cw_raw": null,
+    "pedal_power_raw": null,
+    "torque_nm": null,
+    "torque_voltage_raw": null
+   }
+  },
+  {
+   "hex": "3578",
+   "name": "pid 53 short 2",
+   "raw": {
+    "cadence_app": null,
+    "ccw_raw": null,
+    "cw_raw": 120,
+    "pedal_power_raw": null,
+    "torque_nm": null,
+    "torque_voltage_raw": null
+   },
+   "stripped": {
+    "cadence_app": null,
+    "ccw_raw": null,
+    "cw_raw": 120,
+    "pedal_power_raw": null,
+    "torque_nm": null,
+    "torque_voltage_raw": null
+   }
+  },
+  {
+   "hex": "3554483ce2",
+   "name": "pid 53 short 5",
+   "raw": {
+    "cadence_app": null,
+    "ccw_raw": 72,
+    "cw_raw": 84,
+    "pedal_power_raw": null,
+    "torque_nm": 5791.6,
+    "torque_voltage_raw": null
+   },
+   "stripped": {
+    "cadence_app": null,
+    "ccw_raw": 72,
+    "cw_raw": 84,
+    "pedal_power_raw": null,
+    "torque_nm": 5791.6,
+    "torque_voltage_raw": null
+   }
+  },
+  {
+   "hex": "35a5176102f18e111f",
+   "name": "pid 53 short 9",
+   "raw": {
+    "cadence_app": 36593,
+    "ccw_raw": 23,
+    "cw_raw": 165,
+    "pedal_power_raw": null,
+    "torque_nm": 60.9,
+    "torque_voltage_raw": 36593
+   },
+   "stripped": {
+    "cadence_app": 36593,
+    "ccw_raw": 23,
+    "cw_raw": 165,
+    "pedal_power_raw": null,
+    "torque_nm": 60.9,
+    "torque_voltage_raw": 36593
+   }
+  },
+  {
+   "hex": "35d2e6b9668ad3282b31df5ba76306",
+   "name": "pid 53 short 15",
+   "raw": {
+    "cadence_app": 54154,
+    "ccw_raw": 230,
+    "cw_raw": 210,
+    "pedal_power_raw": 3744541480,
+    "torque_nm": 2629.7,
+    "torque_voltage_raw": 54154
+   },
+   "stripped": {
+    "cadence_app": 54154,
+    "ccw_raw": 230,
+    "cw_raw": 210,
+    "pedal_power_raw": 3744541480,
+    "torque_nm": 2629.7,
+    "torque_voltage_raw": 54154
+   }
+  },
+  {
+   "hex": "35c6a52418e0cf188c7947dcfc7928e6645c1a",
+   "name": "pid 53 short 19",
+   "raw": {
+    "cadence_app": 53216,
+    "ccw_raw": 165,
+    "cw_raw": 198,
+    "pedal_power_raw": 1199148056,
+    "torque_nm": 618.0,
+    "torque_voltage_raw": 53216
+   },
+   "stripped": {
+    "cadence_app": 53216,
+    "ccw_raw": 165,
+    "cw_raw": 198,
+    "pedal_power_raw": 1199148056,
+    "torque_nm": 618.0,
+    "torque_voltage_raw": 53216
+   }
+  },
+  {
+   "hex": "3600000000000000000000000000000000000000",
+   "name": "pid 54 zeros",
+   "raw": {
+    "assist_levels": 0,
+    "batt_full_cap_raw": 0,
+    "batt_health_pct": 0,
+    "charge_cycles": 0,
+    "last_charge_duration_raw": 0,
+    "last_charge_epoch": 0,
+    "motor_on": 0,
+    "speed_limit": 0.0,
+    "wheel_circ_mm": 0
+   },
+   "stripped": {
+    "assist_levels": 0,
+    "batt_full_cap_raw": 0,
+    "batt_health_pct": 0,
+    "charge_cycles": 0,
+    "last_charge_duration_raw": 0,
+    "last_charge_epoch": 0,
+    "motor_on": 0,
+    "speed_limit": 0.0,
+    "wheel_circ_mm": 0
+   }
+  },
+  {
+   "hex": "36ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 54 ff",
+   "raw": {
+    "assist_levels": 255,
+    "batt_full_cap_raw": 65535,
+    "batt_health_pct": 255,
+    "charge_cycles": 65535,
+    "last_charge_duration_raw": 4294967295,
+    "last_charge_epoch": 4294967295,
+    "motor_on": 255,
+    "speed_limit": 6553.5,
+    "wheel_circ_mm": 65535
+   },
+   "stripped": {
+    "assist_levels": 255,
+    "motor_on": 255
+   }
+  },
+  {
+   "hex": "362672eab058bce69987dbd4455fc6e87ae662dd",
+   "name": "pid 54 random 0",
+   "raw": {
+    "assist_levels": 38,
+    "batt_full_cap_raw": 34713,
+    "batt_health_pct": 230,
+    "charge_cycles": 54491,
+    "last_charge_duration_raw": 3905314629,
+    "last_charge_epoch": 3714246266,
+    "motor_on": 188,
+    "speed_limit": 2270.4,
+    "wheel_circ_mm": 60018
+   },
+   "stripped": {
+    "assist_levels": 38,
+    "batt_full_cap_raw": 34713,
+    "batt_health_pct": 230,
+    "charge_cycles": 54491,
+    "last_charge_duration_raw": 3905314629,
+    "last_charge_epoch": 3714246266,
+    "motor_on": 188,
+    "speed_limit": 2270.4,
+    "wheel_circ_mm": 60018
+   }
+  },
+  {
+   "hex": "36970a939dc759c756f988bc387346bbf7233b00",
+   "name": "pid 54 random 1",
+   "raw": {
+    "assist_levels": 151,
+    "batt_full_cap_raw": 63830,
+    "batt_health_pct": 199,
+    "charge_cycles": 48264,
+    "last_charge_duration_raw": 3141956408,
+    "last_charge_epoch": 3875831,
+    "motor_on": 89,
+    "speed_limit": 5110.1,
+    "wheel_circ_mm": 37642
+   },
+   "stripped": {
+    "assist_levels": 151,
+    "batt_full_cap_raw": 63830,
+    "batt_health_pct": 199,
+    "charge_cycles": 48264,
+    "last_charge_duration_raw": 3141956408,
+    "last_charge_epoch": 3875831,
+    "motor_on": 89,
+    "speed_limit": 5110.1,
+    "wheel_circ_mm": 37642
+   }
+  },
+  {
+   "hex": "3662fae72d12e3a374c0908a9f1ea1709e5461d6",
+   "name": "pid 54 random 2",
+   "raw": {
+    "assist_levels": 98,
+    "batt_full_cap_raw": 49268,
+    "batt_health_pct": 163,
+    "charge_cycles": 35472,
+    "last_charge_duration_raw": 1889607327,
+    "last_charge_epoch": 3596702878,
+    "motor_on": 227,
+    "speed_limit": 465.3,
+    "wheel_circ_mm": 59386
+   },
+   "stripped": {
+    "assist_levels": 98,
+    "batt_full_cap_raw": 49268,
+    "batt_health_pct": 163,
+    "charge_cycles": 35472,
+    "last_charge_duration_raw": 1889607327,
+    "last_charge_epoch": 3596702878,
+    "motor_on": 227,
+    "speed_limit": 465.3,
+    "wheel_circ_mm": 59386
+   }
+  },
+  {
+   "hex": "368d7ecf7bc35c088b33d15deaf53efe1c85c5b2",
+   "name": "pid 54 random 3",
+   "raw": {
+    "assist_levels": 141,
+    "batt_full_cap_raw": 13195,
+    "batt_health_pct": 8,
+    "charge_cycles": 24017,
+    "last_charge_duration_raw": 4265539050,
+    "last_charge_epoch": 2999289116,
+    "motor_on": 92,
+    "speed_limit": 5004.3,
+    "wheel_circ_mm": 53118
+   },
+   "stripped": {
+    "assist_levels": 141,
+    "batt_full_cap_raw": 13195,
+    "batt_health_pct": 8,
+    "charge_cycles": 24017,
+    "last_charge_duration_raw": 4265539050,
+    "last_charge_epoch": 2999289116,
+    "motor_on": 92,
+    "speed_limit": 5004.3,
+    "wheel_circ_mm": 53118
+   }
+  },
+  {
+   "hex": "36",
+   "name": "pid 54 short 1",
+   "raw": {
+    "assist_levels": null,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": null,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": null,
+    "speed_limit": null,
+    "wheel_circ_mm": null
+   },
+   "stripped": {
+    "assist_levels": null,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": null,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": null,
+    "speed_limit": null,
+    "wheel_circ_mm": null
+   }
+  },
+  {
+   "hex": "367a",
+   "name": "pid 54 short 2",
+   "raw": {
+    "assist_levels": 122,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": null,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": null,
+    "speed_limit": null,
+    "wheel_circ_mm": null
+   },
+   "stripped": {
+    "assist_levels": 122,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": null,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": null,
+    "speed_limit": null,
+    "wheel_circ_mm": null
+   }
+  },
+  {
+   "hex": "361c55a4d3",
+   "name": "pid 54 short 5",
+   "raw": {
+    "assist_levels": 28,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": null,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": null,
+    "speed_limit": null,
+    "wheel_circ_mm": 42069
+   },
+   "stripped": {
+    "assist_levels": 28,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": null,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": null,
+    "speed_limit": null,
+    "wheel_circ_mm": 42069
+   }
+  },
+  {
+   "hex": "362b40ca03c5da9b66",
+   "name": "pid 54 short 9",
+   "raw": {
+    "assist_levels": 43,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": 155,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": 218,
+    "speed_limit": 5043.5,
+    "wheel_circ_mm": 51776
+   },
+   "stripped": {
+    "assist_levels": 43,
+    "batt_full_cap_raw": null,
+    "batt_health_pct": 155,
+    "charge_cycles": null,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": 218,
+    "speed_limit": 5043.5,
+    "wheel_circ_mm": 51776
+   }
+  },
+  {
+   "hex": "36d1bd8af4aa2432a8240d284ebc28",
+   "name": "pid 54 short 15",
+   "raw": {
+    "assist_levels": 209,
+    "batt_full_cap_raw": 9384,
+    "batt_health_pct": 50,
+    "charge_cycles": 10253,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": 36,
+    "speed_limit": 4376.4,
+    "wheel_circ_mm": 35517
+   },
+   "stripped": {
+    "assist_levels": 209,
+    "batt_full_cap_raw": 9384,
+    "batt_health_pct": 50,
+    "charge_cycles": 10253,
+    "last_charge_duration_raw": null,
+    "last_charge_epoch": null,
+    "motor_on": 36,
+    "speed_limit": 4376.4,
+    "wheel_circ_mm": 35517
+   }
+  },
+  {
+   "hex": "361c64c10c0bc988d9d80137630c87d1d459ee",
+   "name": "pid 54 short 19",
+   "raw": {
+    "assist_levels": 28,
+    "batt_full_cap_raw": 55513,
+    "batt_health_pct": 136,
+    "charge_cycles": 14081,
+    "last_charge_duration_raw": 3515288675,
+    "last_charge_epoch": null,
+    "motor_on": 201,
+    "speed_limit": 282.8,
+    "wheel_circ_mm": 49508
+   },
+   "stripped": {
+    "assist_levels": 28,
+    "batt_full_cap_raw": 55513,
+    "batt_health_pct": 136,
+    "charge_cycles": 14081,
+    "last_charge_duration_raw": 3515288675,
+    "last_charge_epoch": null,
+    "motor_on": 201,
+    "speed_limit": 282.8,
+    "wheel_circ_mm": 49508
+   }
+  },
+  {
+   "hex": "3700000000000000000000000000000000000000",
+   "name": "pid 55 zeros",
+   "raw": {
+    "assist": 0,
+    "batt_err_code": 0,
+    "ctrl_err_code": 0,
+    "error_bits": 0,
+    "headlight": 0,
+    "motor_err_code": 0,
+    "sensitivity": 0,
+    "shutdown_timer_s": 0,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 0,
+    "batt_err_code": 0,
+    "ctrl_err_code": 0,
+    "error_bits": 0,
+    "headlight": 0,
+    "motor_err_code": 0,
+    "sensitivity": 0,
+    "shutdown_timer_s": 0,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "37ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 55 ff",
+   "raw": {
+    "batt_err_code": 65535,
+    "ctrl_err_code": 65535,
+    "error_bits": 4294967295,
+    "headlight": 255,
+    "motor_err_code": 65535,
+    "sensitivity": 255,
+    "shutdown_timer_s": 4294967295,
+    "walk_mode": true
+   },
+   "stripped": {
+    "walk_mode": true
+   }
+  },
+  {
+   "hex": "371b301301a93e633b421f2008ef402c65aadb87",
+   "name": "pid 55 random 0",
+   "raw": {
+    "assist": 27,
+    "batt_err_code": 11328,
+    "ctrl_err_code": 61192,
+    "error_bits": 538919483,
+    "headlight": 19,
+    "motor_err_code": 43621,
+    "sensitivity": 48,
+    "shutdown_timer_s": 1665050881,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 27,
+    "batt_err_code": 11328,
+    "ctrl_err_code": 61192,
+    "error_bits": 538919483,
+    "headlight": 19,
+    "motor_err_code": 43621,
+    "sensitivity": 48,
+    "shutdown_timer_s": 1665050881,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "379e8e8d0e0356b5e961b72b44afb7d3a8c45e33",
+   "name": "pid 55 random 1",
+   "raw": {
+    "assist": 158,
+    "batt_err_code": 54199,
+    "ctrl_err_code": 44868,
+    "error_bits": 733438441,
+    "headlight": 141,
+    "motor_err_code": 50344,
+    "sensitivity": 142,
+    "shutdown_timer_s": 3042312974,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 158,
+    "batt_err_code": 54199,
+    "ctrl_err_code": 44868,
+    "error_bits": 733438441,
+    "headlight": 141,
+    "motor_err_code": 50344,
+    "sensitivity": 142,
+    "shutdown_timer_s": 3042312974,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "3722101c909e5fd7251a36af80a2758b3b428c0e",
+   "name": "pid 55 random 2",
+   "raw": {
+    "assist": 34,
+    "batt_err_code": 35701,
+    "ctrl_err_code": 41600,
+    "error_bits": 2939558437,
+    "headlight": 28,
+    "motor_err_code": 16955,
+    "sensitivity": 16,
+    "shutdown_timer_s": 3613367952,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 34,
+    "batt_err_code": 35701,
+    "ctrl_err_code": 41600,
+    "error_bits": 2939558437,
+    "headlight": 28,
+    "motor_err_code": 16955,
+    "sensitivity": 16,
+    "shutdown_timer_s": 3613367952,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "37744f799621315075b7b396e8201c1938ab1e2b",
+   "name": "pid 55 random 3",
+   "raw": {
+    "assist": 116,
+    "batt_err_code": 6428,
+    "ctrl_err_code": 8424,
+    "error_bits": 2528360309,
+    "headlight": 121,
+    "motor_err_code": 43832,
+    "sensitivity": 79,
+    "shutdown_timer_s": 1345397142,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 116,
+    "batt_err_code": 6428,
+    "ctrl_err_code": 8424,
+    "error_bits": 2528360309,
+    "headlight": 121,
+    "motor_err_code": 43832,
+    "sensitivity": 79,
+    "shutdown_timer_s": 1345397142,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "37",
+   "name": "pid 55 short 1",
+   "raw": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": null,
+    "motor_err_code": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null
+   },
+   "stripped": {
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": null,
+    "motor_err_code": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null
+   }
+  },
+  {
+   "hex": "373f",
+   "name": "pid 55 short 2",
+   "raw": {
+    "assist": 63,
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": null,
+    "motor_err_code": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 63,
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": null,
+    "motor_err_code": null,
+    "sensitivity": null,
+    "shutdown_timer_s": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "37eaf34a9d",
+   "name": "pid 55 short 5",
+   "raw": {
+    "assist": 234,
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": 74,
+    "motor_err_code": null,
+    "sensitivity": 243,
+    "shutdown_timer_s": null,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 234,
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": 74,
+    "motor_err_code": null,
+    "sensitivity": 243,
+    "shutdown_timer_s": null,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "37feaeba3a79c6c9c6",
+   "name": "pid 55 short 9",
+   "raw": {
+    "assist": 254,
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": 186,
+    "motor_err_code": null,
+    "sensitivity": 174,
+    "shutdown_timer_s": 3385227578,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 254,
+    "batt_err_code": null,
+    "ctrl_err_code": null,
+    "error_bits": null,
+    "headlight": 186,
+    "motor_err_code": null,
+    "sensitivity": 174,
+    "shutdown_timer_s": 3385227578,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "37f4341a7e8430b928b10f1ffdca5c",
+   "name": "pid 55 short 15",
+   "raw": {
+    "assist": 244,
+    "batt_err_code": null,
+    "ctrl_err_code": 51965,
+    "error_bits": 521122088,
+    "headlight": 26,
+    "motor_err_code": null,
+    "sensitivity": 52,
+    "shutdown_timer_s": 3106964606,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 244,
+    "batt_err_code": null,
+    "ctrl_err_code": 51965,
+    "error_bits": 521122088,
+    "headlight": 26,
+    "motor_err_code": null,
+    "sensitivity": 52,
+    "shutdown_timer_s": 3106964606,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "37b846461772859b213c376f242d61301309ba",
+   "name": "pid 55 short 19",
+   "raw": {
+    "assist": 184,
+    "batt_err_code": 12385,
+    "ctrl_err_code": 11556,
+    "error_bits": 1865890849,
+    "headlight": 70,
+    "motor_err_code": 2323,
+    "sensitivity": 70,
+    "shutdown_timer_s": 2609213975,
+    "walk_mode": false
+   },
+   "stripped": {
+    "assist": 184,
+    "batt_err_code": 12385,
+    "ctrl_err_code": 11556,
+    "error_bits": 1865890849,
+    "headlight": 70,
+    "motor_err_code": 2323,
+    "sensitivity": 70,
+    "shutdown_timer_s": 2609213975,
+    "walk_mode": false
+   }
+  },
+  {
+   "hex": "3800000000000000000000000000000000000000",
+   "name": "pid 56 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "38ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 56 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "383220d71239b72b5d347a295277c887f1d3d6b1",
+   "name": "pid 56 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3802aad10225619cc73550eeade1da410e7c4873",
+   "name": "pid 56 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "383f770812922e864b44dec9827c672afb576fc9",
+   "name": "pid 56 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "386ad323bf296c1582d9af694c28ce7a2f27b555",
+   "name": "pid 56 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "38",
+   "name": "pid 56 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3867",
+   "name": "pid 56 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "383bae0895",
+   "name": "pid 56 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3853c8ec2ca43fcd6b",
+   "name": "pid 56 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "38f7683bf978bfc14437a006629e6b",
+   "name": "pid 56 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "38d7d42fa35f282b7d0e8e96b949111e0b909b",
+   "name": "pid 56 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0000000000000000000000000000000000000000",
+   "name": "pid 0 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "00ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 0 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "00a8e71d0169e9f25e9d175ba75e2e408453668c",
+   "name": "pid 0 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "003cf0224a93bedeae736dbce5ced932ecea84c0",
+   "name": "pid 0 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "00a741403d71ab94e75256080eade61198fcdbfe",
+   "name": "pid 0 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0014f54a5047e53b7442a58ba4d0a920c00ce8d1",
+   "name": "pid 0 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "00",
+   "name": "pid 0 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "002d",
+   "name": "pid 0 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "000c1929e4",
+   "name": "pid 0 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "007e17956d29777046",
+   "name": "pid 0 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "00f067f329161b3ab443eb4510b2b8",
+   "name": "pid 0 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "007782262ed9b896cf4bd4a39d5cadf2f27d1a",
+   "name": "pid 0 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0100000000000000000000000000000000000000",
+   "name": "pid 1 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "01ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 1 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "014c0ced6124836550739f6d23c1cf9b49fa3e5e",
+   "name": "pid 1 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "013736ae5d6b5943ab6c3163866ca8e5de918dbe",
+   "name": "pid 1 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0156e6e2c3a5d67956dde64217c61ce51e9fe349",
+   "name": "pid 1 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0132910e75afeb27afbba0a1c95193f52dfa1333",
+   "name": "pid 1 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "01",
+   "name": "pid 1 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "014f",
+   "name": "pid 1 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "013ecb1e4f",
+   "name": "pid 1 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "01d7d02cb000b75248",
+   "name": "pid 1 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "01908189080cb23b132345ea9da27c",
+   "name": "pid 1 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "01e8061c413617c34ac235475d942901dc77ef",
+   "name": "pid 1 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0200000000000000000000000000000000000000",
+   "name": "pid 2 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "02ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 2 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "02e12c180069379fc783ebf7b4b57e1dc7315417",
+   "name": "pid 2 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "02b2d412ce724c02256d8a6957c988152569c563",
+   "name": "pid 2 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "024b612237796f5af754fa273392238570531a70",
+   "name": "pid 2 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "02baf8e6c43886270c5650c57813b778443efcee",
+   "name": "pid 2 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "02",
+   "name": "pid 2 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0285",
+   "name": "pid 2 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "021180308f",
+   "name": "pid 2 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "02de78ccd30b3721b6",
+   "name": "pid 2 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "028ea2ae46cafd87ef2aa6cd6f07c7",
+   "name": "pid 2 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "023c81a50182728fe5eaf471f2d74406d5b3ee",
+   "name": "pid 2 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0300000000000000000000000000000000000000",
+   "name": "pid 3 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 3 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03d054c2767e59b019bfc47fdce1ddb7920e1525",
+   "name": "pid 3 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03549578d0e42b6cc99f599c690b6a800d7f3207",
+   "name": "pid 3 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03e6fe5914c0b6ccd3d2ec91cebe1ad526dd9019",
+   "name": "pid 3 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03ce3ec866e42190cdebd50deaa733453fa94548",
+   "name": "pid 3 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03",
+   "name": "pid 3 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "039d",
+   "name": "pid 3 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03e3d43b85",
+   "name": "pid 3 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03748df60ab698baa5",
+   "name": "pid 3 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "03392fce2ec1ccc85d2606b58dd6a2",
+   "name": "pid 3 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "032ad2afcdd8798d61e55f193b38ebf9bb7ca4",
+   "name": "pid 3 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0400000000000000000000000000000000000000",
+   "name": "pid 4 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "04ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 4 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0458dc28fe1c76ddeaca9f5b2393763b27cf3e6a",
+   "name": "pid 4 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "044955cd1b1c7fea9dc688e07938c05db4a7adaf",
+   "name": "pid 4 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "045aeb286c8d07a307211fc2104a9e8b07f5114f",
+   "name": "pid 4 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "04ee35ab4c67403b5a424472e0dc1c3280310256",
+   "name": "pid 4 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "04",
+   "name": "pid 4 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "0492",
+   "name": "pid 4 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "04dc72d149",
+   "name": "pid 4 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "048a2ed56582cd680f",
+   "name": "pid 4 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "04a291f6d4d4664c9e2b47973a5d9f",
+   "name": "pid 4 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "04b6de576ccb2a13568bcb9f8b879ac871b75b",
+   "name": "pid 4 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d00000000000000000000000000000000000000",
+   "name": "pid 29 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1dffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 29 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d3d75f7a1cabb17f400cd8b2d1d7a18659e5681",
+   "name": "pid 29 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d4dc823ed57504a2c52b870846a5bfef99f7b59",
+   "name": "pid 29 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d7f835db8f08ad7faa2f7d6c2760e72cb9b806b",
+   "name": "pid 29 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1dbed29058fec7d041b375c3b625a7713fc5566d",
+   "name": "pid 29 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d",
+   "name": "pid 29 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d3a",
+   "name": "pid 29 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d4b48dcfa",
+   "name": "pid 29 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d0c11b91139d4de79",
+   "name": "pid 29 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1dadc8a547a90b2295e4348ee3c599",
+   "name": "pid 29 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1d60557e0a22b0690ea34a5b741d9581ee2329",
+   "name": "pid 29 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "2700000000000000000000000000000000000000",
+   "name": "pid 39 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "27ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 39 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "27ec587d41538650b26fdaa566486d8308b13e7a",
+   "name": "pid 39 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "278039dd13fc12c3cee934bfd90c191a2281f1d9",
+   "name": "pid 39 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "27d7d371d8db0faa53796bede0718f88b0506b03",
+   "name": "pid 39 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "27a254fb162542dd2c632972a3f3501cee31320e",
+   "name": "pid 39 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "27",
+   "name": "pid 39 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "27a5",
+   "name": "pid 39 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "273b3e2f9d",
+   "name": "pid 39 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "274fea049e3f6dd813",
+   "name": "pid 39 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "277ae0b345e3ddd0f534229351a059",
+   "name": "pid 39 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "27bc6fe9da9a2399b5a7449a5ae21ab65c56b1",
+   "name": "pid 39 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "2900000000000000000000000000000000000000",
+   "name": "pid 41 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "29ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 41 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "29873a30bee2d2ba5e0e26c9849e2546aa053154",
+   "name": "pid 41 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "29f62bd67d3994bcca0e132c215cceebb8829c4a",
+   "name": "pid 41 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "2935dffaf7c8417eb7b7c37e0f377bb9cade0466",
+   "name": "pid 41 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "29fad9474dfdddbffd8e984c7056173acb224d5b",
+   "name": "pid 41 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "29",
+   "name": "pid 41 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "292f",
+   "name": "pid 41 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "297f419d81",
+   "name": "pid 41 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "2991929f811a5d4975",
+   "name": "pid 41 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "2941c85b736fee616c0ae41840e1aa",
+   "name": "pid 41 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "297ccb0955dfdba6cfd75d2ff00c224755906f",
+   "name": "pid 41 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3200000000000000000000000000000000000000",
+   "name": "pid 50 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "32ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 50 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3239b538d7b70d7b015f38d448fa742fd01b6e1a",
+   "name": "pid 50 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "32e6fbed98a803d55502b028e536e87c99b50b17",
+   "name": "pid 50 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3293720ac3fa880e77fefaf0163f5ec282eed44e",
+   "name": "pid 50 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "32a08e62ccdf9d671dc7f978c3f9c613853e17f8",
+   "name": "pid 50 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "32",
+   "name": "pid 50 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "326d",
+   "name": "pid 50 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "32b7aaf8a1",
+   "name": "pid 50 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "320da18efa56c9f5e0",
+   "name": "pid 50 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "32d77c28433a4c26def958f7386e79",
+   "name": "pid 50 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "32de8f309dbc5daee74831b4c56e67a562bec6",
+   "name": "pid 50 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3900000000000000000000000000000000000000",
+   "name": "pid 57 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "39ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 57 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "395bc631ee6a82af197cb50618128a650503c9cc",
+   "name": "pid 57 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "392ec4ef24243b4d8a244665d4741e963c0b302c",
+   "name": "pid 57 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3941dcbbcde80af3f63ea03c0a5762f18f3af211",
+   "name": "pid 57 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "39e8f87cd540eabf6d99a6f9d9f157672b2857ea",
+   "name": "pid 57 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "39",
+   "name": "pid 57 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "39ea",
+   "name": "pid 57 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "39a78cd37f",
+   "name": "pid 57 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "39db92aadc5f3445e5",
+   "name": "pid 57 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "393aa34483d88ff576adccb55de050",
+   "name": "pid 57 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "39923c362d7446cde9da17ec9f51bcc17b55bb",
+   "name": "pid 57 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3c00000000000000000000000000000000000000",
+   "name": "pid 60 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3cffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 60 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3ce4b3db272339ace4e9534047b8054665d2056d",
+   "name": "pid 60 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3cd3010e6a4e47eb39e7365fa6faa0c443aa9272",
+   "name": "pid 60 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3c02b11b20de28a5ff8a5ae5c88bad4e942b4122",
+   "name": "pid 60 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3c05f3ed63dda4bf12dfa63c120ba384f061d1a5",
+   "name": "pid 60 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3c",
+   "name": "pid 60 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3c89",
+   "name": "pid 60 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3cc3f539cc",
+   "name": "pid 60 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3c5367eb3dcb5015f3",
+   "name": "pid 60 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3c196975cf92eef5b3f81b6028322c",
+   "name": "pid 60 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "3cdf3228132b3bb648c0e663b7082a14fd8b07",
+   "name": "pid 60 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5100000000000000000000000000000000000000",
+   "name": "pid 81 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "51ffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 81 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5138cf1b1ed6f474a7d22609ade45dfb4c891f70",
+   "name": "pid 81 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "51e7ace57d7baa501bb00f811b27570059710e87",
+   "name": "pid 81 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "51adc5a5970bc4117130e1151a00114b3f03fac1",
+   "name": "pid 81 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5106f8fd3b2321d5b5f6c29b5925991e0acf7caa",
+   "name": "pid 81 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "51",
+   "name": "pid 81 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5145",
+   "name": "pid 81 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5141466904",
+   "name": "pid 81 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "511db4bcb12b2883cb",
+   "name": "pid 81 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5116d180eeb5a4fd4b40ec9a864a5d",
+   "name": "pid 81 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5125f7c1f8e6574670371c7e42907f71515f7b",
+   "name": "pid 81 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a00000000000000000000000000000000000000",
+   "name": "pid 90 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5affffffffffffffffffffffffffffffffffffff",
+   "name": "pid 90 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5aaed7cbe3fc047bb9edab2440d385bcfb88c18e",
+   "name": "pid 90 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a66c537debb30bec37f8f0b16a18a335aa4d701",
+   "name": "pid 90 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5aba896eba36797f12f1581d7243176b1e6965b9",
+   "name": "pid 90 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5ac84e9ffd81ed4d6844c70cf5f846be5a1d7d43",
+   "name": "pid 90 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a",
+   "name": "pid 90 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a68",
+   "name": "pid 90 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a1efa16e0",
+   "name": "pid 90 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a6d7a29b79775b8e6",
+   "name": "pid 90 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a98a9932bce817eeed1cb4af892e3",
+   "name": "pid 90 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "5a0fd7a5d84a083c4bd92e41f38da62bf60f52",
+   "name": "pid 90 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "be00000000000000000000000000000000000000",
+   "name": "pid 190 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "beffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 190 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "be70d0920695c615c58dfeeac2c63e511da0826a",
+   "name": "pid 190 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "be454369fc02bc15f0d96e96ee1de942fbf3361e",
+   "name": "pid 190 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "be23620ea4d8ae9117cc8dc28179987ea3bfbf0f",
+   "name": "pid 190 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "bece0885b3b987b3672abe4f812d78a91ef62977",
+   "name": "pid 190 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "be",
+   "name": "pid 190 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "bef9",
+   "name": "pid 190 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "bec985b286",
+   "name": "pid 190 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "be221f0752514410db",
+   "name": "pid 190 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "bec582b3b2dc69360d42d85bdfb2c0",
+   "name": "pid 190 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "be7ecf71a309e3cc0996dd9454e53e3e2ef7b3",
+   "name": "pid 190 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ed00000000000000000000000000000000000000",
+   "name": "pid 237 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "edffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 237 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "eddd49705f391fdff360f2dfbf5e963bb0d91a0b",
+   "name": "pid 237 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ede99caf4535fa30764c66f61bba95a6a856890b",
+   "name": "pid 237 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ed5a0998345d5499f535d4a05c079e600b2b6a6c",
+   "name": "pid 237 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "edd327e4622cbe450598ef4848d0e6ab4ac4cb00",
+   "name": "pid 237 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ed",
+   "name": "pid 237 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ed1c",
+   "name": "pid 237 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "edea3a4a4c",
+   "name": "pid 237 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ed599375d3a7515ccf",
+   "name": "pid 237 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ed304317c10e0c1dee98c5c5e5eea5",
+   "name": "pid 237 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "edf5134579e2427d638e7cdcb97f41a1701b02",
+   "name": "pid 237 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff00000000000000000000000000000000000000",
+   "name": "pid 255 zeros",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ffffffffffffffffffffffffffffffffffffffff",
+   "name": "pid 255 ff",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ffdf008ad3b3e53bbb5b0f1862c10983d4ded7f5",
+   "name": "pid 255 random 0",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff8456d525c264195f523593cee546a0cdaf2207",
+   "name": "pid 255 random 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff9c00c717b17cd29e0fef1c9268cf6a794708a1",
+   "name": "pid 255 random 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff099a0237a9f1884174a41d79e1d3bc7471203b",
+   "name": "pid 255 random 3",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff",
+   "name": "pid 255 short 1",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ffab",
+   "name": "pid 255 short 2",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff3d28c74b",
+   "name": "pid 255 short 5",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ffde065b4af82abc2f",
+   "name": "pid 255 short 9",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff65f5a7f71f97648f88b4cba1842e",
+   "name": "pid 255 short 15",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "ff24b28d83ac61348c50ce2ea9506c606177bd",
+   "name": "pid 255 short 19",
+   "raw": {},
+   "stripped": {}
+  },
+  {
+   "hex": "1020313233343536373839200000000000000000",
+   "name": "text pid 16 b' 123456789 '",
+   "raw": {
+    "ctrl_serial1": "123456789"
+   },
+   "stripped": {
+    "ctrl_serial1": "123456789"
+   }
+  },
+  {
+   "hex": "1030332e30362e73300000000000000000000000",
+   "name": "text pid 16 b'03.06.s0'",
+   "raw": {
+    "ctrl_serial1": "03.06.s0"
+   },
+   "stripped": {
+    "ctrl_serial1": "03.06.s0"
+   }
+  },
+  {
+   "hex": "1000000000000000000000000000000000000000",
+   "name": "text pid 16 b''",
+   "raw": {
+    "ctrl_serial1": ""
+   },
+   "stripped": {
+    "ctrl_serial1": ""
+   }
+  },
+  {
+   "hex": "101c1d41421e1f00000000000000000000000000",
+   "name": "text pid 16 b'\\x1c\\x1dAB\\x1e\\x1f'",
+   "raw": {
+    "ctrl_serial1": "AB"
+   },
+   "stripped": {
+    "ctrl_serial1": "AB"
+   }
+  },
+  {
+   "hex": "10090a41420b0c0d000000000000000000000000",
+   "name": "text pid 16 b'\\t\\nAB\\x0b\\x0c\\r'",
+   "raw": {
+    "ctrl_serial1": "AB"
+   },
+   "stripped": {
+    "ctrl_serial1": "AB"
+   }
+  },
+  {
+   "hex": "1041004200000000000000000000000000000000",
+   "name": "text pid 16 b'A\\x00B'",
+   "raw": {
+    "ctrl_serial1": "A"
+   },
+   "stripped": {
+    "ctrl_serial1": "A"
+   }
+  },
+  {
+   "hex": "103142c300000000000000000000000000000000",
+   "name": "text pid 16 b'1B\\xc3'",
+   "raw": {
+    "ctrl_serial1": "1B\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "1B\ufffd"
+   }
+  },
+  {
+   "hex": "104142434445464748494a4b4c4d4e4f50515253",
+   "name": "text pid 16 b'ABCDEFGHIJKLMNOPQRS'",
+   "raw": {
+    "ctrl_serial1": "ABCDEFGHIJKLMNOP"
+   },
+   "stripped": {
+    "ctrl_serial1": "ABCDEFGHIJKLMNOP"
+   }
+  },
+  {
+   "hex": "10ffffffffffffffffffffffffffffffff000000",
+   "name": "text pid 16 b'\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff'",
+   "raw": {
+    "ctrl_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "102020a078a02020000000000000000000000000",
+   "name": "text pid 16 b'  \\xa0x\\xa0  '",
+   "raw": {
+    "ctrl_serial1": "\ufffdx\ufffd"
+   },
+   "stripped": {
+    "ctrl_serial1": "\ufffdx\ufffd"
+   }
+  },
+  {
+   "hex": "1000616263000000000000000000000000000000",
+   "name": "text pid 16 b'\\x00abc'",
+   "raw": {
+    "ctrl_serial1": ""
+   },
+   "stripped": {
+    "ctrl_serial1": ""
+   }
+  },
+  {
+   "hex": "10787f0000000000000000000000000000000000",
+   "name": "text pid 16 b'x\\x7f'",
+   "raw": {
+    "ctrl_serial1": "x\u007f"
+   },
+   "stripped": {
+    "ctrl_serial1": "x\u007f"
+   }
+  },
+  {
+   "hex": "1320313233343536373839200000000000000000",
+   "name": "text pid 19 b' 123456789 '",
+   "raw": {
+    "ctrl_sw": "123456789"
+   },
+   "stripped": {
+    "ctrl_sw": "123456789"
+   }
+  },
+  {
+   "hex": "1330332e30362e73300000000000000000000000",
+   "name": "text pid 19 b'03.06.s0'",
+   "raw": {
+    "ctrl_sw": "03.06.s0"
+   },
+   "stripped": {
+    "ctrl_sw": "03.06.s0"
+   }
+  },
+  {
+   "hex": "1300000000000000000000000000000000000000",
+   "name": "text pid 19 b''",
+   "raw": {
+    "ctrl_sw": ""
+   },
+   "stripped": {
+    "ctrl_sw": ""
+   }
+  },
+  {
+   "hex": "131c1d41421e1f00000000000000000000000000",
+   "name": "text pid 19 b'\\x1c\\x1dAB\\x1e\\x1f'",
+   "raw": {
+    "ctrl_sw": "AB"
+   },
+   "stripped": {
+    "ctrl_sw": "AB"
+   }
+  },
+  {
+   "hex": "13090a41420b0c0d000000000000000000000000",
+   "name": "text pid 19 b'\\t\\nAB\\x0b\\x0c\\r'",
+   "raw": {
+    "ctrl_sw": "AB"
+   },
+   "stripped": {
+    "ctrl_sw": "AB"
+   }
+  },
+  {
+   "hex": "1341004200000000000000000000000000000000",
+   "name": "text pid 19 b'A\\x00B'",
+   "raw": {
+    "ctrl_sw": "A"
+   },
+   "stripped": {
+    "ctrl_sw": "A"
+   }
+  },
+  {
+   "hex": "133142c300000000000000000000000000000000",
+   "name": "text pid 19 b'1B\\xc3'",
+   "raw": {
+    "ctrl_sw": "1B\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "1B\ufffd"
+   }
+  },
+  {
+   "hex": "134142434445464748494a4b4c4d4e4f50515253",
+   "name": "text pid 19 b'ABCDEFGHIJKLMNOPQRS'",
+   "raw": {
+    "ctrl_sw": "ABCDEFGHIJKLMNOP"
+   },
+   "stripped": {
+    "ctrl_sw": "ABCDEFGHIJKLMNOP"
+   }
+  },
+  {
+   "hex": "13ffffffffffffffffffffffffffffffff000000",
+   "name": "text pid 19 b'\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff'",
+   "raw": {
+    "ctrl_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "132020a078a02020000000000000000000000000",
+   "name": "text pid 19 b'  \\xa0x\\xa0  '",
+   "raw": {
+    "ctrl_sw": "\ufffdx\ufffd"
+   },
+   "stripped": {
+    "ctrl_sw": "\ufffdx\ufffd"
+   }
+  },
+  {
+   "hex": "1300616263000000000000000000000000000000",
+   "name": "text pid 19 b'\\x00abc'",
+   "raw": {
+    "ctrl_sw": ""
+   },
+   "stripped": {
+    "ctrl_sw": ""
+   }
+  },
+  {
+   "hex": "13787f0000000000000000000000000000000000",
+   "name": "text pid 19 b'x\\x7f'",
+   "raw": {
+    "ctrl_sw": "x\u007f"
+   },
+   "stripped": {
+    "ctrl_sw": "x\u007f"
+   }
+  },
+  {
+   "hex": "1820313233343536373839200000000000000000",
+   "name": "text pid 24 b' 123456789 '",
+   "raw": {
+    "batt_sw": "123456789"
+   },
+   "stripped": {
+    "batt_sw": "123456789"
+   }
+  },
+  {
+   "hex": "1830332e30362e73300000000000000000000000",
+   "name": "text pid 24 b'03.06.s0'",
+   "raw": {
+    "batt_sw": "03.06.s0"
+   },
+   "stripped": {
+    "batt_sw": "03.06.s0"
+   }
+  },
+  {
+   "hex": "1800000000000000000000000000000000000000",
+   "name": "text pid 24 b''",
+   "raw": {
+    "batt_sw": ""
+   },
+   "stripped": {
+    "batt_sw": ""
+   }
+  },
+  {
+   "hex": "181c1d41421e1f00000000000000000000000000",
+   "name": "text pid 24 b'\\x1c\\x1dAB\\x1e\\x1f'",
+   "raw": {
+    "batt_sw": "AB"
+   },
+   "stripped": {
+    "batt_sw": "AB"
+   }
+  },
+  {
+   "hex": "18090a41420b0c0d000000000000000000000000",
+   "name": "text pid 24 b'\\t\\nAB\\x0b\\x0c\\r'",
+   "raw": {
+    "batt_sw": "AB"
+   },
+   "stripped": {
+    "batt_sw": "AB"
+   }
+  },
+  {
+   "hex": "1841004200000000000000000000000000000000",
+   "name": "text pid 24 b'A\\x00B'",
+   "raw": {
+    "batt_sw": "A"
+   },
+   "stripped": {
+    "batt_sw": "A"
+   }
+  },
+  {
+   "hex": "183142c300000000000000000000000000000000",
+   "name": "text pid 24 b'1B\\xc3'",
+   "raw": {
+    "batt_sw": "1B\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "1B\ufffd"
+   }
+  },
+  {
+   "hex": "184142434445464748494a4b4c4d4e4f50515253",
+   "name": "text pid 24 b'ABCDEFGHIJKLMNOPQRS'",
+   "raw": {
+    "batt_sw": "ABCDEFGHIJKLMNOP"
+   },
+   "stripped": {
+    "batt_sw": "ABCDEFGHIJKLMNOP"
+   }
+  },
+  {
+   "hex": "18ffffffffffffffffffffffffffffffff000000",
+   "name": "text pid 24 b'\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff'",
+   "raw": {
+    "batt_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "182020a078a02020000000000000000000000000",
+   "name": "text pid 24 b'  \\xa0x\\xa0  '",
+   "raw": {
+    "batt_sw": "\ufffdx\ufffd"
+   },
+   "stripped": {
+    "batt_sw": "\ufffdx\ufffd"
+   }
+  },
+  {
+   "hex": "1800616263000000000000000000000000000000",
+   "name": "text pid 24 b'\\x00abc'",
+   "raw": {
+    "batt_sw": ""
+   },
+   "stripped": {
+    "batt_sw": ""
+   }
+  },
+  {
+   "hex": "18787f0000000000000000000000000000000000",
+   "name": "text pid 24 b'x\\x7f'",
+   "raw": {
+    "batt_sw": "x\u007f"
+   },
+   "stripped": {
+    "batt_sw": "x\u007f"
+   }
+  },
+  {
+   "hex": "1c20313233343536373839200000000000000000",
+   "name": "text pid 28 b' 123456789 '",
+   "raw": {
+    "batt_mfr": "123456789"
+   },
+   "stripped": {
+    "batt_mfr": "123456789"
+   }
+  },
+  {
+   "hex": "1c30332e30362e73300000000000000000000000",
+   "name": "text pid 28 b'03.06.s0'",
+   "raw": {
+    "batt_mfr": "03.06.s0"
+   },
+   "stripped": {
+    "batt_mfr": "03.06.s0"
+   }
+  },
+  {
+   "hex": "1c00000000000000000000000000000000000000",
+   "name": "text pid 28 b''",
+   "raw": {
+    "batt_mfr": ""
+   },
+   "stripped": {
+    "batt_mfr": ""
+   }
+  },
+  {
+   "hex": "1c1c1d41421e1f00000000000000000000000000",
+   "name": "text pid 28 b'\\x1c\\x1dAB\\x1e\\x1f'",
+   "raw": {
+    "batt_mfr": "AB"
+   },
+   "stripped": {
+    "batt_mfr": "AB"
+   }
+  },
+  {
+   "hex": "1c090a41420b0c0d000000000000000000000000",
+   "name": "text pid 28 b'\\t\\nAB\\x0b\\x0c\\r'",
+   "raw": {
+    "batt_mfr": "AB"
+   },
+   "stripped": {
+    "batt_mfr": "AB"
+   }
+  },
+  {
+   "hex": "1c41004200000000000000000000000000000000",
+   "name": "text pid 28 b'A\\x00B'",
+   "raw": {
+    "batt_mfr": "A"
+   },
+   "stripped": {
+    "batt_mfr": "A"
+   }
+  },
+  {
+   "hex": "1c3142c300000000000000000000000000000000",
+   "name": "text pid 28 b'1B\\xc3'",
+   "raw": {
+    "batt_mfr": "1B\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "1B\ufffd"
+   }
+  },
+  {
+   "hex": "1c4142434445464748494a4b4c4d4e4f50515253",
+   "name": "text pid 28 b'ABCDEFGHIJKLMNOPQRS'",
+   "raw": {
+    "batt_mfr": "ABCDEFGHIJKLMNOP"
+   },
+   "stripped": {
+    "batt_mfr": "ABCDEFGHIJKLMNOP"
+   }
+  },
+  {
+   "hex": "1cffffffffffffffffffffffffffffffff000000",
+   "name": "text pid 28 b'\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff'",
+   "raw": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd"
+   }
+  },
+  {
+   "hex": "1c2020a078a02020000000000000000000000000",
+   "name": "text pid 28 b'  \\xa0x\\xa0  '",
+   "raw": {
+    "batt_mfr": "\ufffdx\ufffd"
+   },
+   "stripped": {
+    "batt_mfr": "\ufffdx\ufffd"
+   }
+  },
+  {
+   "hex": "1c00616263000000000000000000000000000000",
+   "name": "text pid 28 b'\\x00abc'",
+   "raw": {
+    "batt_mfr": ""
+   },
+   "stripped": {
+    "batt_mfr": ""
+   }
+  },
+  {
+   "hex": "1c787f0000000000000000000000000000000000",
+   "name": "text pid 28 b'x\\x7f'",
+   "raw": {
+    "batt_mfr": "x\u007f"
+   },
+   "stripped": {
+    "batt_mfr": "x\u007f"
+   }
+  },
+  {
+   "hex": "36ffffffffffffffffffffffffffffffffffffff",
+   "name": "page 54 all ff but levels",
+   "raw": {
+    "assist_levels": 255,
+    "batt_full_cap_raw": 65535,
+    "batt_health_pct": 255,
+    "charge_cycles": 65535,
+    "last_charge_duration_raw": 4294967295,
+    "last_charge_epoch": 4294967295,
+    "motor_on": 255,
+    "speed_limit": 6553.5,
+    "wheel_circ_mm": 65535
+   },
+   "stripped": {
+    "assist_levels": 255,
+    "motor_on": 255
+   }
+  },
+  {
+   "hex": "0affffffffffffffffffffffffffffffffffffff",
+   "name": "page 10 ff headlight + batt ff",
+   "raw": {
+    "assist_levels": 255,
+    "batt_full_cap_raw": 65535,
+    "batt_pct": 255,
+    "headlight": 255,
+    "key_flags": "ffffffffffff",
+    "speed": 6553.5,
+    "walk_mode": true
+   },
+   "stripped": {
+    "assist_levels": 255,
+    "batt_pct": 255,
+    "key_flags": "ffffffffffff",
+    "walk_mode": true
+   }
+  }
+ ],
+ "generator": "tools/make_fixtures.py"
+}

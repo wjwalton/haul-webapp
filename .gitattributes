@@ -1,0 +1,5 @@
+* text=auto
+# The laptop launchers: Linux needs LF, cmd.exe wants CRLF.
+*.sh text eol=lf
+*.py text eol=lf
+*.cmd text eol=crlf

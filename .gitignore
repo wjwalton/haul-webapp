@@ -1,0 +1,58 @@
+# Build / tooling
+node_modules/
+dist/
+dev-dist/
+coverage/
+.vite/
+__pycache__/
+*.tsbuildinfo
+
+# ---------------------------------------------------------------------------------------------
+# Firmware: NEVER committed (Specialized's files). The two app images are supplied separately and
+# dropped into src/assets/firmware/ locally (see README.md "Firmware files"); the app also builds
+# and runs without them ("Load file from disk", allowlist-only).
+# ---------------------------------------------------------------------------------------------
+src/assets/firmware/*
+!src/assets/firmware/README.md
+*.bin
+*.zip
+*.hex
+*.dat
+*.apk
+*.ipa
+
+# ---------------------------------------------------------------------------------------------
+# Bike data: real captures, everything derived from them, logs and downloads. Personal (serials,
+# odometer, ride history). Tests that need them skip when they're absent.
+# ---------------------------------------------------------------------------------------------
+tests/fixtures/captures/
+*.jsonl
+*.log
+logs/
+captures/
+report*.json
+update_*.txt
+spi_*
+*.csv
+
+# ---------------------------------------------------------------------------------------------
+# Reference material (protocol notes, the Python client, the Android app's rules, the firmware folder):
+# local only. It holds real bike names and serials. The committed parity fixtures (tests/fixtures/py_*.json)
+# were generated from it by tools/make_fixtures.py.
+# ---------------------------------------------------------------------------------------------
+reference/
+
+# Local builds for the shop laptop (npm run laptop): may contain the firmware.
+/laptop/
+
+# Personal / machine-local
+.env
+.env.*
+CLAUDE.local.md
+.claude/settings.local.json
+.vscode/
+.idea/
+*.local
+Thumbs.db
+.DS_Store
+desktop.ini

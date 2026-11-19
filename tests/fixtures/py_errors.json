@@ -1,0 +1,2319 @@
+{
+ "cases": [
+  {
+   "bits": 0,
+   "decoded": []
+  },
+  {
+   "bits": 65536,
+   "decoded": [
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ]
+   ]
+  },
+  {
+   "bits": 2097152,
+   "decoded": [
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ]
+   ]
+  },
+  {
+   "bits": 3,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ]
+   ]
+  },
+  {
+   "bits": 4294967295,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 16777215,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ]
+   ]
+  },
+  {
+   "bits": 4278190080,
+   "decoded": [
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 2147483649,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 1,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ]
+   ]
+  },
+  {
+   "bits": 2,
+   "decoded": [
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ]
+   ]
+  },
+  {
+   "bits": 4,
+   "decoded": [
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ]
+   ]
+  },
+  {
+   "bits": 8,
+   "decoded": [
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ]
+   ]
+  },
+  {
+   "bits": 16,
+   "decoded": [
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ]
+   ]
+  },
+  {
+   "bits": 32,
+   "decoded": [
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ]
+   ]
+  },
+  {
+   "bits": 64,
+   "decoded": [
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ]
+   ]
+  },
+  {
+   "bits": 128,
+   "decoded": [
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ]
+   ]
+  },
+  {
+   "bits": 256,
+   "decoded": [
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ]
+   ]
+  },
+  {
+   "bits": 512,
+   "decoded": [
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ]
+   ]
+  },
+  {
+   "bits": 1024,
+   "decoded": [
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ]
+   ]
+  },
+  {
+   "bits": 2048,
+   "decoded": [
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ]
+   ]
+  },
+  {
+   "bits": 4096,
+   "decoded": [
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ]
+   ]
+  },
+  {
+   "bits": 8192,
+   "decoded": [
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ]
+   ]
+  },
+  {
+   "bits": 16384,
+   "decoded": [
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ]
+   ]
+  },
+  {
+   "bits": 32768,
+   "decoded": [
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ]
+   ]
+  },
+  {
+   "bits": 65536,
+   "decoded": [
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ]
+   ]
+  },
+  {
+   "bits": 131072,
+   "decoded": [
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ]
+   ]
+  },
+  {
+   "bits": 262144,
+   "decoded": [
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ]
+   ]
+  },
+  {
+   "bits": 524288,
+   "decoded": [
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ]
+   ]
+  },
+  {
+   "bits": 1048576,
+   "decoded": [
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ]
+   ]
+  },
+  {
+   "bits": 2097152,
+   "decoded": [
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ]
+   ]
+  },
+  {
+   "bits": 4194304,
+   "decoded": [
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ]
+   ]
+  },
+  {
+   "bits": 8388608,
+   "decoded": [
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ]
+   ]
+  },
+  {
+   "bits": 16777216,
+   "decoded": [
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 33554432,
+   "decoded": [
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 67108864,
+   "decoded": [
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 134217728,
+   "decoded": [
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 268435456,
+   "decoded": [
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 536870912,
+   "decoded": [
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 1073741824,
+   "decoded": [
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 2147483648,
+   "decoded": [
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 1390851128,
+   "decoded": [
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 4071050724,
+   "decoded": [
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 647892279,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 1695753998,
+   "decoded": [
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 2795742288,
+   "decoded": [
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 207388624,
+   "decoded": [
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 311111475,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 3527346212,
+   "decoded": [
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 2301595691,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 404285457,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 1570621944,
+   "decoded": [
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 2503055453,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 249103477,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 3907149204,
+   "decoded": [
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 2179419893,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     5,
+     "bms_e003",
+     "Battery - Cell Under Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     11,
+     "controller_e005",
+     "Ctrl - Motor Hall Sensor Abnormal"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     31,
+     "bit31",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 922121676,
+   "decoded": [
+    [
+     2,
+     "bms_e000",
+     "Battery - Over Discharging Current"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     21,
+     "controller_e031",
+     "Ctrl - Update FW  Error"
+    ],
+    [
+     22,
+     "controller_e027",
+     "Ctrl - Light Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 161042648,
+   "decoded": [
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     20,
+     "controller_e021",
+     "Ctrl - Constant Voltage Error"
+    ],
+    [
+     23,
+     "controller_e022",
+     "Ctrl - EEPROM Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 369140570,
+   "decoded": [
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     15,
+     "controller_e009",
+     "Ctrl - Throttle Over"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     28,
+     "bit28",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 1862494042,
+   "decoded": [
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     6,
+     "bms_e004",
+     "Battery - Over Charging Current"
+    ],
+    [
+     8,
+     "bms_e006",
+     "Battery - Cell Under Temperature"
+    ],
+    [
+     9,
+     "bms_e015",
+     "Battery - Charge/Discharge OT/UT"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     13,
+     "controller_e007",
+     "Ctrl - TS Over Limit"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     17,
+     "controller_e011",
+     "Ctrl - FET Over Temperature"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     26,
+     "bit26",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ]
+   ]
+  },
+  {
+   "bits": 1796035739,
+   "decoded": [
+    [
+     0,
+     "hmi_e032",
+     "HMI- Cmmunication Error"
+    ],
+    [
+     1,
+     "bms_e032",
+     "Battery - Cmmunication Error"
+    ],
+    [
+     3,
+     "bms_e001",
+     "Battery - Short Circuit"
+    ],
+    [
+     4,
+     "bms_e002",
+     "Battery - Cell Over Voltage"
+    ],
+    [
+     7,
+     "bms_e005",
+     "Battery - Cell Over Temperature"
+    ],
+    [
+     10,
+     "controller_e003",
+     "Ctrl - Instantaneous Phase Over Current"
+    ],
+    [
+     12,
+     "controller_e006",
+     "Ctrl - Motor - Blocked Rotor"
+    ],
+    [
+     14,
+     "controller_e008",
+     "Ctrl - TS Under Limit"
+    ],
+    [
+     16,
+     "controller_e010",
+     "Ctrl - Throttle Under"
+    ],
+    [
+     18,
+     "controller_e012",
+     "Ctrl - Motor Over Temperature"
+    ],
+    [
+     19,
+     "controller_e014",
+     "Ctrl - Regen Error"
+    ],
+    [
+     24,
+     "bit24",
+     "unmapped in app table"
+    ],
+    [
+     25,
+     "bit25",
+     "unmapped in app table"
+    ],
+    [
+     27,
+     "bit27",
+     "unmapped in app table"
+    ],
+    [
+     29,
+     "bit29",
+     "unmapped in app table"
+    ],
+    [
+     30,
+     "bit30",
+     "unmapped in app table"
+    ]
+   ]
+  }
+ ],
+ "generator": "tools/make_fixtures.py"
+}

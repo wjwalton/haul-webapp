@@ -1,0 +1,706 @@
+/**
+ * MockHmi: a scriptable, in-memory Globe Haul display (EH02) behind the GattTransport interfaces.
+ * Used by the unit tests (with fake timers) and by the app's dev mock mode.
+ *
+ * Behaviour follows PROTOCOL.md; where PROTOCOL.md doesn't say, the choice is marked MOCK ASSUMPTION
+ * and is a knob, not a fact. Timings default to the stock update trace (2026-11-10):
+ * 46 ack after ~150 ms, `3C 02 01 00` 4.57 s after the start frame, `3C 00 00 00` 148 ms after the
+ * last block.
+ *
+ * The mock keeps its OWN list of what this app may send (independent of protocol/frames.ts) and records
+ * anything else as a violation, so a bug in checkFrame can't hide itself in tests.
+ */
+import { hex } from '../../protocol/bytes';
+import {
+  CH_BATTERY_LEVEL, CH_BYPASS, CH_POWER, CH_READ, CH_WRITE, DIS_CHARS, DIS_SERIAL_BLOCKLISTED,
+  SCAN_UUID, SVC_BATTERY, SVC_DIS, SVC_EBIKE, SVC_SECURE_DFU,
+} from '../../protocol/gatt';
+import { STRING_PAGES } from '../../protocol/pages';
+import type { BleDevice, CharProperties, GattLink, GattServiceInfo, WriteMode } from '../transport';
+import { LinkLostError } from '../transport';
+import {
+  configPage, identityPage, livePage, productionPage, settingsPage, type MockConfig, type MockLive,
+} from './pages';
+
+export interface MockTiming {
+  /** A write with response completes after this. */
+  writeMs: number;
+  /** A …0011 block write completes after this (the "slow host" variant sets 50). */
+  blockWriteMs: number;
+  /** Ack indication `10 op status` after a command arrives (captures: 60-120 ms). */
+  ackMs: number;
+  /** One-shot pages after a 3D. */
+  pagesMs: number;
+  /** Live loop period: ~10 Hz on the real bike. */
+  liveIntervalMs: number;
+  /** …0004 repeat period; 0 = only on change. The real HMI repeats ~55x/s. */
+  statusIntervalMs: number;
+  /** 46 → `10 46 01` (stock trace: 153 ms). */
+  fwAckMs: number;
+  /** 46 → `3C 02 01 00` (stock trace: 4,566 ms; the controller erases its application meanwhile). */
+  eraseMs: number;
+  /** Last block → `3C 00 00 00` (stock trace: 148 ms). */
+  finishMs: number;
+  /** Between log-dump notifications. */
+  dumpChunkMs: number;
+}
+
+export interface UpdateScript {
+  /** The bootloader never answers: after 46 the HMI waits in update mode forever (PROTOCOL.md step 5). */
+  neverReady: boolean;
+  /** Ask for a resend (`3C 02 <k>`) the first time block k arrives; each k once. */
+  resendAt: number[];
+  /** Report failure (`3C 01 00 00`) when block k arrives. */
+  failAt: number | null;
+  /** Drop the link when block k arrives. */
+  disconnectAt: number | null;
+  /**
+   * MOCK ASSUMPTION (PROTOCOL.md only says the HMI's streaming timeout "re-requests from a seq
+   * (status 2) or fails (status 1)"; the period isn't documented): no expected block for this long →
+   * `3C 02 <expected>`; after `streamRetries` of those in a row → `3C 01 00 00`. Off by default.
+   */
+  streamTimeoutMs: number;
+  streamRetries: number;
+  /** Controller SW on page 19 after a successful flash. */
+  flashedVersion: string;
+  /** If set, blocks are compared with this image; any mismatch ends in status 1 instead of 0. */
+  expectImage: Uint8Array | null;
+}
+
+export interface MockHmiOptions {
+  name?: string;
+  dis?: Partial<Record<'manufacturer' | 'model' | 'hw_rev' | 'fw_rev' | 'sw_rev', string>>;
+  /** Identity text by field name (ctrl_sw: '03.06.s0'); missing = blank (all spaces), like the real HMI. */
+  identity?: Partial<Record<string, string>>;
+  live?: Partial<MockLive>;
+  config?: Partial<MockConfig>;
+  status?: Partial<MockStatus>;
+  bleBatteryPct?: number;
+  logs?: Partial<Record<1 | 2 | 3, Uint8Array>>;
+  /** Expose the Nordic Secure DFU service 0xFE59. Unknown on the real HMI: tests decide. */
+  dfuService?: boolean;
+  /** …0011 properties. Default: write without response only (globe_capture.py "write-no-resp"). */
+  blockCharProps?: Partial<CharProperties>;
+  /** The controller answers none of its identity fields and reports e031 (the recovery case). */
+  controllerSilent?: boolean;
+  timing?: Partial<MockTiming>;
+  update?: Partial<UpdateScript>;
+  /** Record every notification in `events` (off by default: the live loop is chatty). */
+  recordNotifications?: boolean;
+}
+
+export interface MockStatus {
+  awake: boolean;
+  locked: boolean;
+  charging: boolean;
+  imperial: boolean;
+}
+
+export interface MockEvent {
+  /** ms since the mock was created */
+  t: number;
+  kind: 'connect' | 'disconnect' | 'read' | 'write' | 'subscribe' | 'unsubscribe' | 'notify' | 'violation' | 'state';
+  char?: string;
+  mode?: WriteMode;
+  hex?: string;
+  note?: string;
+}
+
+/**
+ * The simulated bike: the hardware-test bike's display, versions and models (PROTOCOL.md), with
+ * made-up serial numbers (real ones stay out of the repo).
+ */
+export const DEMO_BIKE = {
+  name: 'EH02_00001',
+  dis: { manufacturer: 'Eagotech', model: 'EH2CG0B071', hw_rev: '1.2', fw_rev: '1.0', sw_rev: '5.19' },
+  identity: {
+    ctrl_serial1: '200000001', ctrl_model: '1B', ctrl_sw: '03.06.s0', ctrl_hw: 'AS.03',
+    batt_serial1: '30000001', batt_sw: '10.00.21.RC',
+  },
+} as const;
+
+const DEFAULT_LIVE: MockLive = {
+  assist: 1, speed_x10: 0, error_bits: 0, ride_time_s: 15, trip_m: 814_200, odometer_m: 814_000, range_km: 79,
+  cadence_rpm: 0, batt_temp_c: 20, batt_current_ma: 90, batt_mv: 52_192, motor_rpm: 0, assist_levels: 5,
+  batt_pct: 81, key_flags: '010101010101', headlight: 1,
+};
+const DEFAULT_CONFIG: MockConfig = {
+  assist_levels: 5, wheel_circ_mm: 2235, speed_limit_x10: 250, headlight: 1, shutdown_timer_s: 0,
+  ctrl_err_code: 0, batt_err_code: 0, motor_err_code: 0,
+};
+const DEFAULT_TIMING: MockTiming = {
+  writeMs: 5, blockWriteMs: 1, ackMs: 60, pagesMs: 60, liveIntervalMs: 100, statusIntervalMs: 0,
+  fwAckMs: 150, eraseMs: 4_570, finishMs: 148, dumpChunkMs: 10,
+};
+const DEFAULT_UPDATE: UpdateScript = {
+  neverReady: false, resendAt: [], failAt: null, disconnectAt: null, streamTimeoutMs: Infinity,
+  streamRetries: 3, flashedVersion: '03.06.s0', expectImage: null,
+};
+
+/** sbc bit 21, controller_e031 "Update FW Error" (from protocol/errors.ts SBC_TABLE). */
+const E031 = 1 << 21;
+const CONTROLLER_IDENTITY = ['ctrl_serial1', 'ctrl_serial2', 'ctrl_model', 'ctrl_sw', 'ctrl_hw', 'ctrl_mfr'];
+/** Pages the HMI 5.19 page builder answers (PROTOCOL.md "Which pages the HMI can build"). */
+const BUILT_PAGES = new Set([...Array.from({ length: 28 }, (_, i) => i + 1), 40, 51, 52, 53, 54, 55, 56]);
+/** What the mock expects this app to send on …0010 (independent of frames.ts). */
+const EXPECTED_OPS = new Set([0x3c, 0x3d, 0x3e, 0x29, 0x46]);
+
+type Update =
+  | { phase: 'idle' }
+  | { phase: 'erasing'; total: number }
+  | { phase: 'streaming'; total: number; expected: number; resent: Set<number>; retries: number; mismatch: boolean }
+  | { phase: 'finishing'; total: number };
+
+type Sub = (v: Uint8Array) => void;
+
+export class MockHmi {
+  readonly name: string;
+  readonly events: MockEvent[] = [];
+  readonly violations: string[] = [];
+  /** Every …0010 write and …0011 write, in order. */
+  readonly writes: { t: number; char: string; mode: WriteMode; bytes: Uint8Array }[] = [];
+  /** Accepted (in-sequence) firmware blocks. */
+  blocksAccepted = 0;
+  /** Times a stale/out-of-sequence block was ignored. */
+  blocksIgnored = 0;
+
+  live: MockLive;
+  config: MockConfig;
+  status: MockStatus;
+  identity: Record<string, string>;
+  dis: Record<string, string>;
+  logs: Partial<Record<1 | 2 | 3, Uint8Array>>;
+  timing: MockTiming;
+  update: UpdateScript;
+  bleBatteryPct: number;
+  controllerSilent: boolean;
+
+  /** Live pages stop while true: the HMI only sends page 0x3C until the update ends or a power cycle. */
+  inUpdateMode = false;
+  /** 46 was received: the controller's application is gone until a transfer completes. */
+  controllerErased = false;
+  updateState: Update = { phase: 'idle' };
+
+  private readonly t0 = Date.now();
+  private readonly dfuService: boolean;
+  private readonly blockProps: CharProperties;
+  private readonly recordNotifications: boolean;
+  private connected = false;
+  private pageMode = false;
+  private loopPages: number[] | null = null;
+  private readonly subs = new Map<string, Sub>();
+  private readonly timers = new Set<ReturnType<typeof setTimeout>>();
+  private liveTimer: ReturnType<typeof setInterval> | null = null;
+  private statusTimer: ReturnType<typeof setInterval> | null = null;
+  private streamTimer: ReturnType<typeof setTimeout> | null = null;
+  private readonly disconnectListeners = new Set<() => void>();
+
+  constructor(opts: MockHmiOptions = {}) {
+    this.name = opts.name ?? DEMO_BIKE.name;
+    this.dis = { ...DEMO_BIKE.dis, ...opts.dis };
+    this.identity = { ...DEMO_BIKE.identity, ...opts.identity } as Record<string, string>;
+    this.live = { ...DEFAULT_LIVE, ...opts.live };
+    this.config = { ...DEFAULT_CONFIG, ...opts.config };
+    this.status = { awake: true, locked: false, charging: false, imperial: true, ...opts.status };
+    this.bleBatteryPct = opts.bleBatteryPct ?? this.live.batt_pct;
+    this.logs = { ...opts.logs };
+    this.dfuService = opts.dfuService ?? false;
+    this.blockProps = { read: false, write: false, writeWithoutResponse: true, notify: false, indicate: false, ...opts.blockCharProps };
+    this.controllerSilent = opts.controllerSilent ?? false;
+    this.timing = { ...DEFAULT_TIMING, ...opts.timing };
+    this.update = { ...DEFAULT_UPDATE, ...opts.update };
+    this.recordNotifications = opts.recordNotifications ?? false;
+    const listeners = this.disconnectListeners;
+    this.device = {
+      id: `mock-${this.name}-${Math.random().toString(36).slice(2, 8)}`,
+      name: this.name,
+      connect: () => this.connect(),
+      onDisconnected: (l: () => void) => {
+        listeners.add(l);
+        return () => listeners.delete(l);
+      },
+    };
+  }
+
+  // ---- what the transport sees ---------------------------------------------------------------
+
+  /** A connected HMI stops advertising (PROTOCOL.md "One connection at a time"). */
+  get advertising(): boolean {
+    return !this.connected;
+  }
+
+  readonly advertisedServices = [SCAN_UUID];
+
+  /** What requestDevice hands the app for this bike. */
+  readonly device: BleDevice;
+
+  get isConnected(): boolean {
+    return this.connected;
+  }
+
+  async connect(): Promise<GattLink> {
+    if (this.connected) throw new Error('NetworkError: the display is already connected to another central');
+    this.connected = true;
+    this.pageMode = false;
+    this.log({ kind: 'connect' });
+    const link = new MockLink(this);
+    if (this.timing.statusIntervalMs > 0) {
+      this.statusTimer = setInterval(() => this.emit(CH_POWER, this.statusBytes()), this.timing.statusIntervalMs);
+    }
+    return link;
+  }
+
+  /** The link drops (out of range, bike switched off, Windows dropped it). */
+  dropLink(note = 'link lost'): void {
+    if (!this.connected) return;
+    this.connected = false;
+    this.log({ kind: 'disconnect', note });
+    this.stopTimers();
+    this.subs.clear();
+    for (const l of [...this.disconnectListeners]) l();
+  }
+
+  /**
+   * Power button off/on. Update mode ends; a controller left without an application now sits in its
+   * bootloader: it answers no identity request and reports controller_e031 (PROTOCOL.md step 6).
+   */
+  powerCycle(): void {
+    this.dropLink('power cycle');
+    this.inUpdateMode = false;
+    this.updateState = { phase: 'idle' };
+    this.loopPages = null;
+    if (this.controllerErased) this.controllerSilent = true;
+  }
+
+  setLive(v: Partial<MockLive>): void {
+    Object.assign(this.live, v);
+  }
+
+  setStatus(s: Partial<MockStatus>): void {
+    Object.assign(this.status, s);
+    if (this.connected) this.emit(CH_POWER, this.statusBytes());
+  }
+
+  /** …0010 command frames received, in order. */
+  commands(): Uint8Array[] {
+    return this.writes.filter((w) => w.char === CH_WRITE).map((w) => w.bytes);
+  }
+
+  /** Page-0x3C notifications sent, as hex. */
+  fwStatusesSent(): string[] {
+    return this.events.filter((e) => e.kind === 'notify' && e.char === CH_READ && e.hex?.startsWith('3c')).map((e) => e.hex!);
+  }
+
+  // ---- GATT table ------------------------------------------------------------------------------
+
+  services(): GattServiceInfo[] {
+    const p = (o: Partial<CharProperties>): CharProperties => ({ read: false, write: false, writeWithoutResponse: false, notify: false, indicate: false, ...o });
+    const out: GattServiceInfo[] = [
+      {
+        uuid: SVC_EBIKE,
+        characteristics: [
+          { uuid: CH_READ, properties: p({ notify: true }) },
+          { uuid: CH_WRITE, properties: p({ write: true, indicate: true }) },
+          { uuid: CH_BYPASS, properties: { ...this.blockProps } },
+          { uuid: CH_POWER, properties: p({ read: true, notify: true }) },
+        ],
+      },
+      {
+        uuid: SVC_DIS,
+        characteristics: [...Object.values(DIS_CHARS), DIS_SERIAL_BLOCKLISTED].map((uuid) => ({ uuid, properties: p({ read: true }) })),
+      },
+      { uuid: SVC_BATTERY, characteristics: [{ uuid: CH_BATTERY_LEVEL, properties: p({ read: true, notify: true }) }] },
+    ];
+    // MOCK ASSUMPTION: the FE59 characteristics aren't modelled until the HMI DFU milestone.
+    if (this.dfuService) out.push({ uuid: SVC_SECURE_DFU, characteristics: [] });
+    return out;
+  }
+
+  // ---- called by MockLink ----------------------------------------------------------------------
+
+  /** @internal */
+  requireConnected(): void {
+    if (!this.connected) throw new LinkLostError();
+  }
+
+  /** @internal */
+  read(service: string, char: string): Uint8Array {
+    this.requireConnected();
+    this.log({ kind: 'read', char });
+    if (char === DIS_SERIAL_BLOCKLISTED) {
+      this.violation('read the DIS Serial Number 0x2A25 (on Chrome\'s GATT blocklist)');
+      throw Object.assign(new Error('SecurityError: blocklisted UUID'), { name: 'SecurityError' });
+    }
+    if (service === SVC_DIS) {
+      const key = (Object.entries(DIS_CHARS).find(([, u]) => u === char) ?? [])[0];
+      const v = key ? this.dis[key] : undefined;
+      if (v === undefined) throw new Error(`NotFoundError: ${char}`);
+      return new TextEncoder().encode(v);
+    }
+    if (char === CH_BATTERY_LEVEL) return Uint8Array.of(this.bleBatteryPct);
+    if (char === CH_POWER) return this.statusBytes();
+    throw new Error(`NotSupportedError: ${char} is not readable`);
+  }
+
+  /** @internal */
+  subscribe(char: string, cb: Sub): void {
+    this.requireConnected();
+    this.log({ kind: 'subscribe', char });
+    this.subs.set(char, cb);
+    if (char === CH_READ) this.syncLiveTimer();
+  }
+
+  /** @internal */
+  unsubscribe(char: string): void {
+    this.log({ kind: 'unsubscribe', char });
+    this.subs.delete(char);
+    if (char === CH_READ) this.syncLiveTimer();
+  }
+
+  /** @internal Handle a write the moment it reaches the display. */
+  receiveWrite(char: string, bytes: Uint8Array, mode: WriteMode): void {
+    this.requireConnected();
+    const b = bytes.slice();
+    this.writes.push({ t: this.now(), char, mode, bytes: b });
+    this.log({ kind: 'write', char, mode, hex: hex(b) });
+    if (char === CH_WRITE) {
+      if (mode !== 'with-response') this.violation(`…0010 written without response: ${hex(b)}`);
+      this.onCommand(b);
+    } else if (char === CH_BYPASS) {
+      const allowed = mode === 'with-response' ? this.blockProps.write : this.blockProps.writeWithoutResponse;
+      if (!allowed) {
+        this.violation(`…0011 written ${mode} but its properties don't allow that`);
+        throw Object.assign(new Error(`NotSupportedError: …0011 doesn't support ${mode}`), { name: 'NotSupportedError' });
+      }
+      this.onBlock(b);
+    } else {
+      this.violation(`write to ${char}: ${hex(b)}`);
+      throw new Error(`NotSupportedError: ${char} is not writable`);
+    }
+  }
+
+  // ---- protocol --------------------------------------------------------------------------------
+
+  private onCommand(b: Uint8Array): void {
+    const op = b[0] ?? -1;
+    if (!EXPECTED_OPS.has(op)) {
+      this.violation(`unexpected command ${hex(b)}`);
+      this.later(this.timing.ackMs, () => this.ack(op, 2));
+      return;
+    }
+    switch (op) {
+      case 0x3c:
+        if (b.length !== 2 || b[1] !== 1) this.violation(`odd 3C frame ${hex(b)}`);
+        this.pageMode = true;
+        this.later(this.timing.ackMs, () => this.ack(op, 1));
+        return;
+      case 0x3d: {
+        if (b.length !== 19) this.violation(`3D frame of ${b.length} bytes (page_req makes 19)`);
+        const pages = [...b.subarray(1)].filter((p) => p !== 0);
+        // A one-shot request replaces the loop (the stock update trace pauses the stream with `3D 37`).
+        this.loopPages = null;
+        this.syncLiveTimer();
+        this.later(this.timing.ackMs, () => this.ack(op, 1));
+        // MOCK ASSUMPTION: in update mode the HMI answers no data pages (PROTOCOL.md: it "sends ONLY this page").
+        if (!this.inUpdateMode) this.later(this.timing.pagesMs, () => this.sendPages(pages.filter((p) => BUILT_PAGES.has(p))));
+        return;
+      }
+      case 0x3e: {
+        if (b.length !== 19) this.violation(`3E frame of ${b.length} bytes (page_req makes 19)`);
+        this.loopPages = [...b.subarray(1)].filter((p) => p !== 0);
+        this.later(this.timing.ackMs, () => this.ack(op, 1));
+        this.syncLiveTimer();
+        return;
+      }
+      case 0x29: {
+        const type = b[1];
+        if (b.length !== 4 || (type !== 1 && type !== 2 && type !== 3) || b[2] !== 0 || b[3] !== 0) {
+          this.violation(`odd 29 frame ${hex(b)}`);
+          this.later(this.timing.ackMs, () => this.ack(op, 3));
+          return;
+        }
+        this.later(this.timing.ackMs, () => this.ack(op, 1));
+        this.later(this.timing.ackMs + 20, () => this.sendDump(this.logs[type] ?? new Uint8Array(0)));
+        return;
+      }
+      case 0x46:
+        this.onFwStart(b);
+        return;
+    }
+  }
+
+  private onFwStart(b: Uint8Array): void {
+    if (b.length !== 7 || b[1] !== 0) {
+      this.violation(`46 frame that isn't a type-0 controller start: ${hex(b)}`);
+      this.later(this.timing.fwAckMs, () => this.ack(0x46, 3));
+      return;
+    }
+    const total = b[2]! | (b[3]! << 8);
+    // Re-sending 46 restarts at step 1: the controller re-erases (PROTOCOL.md, "seen 6 times").
+    this.clearStreamTimer();
+    this.inUpdateMode = true;
+    this.controllerErased = true;
+    this.loopPages = null;
+    this.syncLiveTimer();
+    this.updateState = { phase: 'erasing', total };
+    this.log({ kind: 'state', note: `update mode: erasing, ${total} blocks` });
+    this.later(this.timing.fwAckMs, () => this.ack(0x46, 1));
+    if (this.update.neverReady) return;
+    this.later(this.timing.eraseMs, () => {
+      if (this.updateState.phase !== 'erasing') return;
+      this.updateState = { phase: 'streaming', total, expected: 1, resent: new Set(), retries: 0, mismatch: false };
+      this.fwStatus(2, 1);
+      this.armStreamTimer();
+    });
+  }
+
+  private onBlock(b: Uint8Array): void {
+    const u = this.updateState;
+    if (b[0] !== 0x47 || b.length !== 12) {
+      this.violation(`…0011 frame that isn't a 12-byte 47 block: ${hex(b)}`);
+      return;
+    }
+    if (u.phase !== 'streaming') {
+      this.violation(`block received outside streaming (${u.phase})`);
+      return;
+    }
+    const seq = b[1]! | (b[2]! << 8);
+    const len = b[3]!;
+    if (seq !== u.expected) {
+      this.blocksIgnored++;
+      return;
+    }
+    if (this.update.disconnectAt === seq) {
+      this.dropLink(`link dropped at block ${seq}`);
+      return;
+    }
+    if (this.update.failAt === seq) {
+      this.finishUpdate(false, `failure scripted at block ${seq}`);
+      return;
+    }
+    if (this.update.resendAt.includes(seq) && !u.resent.has(seq)) {
+      u.resent.add(seq);
+      this.fwStatus(2, seq);
+      this.armStreamTimer();
+      return;
+    }
+    const img = this.update.expectImage;
+    if (img) {
+      const from = (seq - 1) * 8;
+      const want = img.subarray(from, Math.min(from + 8, img.length));
+      const got = b.subarray(4, 4 + len);
+      if (len !== want.length || want.some((x, i) => x !== got[i]) || b.subarray(4 + len).some((x) => x !== 0)) u.mismatch = true;
+    }
+    this.blocksAccepted++;
+    u.expected++;
+    u.retries = 0;
+    if (u.expected > u.total) {
+      this.clearStreamTimer();
+      const mismatch = u.mismatch;
+      this.updateState = { phase: 'finishing', total: u.total };
+      this.later(this.timing.finishMs, () => this.finishUpdate(!mismatch, mismatch ? 'image mismatch' : 'all blocks acked'));
+    } else {
+      this.armStreamTimer();
+    }
+  }
+
+  private finishUpdate(ok: boolean, note: string): void {
+    this.clearStreamTimer();
+    this.fwStatus(ok ? 0 : 1, 0);
+    this.inUpdateMode = false; // BPOU
+    this.updateState = { phase: 'idle' };
+    this.log({ kind: 'state', note: `update ${ok ? 'succeeded' : 'failed'}: ${note}` });
+    if (ok) {
+      this.controllerErased = false;
+      this.controllerSilent = false;
+      this.identity.ctrl_sw = this.update.flashedVersion;
+    }
+  }
+
+  private armStreamTimer(): void {
+    this.clearStreamTimer();
+    if (!Number.isFinite(this.update.streamTimeoutMs)) return;
+    this.streamTimer = setTimeout(() => {
+      const u = this.updateState;
+      if (u.phase !== 'streaming' || !this.connected) return;
+      u.retries++;
+      if (u.retries > this.update.streamRetries) this.finishUpdate(false, 'HMI streaming timeout');
+      else {
+        this.fwStatus(2, u.expected);
+        this.armStreamTimer();
+      }
+    }, this.update.streamTimeoutMs);
+  }
+
+  private clearStreamTimer(): void {
+    if (this.streamTimer) clearTimeout(this.streamTimer);
+    this.streamTimer = null;
+  }
+
+  private fwStatus(status: number, seq: number): void {
+    this.emit(CH_READ, Uint8Array.of(0x3c, status, seq & 0xff, (seq >>> 8) & 0xff), true);
+  }
+
+  private ack(op: number, status: number): void {
+    this.emit(CH_WRITE, Uint8Array.of(0x10, op & 0xff, status), true);
+  }
+
+  /** Error bits as the HMI reports them now. */
+  errorBits(): number {
+    let bits = this.live.error_bits;
+    if (this.controllerSilent || (this.controllerErased && !this.inUpdateMode)) bits |= E031;
+    return bits >>> 0;
+  }
+
+  private page(pid: number): Uint8Array | null {
+    const key = STRING_PAGES[pid];
+    if (key !== undefined) {
+      const blank = this.controllerSilent && CONTROLLER_IDENTITY.includes(key);
+      return identityPage(pid, blank ? '' : (this.identity[key] ?? ''));
+    }
+    const live: MockLive = { ...this.live, error_bits: this.errorBits() };
+    if (this.controllerSilent) {
+      // MOCK ASSUMPTION: with no controller application, the controller-sourced live fields read "not reported".
+      Object.assign(live, { speed_x10: 0xffff, trip_m: 0xffffffff, odometer_m: 0xffffffff, ride_time_s: 0xffffffff, range_km: 0xffff });
+    }
+    switch (pid) {
+      case 7: case 8: case 9: case 10: case 40:
+        return livePage(pid, live);
+      case 54:
+        return configPage(this.config);
+      case 55:
+        return settingsPage(this.config, this.live.assist, this.errorBits());
+      case 56:
+        return productionPage();
+      default:
+        // MOCK ASSUMPTION: other built pages answer with their id and 0xFF fill (pages 1/2/3 are "empty echoes").
+        return BUILT_PAGES.has(pid) ? Uint8Array.from({ length: 20 }, (_, i) => (i === 0 ? pid : 0xff)) : null;
+    }
+  }
+
+  /** Send pages packed as the HMI does in MTU page mode (12 x 20 B per notification at MTU 247). */
+  private sendPages(pids: number[]): void {
+    const pages = pids.map((p) => this.page(p)).filter((p): p is Uint8Array => p !== null);
+    const per = this.pageMode ? 12 : 1;
+    for (let i = 0; i < pages.length; i += per) {
+      const chunk = pages.slice(i, i + per);
+      const out = new Uint8Array(chunk.length * 20);
+      chunk.forEach((p, j) => out.set(p, j * 20));
+      this.emit(CH_READ, out);
+    }
+  }
+
+  /**
+   * MOCK ASSUMPTION on framing: `BE` alone, then the bytes in notifications of up to 240 (page mode) or
+   * 20 bytes, then `ED` alone (globe_capture.py only needs byte 0 of each to be BE / ED). A running
+   * live loop keeps interleaving its pages, which is why the app must pause it first.
+   */
+  private sendDump(data: Uint8Array): void {
+    const per = this.pageMode ? 240 : 20;
+    const chunks: Uint8Array[] = [Uint8Array.of(0xbe)];
+    for (let i = 0; i < data.length; i += per) chunks.push(data.slice(i, i + per));
+    chunks.push(Uint8Array.of(0xed));
+    chunks.forEach((c, i) => this.later(i * this.timing.dumpChunkMs, () => this.emit(CH_READ, c)));
+  }
+
+  private syncLiveTimer(): void {
+    const on = this.connected && this.loopPages !== null && !this.inUpdateMode && this.subs.has(CH_READ);
+    if (on && !this.liveTimer) {
+      this.liveTimer = setInterval(() => {
+        if (this.loopPages && !this.inUpdateMode) this.sendPages(this.loopPages.filter((p) => BUILT_PAGES.has(p)));
+      }, this.timing.liveIntervalMs);
+    } else if (!on && this.liveTimer) {
+      clearInterval(this.liveTimer);
+      this.liveTimer = null;
+    }
+  }
+
+  statusBytes(): Uint8Array {
+    const s = this.status;
+    return Uint8Array.of(s.awake ? 1 : 0, s.locked ? 1 : 0, s.charging ? 1 : 0, s.imperial ? 1 : 0);
+  }
+
+  private emit(char: string, bytes: Uint8Array, always = false): void {
+    if (!this.connected) return;
+    if (always || this.recordNotifications) this.log({ kind: 'notify', char, hex: hex(bytes) });
+    this.subs.get(char)?.(bytes.slice());
+  }
+
+  private later(ms: number, fn: () => void): void {
+    const t = setTimeout(() => {
+      this.timers.delete(t);
+      if (this.connected) fn();
+    }, ms);
+    this.timers.add(t);
+  }
+
+  private stopTimers(): void {
+    for (const t of this.timers) clearTimeout(t);
+    this.timers.clear();
+    this.clearStreamTimer();
+    if (this.liveTimer) clearInterval(this.liveTimer);
+    if (this.statusTimer) clearInterval(this.statusTimer);
+    this.liveTimer = this.statusTimer = null;
+  }
+
+  private violation(what: string): void {
+    this.violations.push(what);
+    this.log({ kind: 'violation', note: what });
+  }
+
+  private now(): number {
+    return Date.now() - this.t0;
+  }
+
+  private log(e: Omit<MockEvent, 't'>): void {
+    this.events.push({ t: this.now(), ...e });
+  }
+}
+
+/** The GattLink a MockHmi hands out. Each write takes the configured time to "complete". */
+class MockLink implements GattLink {
+  constructor(private readonly hmi: MockHmi) {}
+
+  get connected(): boolean {
+    return this.hmi.isConnected;
+  }
+
+  async services(): Promise<GattServiceInfo[]> {
+    this.hmi.requireConnected();
+    return this.hmi.services();
+  }
+
+  async properties(service: string, characteristic: string): Promise<CharProperties | null> {
+    this.hmi.requireConnected();
+    const s = this.hmi.services().find((x) => x.uuid === service);
+    return s?.characteristics.find((c) => c.uuid === characteristic)?.properties ?? null;
+  }
+
+  async read(service: string, characteristic: string): Promise<Uint8Array> {
+    await tick(this.hmi.timing.writeMs);
+    return this.hmi.read(service, characteristic);
+  }
+
+  async write(_service: string, characteristic: string, value: Uint8Array, mode: WriteMode): Promise<void> {
+    this.hmi.receiveWrite(characteristic, value, mode);
+    await tick(characteristic === CH_BYPASS ? this.hmi.timing.blockWriteMs : this.hmi.timing.writeMs);
+    this.hmi.requireConnected();
+  }
+
+  async subscribe(_service: string, characteristic: string, onValue: (value: Uint8Array) => void): Promise<void> {
+    await tick(this.hmi.timing.writeMs);
+    this.hmi.subscribe(characteristic, onValue);
+  }
+
+  async unsubscribe(_service: string, characteristic: string): Promise<void> {
+    this.hmi.unsubscribe(characteristic);
+  }
+
+  async disconnect(): Promise<void> {
+    this.hmi.dropLink('disconnected by the app');
+  }
+}
+
+function tick(ms: number): Promise<void> {
+  return new Promise((r) => setTimeout(r, ms));
+}
