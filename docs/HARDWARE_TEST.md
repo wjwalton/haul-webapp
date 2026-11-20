@@ -67,42 +67,60 @@ distribution, the browser and its version, and how it was installed (deb / rpm /
 
 Windows only for now: on Linux the update stays disabled (see step 6).
 
+First run (2026-11-19, beta 8ec276b) failed and is fixed in 0.1.1: see docs/DECISIONS.md "controller
+update over Chrome on Windows". Check the header says **0.1.1** or later before flashing. On that laptop
+the transfer takes **about 4 minutes**, not the phone's 28 s: the Bluetooth link to the display carries
+about 44 blocks per second.
+
 Only after step 1 passes on the same laptop and browser. Laptop plugged in, lid open, next to the bike.
-Bike battery at least 30 % (the charger may stay connected). The bike already runs 03.06.s0, so this is a
-**same-version reflash** (docs/DECISIONS.md): tick "Reflash the same version". If `controller_e031` is
-active or the controller isn't answering (recovery), the update is offered without the tick.
+Bike battery at least 30 % (the charger may stay connected). Have the Android app at hand: it can do the
+recovery flash if this one fails. On a bike that already runs 03.06.s0 this is a **same-version reflash**
+(docs/DECISIONS.md): tick "Reflash the same version". If `controller_e031` is active or the controller
+isn't answering (recovery), the update is offered without the tick.
 
 1. Connect, confirm, and wait for the checklist. Check every line, especially "…0011 present (write
-   without response …)" and "HMI is 5.19". Tick "Reflash the same version": "Update needed" turns ✓
-   ("Same-version reflash chosen").
+   without response …)" and "HMI is 5.19". On a 03.06.s0 bike, tick "Reflash the same version":
+   "Update needed" turns ✓ ("Same-version reflash chosen").
 2. File: the built-in M1B0306s0.bin (laptop build) shows ✓ with the full SHA-256. On the public site, use
    **Load file from disk…** and pick the official file. Also pick any other `.bin` once: it must be
    rejected with the reason and both hashes.
 3. Read the point-of-no-return warning. Type the bike's name exactly. **Start controller update**.
    From here there is no stop button, and Reconnect / Disconnect are disabled until it ends.
-4. Watch, and note the times: "Pausing live data", "Sending the start frame", "erasing (about 4.5 s)".
-   Then the progress bar and the measured ETA. The phone app took ~28 s for 10,240 blocks; Windows may
-   be slower. That's fine as long as it completes.
-5. Expected end: "The controller reported success … This was a same-version reflash". Power-cycle the
-   bike, click Reconnect: "Verified after the power-cycle: the controller reports 03.06.s0".
-6. **Download update log** every time (success or not) and keep it. Its first lines say why it was
-   offered ("Same-version reflash chosen …"). Check its summary: write method,
-   block write time min / avg / max, "Ready (3C 02) … ms after the start frame", one `3c020100` and one
-   `3c000000`, and no other page 0x3C unless the HMI asked for a resend.
-7. After the power-cycle: live data and the controller identity are back, no `controller_e031`, and the
+4. Watch, and note the times: "Pausing live data", "Sending the start frame", "erasing (about 4.5 s)",
+   then the progress bar. The bike's display shows **bypass** the whole time: that is normal. The
+   "blocks/s reaching the bike" figure should be about 40-45 and the ETA about 4 minutes. **Don't switch
+   the bike off or close the tab** until the card says it has finished, however long it takes.
+5. After the last block the card says "Every block has been sent… keep waiting" with a timer. The
+   display should confirm within a second or two. It may take longer only if the barrier reads
+   overtake the queue (see 6); the app keeps waiting up to about 8 minutes.
+6. Expected end: "The controller reported success …". On a same-version reflash: power-cycle the bike,
+   click Reconnect: "Verified after the power-cycle: the controller reports 03.06.s0". On an older
+   controller: "Verified: it now reports 03.06.s0", or the same power-cycle step.
+7. **Download update log** every time (success or not) and keep it. Check its summary:
+   - "Barrier (read 0004 behind the blocks, every 32): min / avg / max": **about 700 ms each means the
+     pacing works on Windows**; a few tens of ms means the reads overtake the queue (send the log).
+   - "Delivery rate: … blocks/s" (about 44 on that laptop), the write method, the block write time,
+     "Ready (3C 02) … ms after the start frame", one `3c020100` and one `3c000000`, and no other page
+     0x3C unless the display asked for a resend.
+8. After the power-cycle: live data and the controller identity are back, no `controller_e031`, and the
    bike rides normally.
-8. Repeat in Edge.
+9. Repeat in Edge.
 
-If anything fails, don't retry blindly. Download the log, then:
+If anything fails, don't retry blindly. Download the update log and the connection log, then:
 - No `3C 02` ("No answer from the controller bootloader"): power-cycle the bike, reconnect, and flash
   again (recovery). It stays reflashable.
 - Link lost mid-stream: reconnect (power-cycle the bike first if no live data comes back) and flash again.
-- Display stuck showing **bypass**: power-cycle the bike, reconnect, then do the recovery flash.
+- The card says it stopped and the display still shows **bypass**: power-cycle the bike, reconnect, then
+  do the recovery flash.
+- Reconnect keeps failing: switch the bike off and on, then **Choose the bike again** and pick the same
+  bike (it keeps the update result). Reload the page only after downloading the logs.
 
 Bring back (copy into `logs/` on the dev PC):
 - Every update log (`update_<bike>_<time>.txt`), successful or not.
+- The connection log (`connection_<bike>_<time>.txt`, debug panel or the "connection lost" card).
 - The `raw.jsonl` from step 1 and one from the session with the flash (download it after the
   power-cycle and Reconnect: it holds both connections).
+- A CAN capture of the update if the logger is on the bike: it shows what the display really received.
 - Notes: Windows and Chrome versions; the debug panel's …0011 properties, FE59 yes / no and notification
   sizes; how long the flash took; what the bike's display showed during and after it; anything that
   looked wrong, even if it worked.

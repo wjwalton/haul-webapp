@@ -36,7 +36,7 @@ const text = (html: string) =>
 describe('screens render', () => {
   it('connect screen: chooser button, the Windows pairing warning and the "bike missing" hint', () => {
     const html = text(renderToStaticMarkup(
-      <ConnectScreen platform={WIN} state={{ phase: 'idle', device: null, confirmed: false, session: null, message: 'Disconnected from EH02_1.', connections: 0, update: null }} onChoose={noop} firmware={null} />,
+      <ConnectScreen platform={WIN} state={{ phase: 'idle', device: null, confirmed: false, session: null, message: 'Disconnected from EH02_1.', connections: 0, update: null, events: [] }} onChoose={noop} firmware={null} />,
     ));
     expect(html).toMatch(/Choose bike…/);
     expect(html).toMatch(/Don't pair the bike in Windows Bluetooth settings/);
@@ -46,7 +46,7 @@ describe('screens render', () => {
 
   it('connect screen on Linux without Web Bluetooth: the flag steps instead of the button', () => {
     const html = text(renderToStaticMarkup(
-      <ConnectScreen platform={LINUX_NO_BT} state={{ phase: 'idle', device: null, confirmed: false, session: null, message: null, connections: 0, update: null }} onChoose={noop} firmware={null} />,
+      <ConnectScreen platform={LINUX_NO_BT} state={{ phase: 'idle', device: null, confirmed: false, session: null, message: null, connections: 0, update: null, events: [] }} onChoose={noop} firmware={null} />,
     ));
     expect(html).toMatch(/enable-experimental-web-platform-features/);
     expect(html).not.toMatch(/Choose bike…/);
@@ -140,13 +140,38 @@ describe('screens render', () => {
     expect(t).toMatch(/CAN-analysis frames are arriving/);
   });
 
-  it('link lost: reconnect and disconnect', async () => {
+  it('link lost: reconnect, choose the bike again, disconnect, and what happened', async () => {
     const { hmi, state } = await connected();
     hmi.dropLink();
-    const t = text(renderToStaticMarkup(<LinkProblem state={state()} onReconnect={noop} onDisconnect={noop} />));
+    const t = text(renderToStaticMarkup(<LinkProblem state={state()} onReconnect={noop} onChooseAgain={noop} onDisconnect={noop} />));
     expect(t).toMatch(/Connection lost/);
     expect(t).toMatch(/Reconnect to EH02_00001/);
+    expect(t).toMatch(/Choose the bike again/);
+    expect(t).toMatch(/download the logs first: a reload clears them/);
     expect(t).toMatch(/Disconnect \/ choose another bike/);
+    expect(t).toMatch(/What happened \(connection log\)/);
+    expect(t).toMatch(/Disconnect event: the link was lost/);
+  });
+
+  it('update running, waiting for the final status: says so, and that "bypass" is normal', () => {
+    const t = text(renderToStaticMarkup(
+      <UpdateRunning
+        now={Date.now()}
+        update={{
+          running: true, result: null, verify: null,
+          progress: {
+            step: 'finishing', text: 'All blocks sent. Waiting for the display to pass the last ones to the controller and confirm…',
+            pastPointOfNoReturn: true, writeMode: 'without-response', startedAt: Date.now() - 240_000,
+            flash: { position: 10_240, total: 10_240, writes: 10_240, resends: 0, elapsedMs: 235_000, blocksPerSecond: 44, etaMs: null, confirming: { waitedMs: 12_000, maxMs: 300_000 } },
+          },
+        }}
+      />,
+    ));
+    expect(t).toMatch(/waiting 12 s \(up to 5 min/);
+    expect(t).toMatch(/can take a few minutes: keep waiting/);
+    expect(t).toMatch(/"bypass" while this runs; that is normal/);
+    expect(t).toMatch(/Don't switch the bike off/);
+    expect(t).toMatch(/44 blocks\/s reaching the bike/);
   });
 });
 
@@ -165,7 +190,7 @@ describe('controller update screens render', () => {
           running: true, result: null, verify: null,
           progress: {
             step: 'sending', text: 'Sending firmware…', pastPointOfNoReturn: true, writeMode: 'without-response', startedAt: Date.now() - 12_000,
-            flash: { position: 5_120, total: 10_240, writes: 5_120, resends: 0, elapsedMs: 11_000, blocksPerSecond: 465, etaMs: 11_000 },
+            flash: { position: 5_120, total: 10_240, writes: 5_120, resends: 0, elapsedMs: 11_000, blocksPerSecond: 465, etaMs: 11_000, confirming: null },
           },
         }}
       />,

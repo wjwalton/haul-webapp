@@ -62,15 +62,22 @@ export function StatusBar(props: {
 export function Warnings({ session: s, onReconnect }: { session: SessionState; onReconnect: () => void }) {
   return (
     <>
+      {s.lateFwStatus !== null ? (
+        <p className={`notice${s.lateFwStatus === 0 ? '' : ' bad'}`}>
+          {s.lateFwStatus === 0
+            ? 'The display has now reported that the controller update SUCCEEDED (after the app had stopped waiting). Power-cycle the bike, then reconnect: the app reads the controller version.'
+            : 'The display has now reported that the controller update FAILED. Power-cycle the bike, reconnect, then do the recovery flash.'}
+        </p>
+      ) : null}
       {s.stale ? (
         <p className="notice bad">
           No {s.stale.what} for {Math.round(s.stale.quietMs / 1000)} s while the link claims to be up.{' '}
-          {s.displayInUpdateMode ? 'The display is still in update mode: power-cycle the bike, then reconnect. ' : ''}
+          {s.displayInUpdateMode && s.lateFwStatus === null ? 'The display is still in update mode: power-cycle the bike, then reconnect. ' : ''}
           <button onClick={onReconnect}>Reconnect</button>
         </p>
       ) : null}
-      {s.displayInUpdateMode && !s.stale ? (
-        <p className="notice bad">The display is sending firmware-update status (page 0x3C): it is still in update mode. Power-cycle the bike, then reconnect.</p>
+      {s.displayInUpdateMode && !s.stale && s.lateFwStatus === null ? (
+        <p className="notice bad">The display is still in update mode. Power-cycle the bike, then reconnect.</p>
       ) : null}
       {s.canFrames > 0 ? (
         <p className="notice bad">

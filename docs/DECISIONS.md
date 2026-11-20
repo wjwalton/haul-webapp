@@ -82,3 +82,40 @@ helper program on the laptop, so it isn't planned; the app tells Firefox users t
 - Test logs aren't uploaded anywhere by the app (no network at runtime, and an upload would need a key
   in a public page). They download to the laptop; the user copies them into `logs/` (git-ignored) for
   review.
+
+## 2026-11-19: controller update over Chrome on Windows: first hardware test, and the fix
+
+What happened (a customer's Haul, Windows laptop, Chrome, beta 8ec276b; CAN capture of the second
+attempt, then the Android app's recovery flash):
+- Chrome on Windows completes a "write without response" as soon as Windows has queued it. The app had
+  "written" all 10,240 blocks in about 29 s (2.79 ms each), but the display received them at about
+  44 blocks/s (CAN 0x007 relays, in order, no gaps or repeats). The app waited 30 s for the final
+  status, called it stalled and said to power-cycle the bike. The bike was power-cycled with most of the
+  image still queued on the laptop, and the controller was left in its bootloader (e031). It stayed
+  reflashable: the Android app recovered it (27 s at about 370 blocks/s, `3C 00 00 00`, 0x009/0x00A,
+  BPOU).
+- The display shows "bypass" during every update. The app's failure text treated bypass as a fault.
+
+Changes (update/controller.ts, app/shop.ts):
+- **Flow control.** After every 32 blocks written without response, the app reads …0004 (a passive GATT
+  read of the status characteristic, queued behind the blocks) and waits for it. Blocks are still
+  written without response, as the stock app does. The stock app reads nothing during an update; the
+  read doesn't change what the display receives. With response is still used only when …0011 has no
+  write-without-response.
+- **The final wait.** After the last block the app waits for the final status for as long as blocks
+  could still be on their way at 20 blocks/s, counted from the start of the pass (8.5 min for 10,240),
+  and at least 30 s. Expected on that laptop: about 4 minutes in all.
+- **After a failure** where the display may still be in update mode, nothing more is sent on that
+  connection (no live loop, no polls) until the bike is power-cycled. A verdict (`3C 00` / `3C 01`) that
+  arrives after the app stopped waiting is shown as such.
+- **Texts:** "bypass" is normal while an update runs; never switch the bike off until the card says
+  it has finished.
+- **Reconnect** (a stale link needed a page reload): close the old link, wait 1.5 s, then up to 3
+  attempts. A disconnect event that arrives while the current link still reports connected is ignored
+  (an earlier connection's). "Choose the bike again" keeps the confirmation and update result when the
+  same bike is picked. Every step goes into a downloadable connection log.
+
+Still to confirm on the bike (the next update log answers it): whether the read really waits behind the
+queued blocks on Windows. In the log, BARRIER lines of about 700 ms (32 blocks at 44 blocks/s) mean it
+does. A few tens of ms mean the reads overtake the queue; then the long final wait is what protects the
+update, and the progress bar runs ahead of the bike.

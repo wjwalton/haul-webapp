@@ -137,6 +137,8 @@ export interface SessionState {
   stale: { quietMs: number; what: 'data page' | 'status notification' } | null;
   /** Page 0x3C arrived outside an update: the display is still in update mode. */
   displayInUpdateMode: boolean;
+  /** A firmware verdict (0 = success, 1 = failed) that arrived after the update had stopped waiting. */
+  lateFwStatus: number | null;
   /** CAN-analysis frames seen: another app left CAN analysis on (only a power cycle clears it here). */
   canFrames: number;
 
@@ -225,7 +227,7 @@ export class BikeSession {
       identity: {}, identityMissing: [], identityReads: 0,
       config: null, settings: null, configMissing: [], production: { buildDate: null, prodId: null },
       live: {}, liveAt: null, errorBits: null, errors: [],
-      livePaused: false, stale: null, displayInUpdateMode: false, canFrames: 0,
+      livePaused: false, stale: null, displayInUpdateMode: false, lateFwStatus: null, canFrames: 0,
       quality: { dropped: 0, rejectedByPid: {}, lastReject: null },
       sizes: {}, pagesReceived: 0, log: [],
     };
@@ -624,7 +626,16 @@ export class BikeSession {
           else this.note(`[firmware] page 0x3C too short to carry a status: ${hex(b)}`);
           return this.set(patch);
         }
-        // Page 0x3C outside an update: the display is still in update mode.
+        // Page 0x3C outside an update. Status 0 or 1 is a late verdict on an update the app had stopped
+        // waiting for (the display leaves update mode with it, BPOU); anything else means it is still in
+        // update mode.
+        if (n.status && (n.status.status === 0 || n.status.status === 1)) {
+          this.note(
+            `[firmware] page 0x3C ${hex(b)} after the app stopped waiting: the display reports the update ` +
+              `${n.status.status === 0 ? 'SUCCEEDED' : 'FAILED'} and leaves update mode. Power-cycle the bike and reconnect to read the controller version.`,
+          );
+          return this.set({ ...patch, lateFwStatus: n.status.status });
+        }
         if (!this.s.displayInUpdateMode) this.note(`[firmware] page 0x3C outside an update (${hex(b)}): the display is still in update mode`);
         return this.set({ ...patch, displayInUpdateMode: true });
       case 'can':

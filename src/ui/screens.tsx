@@ -102,6 +102,7 @@ export function OpeningView({ state, onCancel }: { state: ShopState; onCancel: (
           </li>
         ))}
       </ol>
+      {state.message ? <p className="notice">{state.message}</p> : null}
       <p className="muted">Nothing is written to the bike: these are read-only requests.</p>
       <button onClick={onCancel}>Cancel</button>
     </Card>
@@ -168,19 +169,33 @@ export function ConfirmBike(props: {
 export function LinkProblem(props: {
   state: ShopState;
   onReconnect: () => void;
+  /** Open the chooser again (keeps the confirmation and update result if the same bike is picked). */
+  onChooseAgain: () => void;
   onDisconnect: () => void;
   extra?: ReactNode;
 }) {
   const lost = props.state.phase === 'lost';
+  const recent = props.state.events.slice(-8);
   return (
-    <Card title={lost ? 'Connection lost' : 'Couldn\'t read the bike'} tone="bad">
+    <Card title={lost ? 'Connection lost' : 'Couldn\'t connect to the bike'} tone="bad">
       <p>{props.state.message}</p>
       <div className="row">
         <button className="primary" onClick={props.onReconnect}>
           {lost ? `Reconnect to ${props.state.device?.name ?? 'the bike'}` : 'Try again'}
         </button>
+        <button onClick={props.onChooseAgain}>Choose the bike again</button>
         <button onClick={props.onDisconnect}>Disconnect / choose another bike</button>
       </div>
+      <p className="muted small">
+        If Reconnect keeps failing, switch the bike off and on, then use <strong>Choose the bike again</strong> and pick the same bike: it keeps the
+        confirmation and any update result. Reloading the page also works, but download the logs first: a reload clears them.
+      </p>
+      {recent.length ? (
+        <details>
+          <summary>What happened (connection log)</summary>
+          <pre className="mono small">{recent.join('\n')}</pre>
+        </details>
+      ) : null}
       {props.extra}
     </Card>
   );

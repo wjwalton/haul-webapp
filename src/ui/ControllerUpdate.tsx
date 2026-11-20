@@ -195,6 +195,7 @@ export function UpdateRunning({ update, now }: { update: UpdateState; now: numbe
   const pr = update.progress;
   const f = pr?.flash ?? null;
   const pct = f ? Math.floor((f.position / f.total) * 100) : 0;
+  const c = f?.confirming ?? null;
   return (
     <Card title="Updating the controller" tone="warn">
       <p className="big-status">{pr?.text ?? 'Starting…'}</p>
@@ -202,20 +203,28 @@ export function UpdateRunning({ update, now }: { update: UpdateState; now: numbe
         <>
           <progress className="bar" max={f.total} value={f.position} />
           <p>
-            Block {f.position.toLocaleString()} of {f.total.toLocaleString()} ({pct} %) · {f.etaMs === null ? 'measuring…' : `about ${duration(f.etaMs)} left`} ·
+            Block {f.position.toLocaleString()} of {f.total.toLocaleString()} ({pct} %) ·{' '}
+            {c ? `waiting ${duration(c.waitedMs)} (up to ${duration(c.maxMs)})` : f.etaMs === null ? 'measuring…' : `about ${duration(f.etaMs)} left`} ·
             elapsed {duration(now - (pr?.startedAt ?? now))}
           </p>
           <p className="muted small">
-            {f.blocksPerSecond.toFixed(0)} blocks/s measured · …0011 written {pr?.writeMode ?? '?'}
+            {f.blocksPerSecond.toFixed(0)} blocks/s reaching the bike · …0011 written {pr?.writeMode ?? '?'}
             {f.resends ? ` · resend requests: ${f.resends}` : ''}
           </p>
+          {c ? (
+            <p className="notice">
+              Every block has been sent. The display passes the last ones to the controller and then confirms. Over a slow Bluetooth link this can take a
+              few minutes: keep waiting.
+            </p>
+          ) : null}
         </>
       ) : (
         <p className="muted">Elapsed {duration(now - (pr?.startedAt ?? now))}</p>
       )}
       <p className="notice">
-        {pr?.pastPointOfNoReturn ? 'The controller is being reprogrammed. ' : ''}Keep the laptop plugged in, lid open, next to the bike. Don't close this
-        tab.
+        {pr?.pastPointOfNoReturn ? 'The controller is being reprogrammed. The bike\'s display shows "bypass" while this runs; that is normal. ' : ''}
+        <strong>Don't switch the bike off</strong> or close this tab until this card says it has finished. Keep the laptop plugged in, lid open, next
+        to the bike.
       </p>
     </Card>
   );

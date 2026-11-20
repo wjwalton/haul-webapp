@@ -43,6 +43,19 @@ export interface MockTiming {
   finishMs: number;
   /** Between log-dump notifications. */
   dumpChunkMs: number;
+  /**
+   * The radio: 0 = every write reaches the display at once (the default). > 0 = every write and read
+   * travels through one first-in-first-out air queue, one packet per this many ms (the 2026-11-19
+   * Windows capture: the display received 44 blocks/s, ~22.7 ms per block).
+   */
+  airMsPerPacket: number;
+  /**
+   * With a radio: a write WITHOUT response completes once queued (after blockWriteMs), not when it
+   * has gone out. Chrome on Windows does this (2026-11-19: 10,240 writes "done" in 29 s).
+   */
+  hostQueuesWrites: boolean;
+  /** With a radio: reads and writes with response skip the queue (the worst case for a barrier). */
+  requestsJumpAir: boolean;
 }
 
 export interface UpdateScript {
@@ -65,6 +78,8 @@ export interface UpdateScript {
   flashedVersion: string;
   /** If set, blocks are compared with this image; any mismatch ends in status 1 instead of 0. */
   expectImage: Uint8Array | null;
+  /** Every block arrives but the final status never comes (the display stays in update mode). */
+  silentEnd: boolean;
 }
 
 export interface MockHmiOptions {
@@ -131,10 +146,11 @@ const DEFAULT_CONFIG: MockConfig = {
 const DEFAULT_TIMING: MockTiming = {
   writeMs: 5, blockWriteMs: 1, ackMs: 60, pagesMs: 60, liveIntervalMs: 100, statusIntervalMs: 0,
   fwAckMs: 150, eraseMs: 4_570, finishMs: 148, dumpChunkMs: 10,
+  airMsPerPacket: 0, hostQueuesWrites: false, requestsJumpAir: false,
 };
 const DEFAULT_UPDATE: UpdateScript = {
   neverReady: false, resendAt: [], failAt: null, disconnectAt: null, streamTimeoutMs: Infinity,
-  streamRetries: 3, flashedVersion: '03.06.s0', expectImage: null,
+  streamRetries: 3, flashedVersion: '03.06.s0', expectImage: null, silentEnd: false,
 };
 
 /** sbc bit 21, controller_e031 "Update FW Error" (from protocol/errors.ts SBC_TABLE). */
@@ -163,6 +179,8 @@ export class MockHmi {
   blocksAccepted = 0;
   /** Times a stale/out-of-sequence block was ignored. */
   blocksIgnored = 0;
+  /** With a radio: the most packets ever waiting in the air queue. */
+  airPeak = 0;
 
   live: MockLive;
   config: MockConfig;
@@ -186,6 +204,8 @@ export class MockHmi {
   private readonly blockProps: CharProperties;
   private readonly recordNotifications: boolean;
   private connected = false;
+  /** powerCycleUnnoticed(): the computer thinks it's connected, but nothing gets through. */
+  private deadLink = false;
   private pageMode = false;
   private loopPages: number[] | null = null;
   private readonly subs = new Map<string, Sub>();
@@ -254,6 +274,7 @@ export class MockHmi {
   dropLink(note = 'link lost'): void {
     if (!this.connected) return;
     this.connected = false;
+    this.deadLink = false;
     this.log({ kind: 'disconnect', note });
     this.stopTimers();
     this.subs.clear();
@@ -270,6 +291,28 @@ export class MockHmi {
     this.updateState = { phase: 'idle' };
     this.loopPages = null;
     if (this.controllerErased) this.controllerSilent = true;
+  }
+
+  /**
+   * The bike is switched off and on, but the computer never notices: no disconnect event, the old
+   * link still "claims to be up", and nothing more arrives on it (writes on it fail). Closing the link
+   * from the app ends that; then the bike can be connected again.
+   */
+  powerCycleUnnoticed(): void {
+    if (!this.connected) return;
+    this.log({ kind: 'state', note: 'power cycle the computer did not notice' });
+    this.stopTimers();
+    this.subs.clear();
+    this.deadLink = true;
+    this.inUpdateMode = false;
+    this.updateState = { phase: 'idle' };
+    this.loopPages = null;
+    if (this.controllerErased) this.controllerSilent = true;
+  }
+
+  /** Test hook: the display sends its final verdict now (e.g. after the app stopped waiting). */
+  finishNow(ok: boolean): void {
+    if (this.updateState.phase === 'streaming' || this.updateState.phase === 'finishing') this.finishUpdate(ok, 'finished on request');
   }
 
   setLive(v: Partial<MockLive>): void {
@@ -321,6 +364,7 @@ export class MockHmi {
   /** @internal */
   requireConnected(): void {
     if (!this.connected) throw new LinkLostError();
+    if (this.deadLink) throw Object.assign(new Error('NetworkError: GATT operation failed for unknown reason.'), { name: 'NetworkError' });
   }
 
   /** @internal */
@@ -498,6 +542,10 @@ export class MockHmi {
       this.clearStreamTimer();
       const mismatch = u.mismatch;
       this.updateState = { phase: 'finishing', total: u.total };
+      if (this.update.silentEnd) {
+        this.log({ kind: 'state', note: 'all blocks received; scripted to never send the final status' });
+        return;
+      }
       this.later(this.timing.finishMs, () => this.finishUpdate(!mismatch, mismatch ? 'image mismatch' : 'all blocks acked'));
     } else {
       this.armStreamTimer();
@@ -621,7 +669,7 @@ export class MockHmi {
   }
 
   private emit(char: string, bytes: Uint8Array, always = false): void {
-    if (!this.connected) return;
+    if (!this.connected || this.deadLink) return;
     if (always || this.recordNotifications) this.log({ kind: 'notify', char, hex: hex(bytes) });
     this.subs.get(char)?.(bytes.slice());
   }
@@ -657,12 +705,50 @@ export class MockHmi {
   }
 }
 
-/** The GattLink a MockHmi hands out. Each write takes the configured time to "complete". */
+/**
+ * The GattLink a MockHmi hands out. Each write takes the configured time to "complete". With a radio
+ * (MockTiming.airMsPerPacket > 0) writes and reads go through one FIFO air queue first.
+ */
 class MockLink implements GattLink {
+  private readonly air: { deliver: () => void; resolve: () => void; reject: (e: unknown) => void }[] = [];
+  private airTimer: ReturnType<typeof setTimeout> | null = null;
+
   constructor(private readonly hmi: MockHmi) {}
 
   get connected(): boolean {
     return this.hmi.isConnected;
+  }
+
+  /** Send one packet over the air; resolves once the display has it. */
+  private overAir(deliver: () => void): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.air.push({ deliver, resolve, reject });
+      this.hmi.airPeak = Math.max(this.hmi.airPeak, this.air.length);
+      this.pumpAir();
+    });
+  }
+
+  private pumpAir(): void {
+    if (this.airTimer || this.air.length === 0) return;
+    this.airTimer = setTimeout(() => {
+      this.airTimer = null;
+      if (!this.hmi.isConnected) {
+        for (const p of this.air.splice(0)) p.reject(new LinkLostError());
+        return;
+      }
+      const p = this.air.shift()!;
+      try {
+        p.deliver();
+        p.resolve();
+      } catch (e) {
+        p.reject(e);
+      }
+      this.pumpAir();
+    }, this.hmi.timing.airMsPerPacket);
+  }
+
+  private get radio(): boolean {
+    return this.hmi.timing.airMsPerPacket > 0;
   }
 
   async services(): Promise<GattServiceInfo[]> {
@@ -677,13 +763,35 @@ class MockLink implements GattLink {
   }
 
   async read(service: string, characteristic: string): Promise<Uint8Array> {
+    if (this.radio && !this.hmi.timing.requestsJumpAir) {
+      this.hmi.requireConnected();
+      await this.overAir(() => undefined);
+    }
     await tick(this.hmi.timing.writeMs);
     return this.hmi.read(service, characteristic);
   }
 
   async write(_service: string, characteristic: string, value: Uint8Array, mode: WriteMode): Promise<void> {
-    this.hmi.receiveWrite(characteristic, value, mode);
-    await tick(characteristic === CH_BYPASS ? this.hmi.timing.blockWriteMs : this.hmi.timing.writeMs);
+    const t = this.hmi.timing;
+    const local = characteristic === CH_BYPASS ? t.blockWriteMs : t.writeMs;
+    if (!this.radio || (mode === 'with-response' && t.requestsJumpAir)) {
+      this.hmi.receiveWrite(characteristic, value, mode);
+      await tick(local);
+      this.hmi.requireConnected();
+      return;
+    }
+    this.hmi.requireConnected();
+    const copy = value.slice();
+    const delivered = this.overAir(() => this.hmi.receiveWrite(characteristic, copy, mode));
+    if (mode === 'without-response' && t.hostQueuesWrites) {
+      // "Done" once queued here; a packet that can't be delivered later is simply lost.
+      delivered.catch(() => undefined);
+      await tick(local);
+      this.hmi.requireConnected();
+      return;
+    }
+    await delivered;
+    await tick(local);
     this.hmi.requireConnected();
   }
 

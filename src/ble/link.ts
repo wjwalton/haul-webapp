@@ -44,6 +44,11 @@ export class BikeLink {
     return this.gatt.connected && !this.queue.closed;
   }
 
+  /** What the browser says about this GATT connection, whatever the app did with the queue. */
+  get gattConnected(): boolean {
+    return this.gatt.connected;
+  }
+
   /** Listen to every frame sent and received (until the returned function is called). */
   addTap(tap: LinkTap): () => void {
     this.taps.add(tap);
@@ -76,6 +81,18 @@ export class BikeLink {
       if (this.taps.size) this.emit({ dir: 'tx', char: CH_BYPASS, bytes: copy, label });
       return this.gatt.write(SVC_EBIKE, CH_BYPASS, copy, mode);
     }, { tag: 'block' });
+  }
+
+  /**
+   * Flow control for blocks written without response: a read of …0004 (the status characteristic the
+   * app reads at every connect) queued behind them. It comes back once the blocks before it have left
+   * this computer. Not in raw.jsonl (it's not a status change); no queue timeout (the flasher's stall
+   * timer decides).
+   */
+  barrier(label: string): Promise<void> {
+    return this.queue.run(label, async () => {
+      await this.gatt.read(SVC_EBIKE, CH_POWER);
+    }, { tag: 'barrier', timeoutMs: 0 });
   }
 
   /** Drop firmware blocks that haven't been issued yet (a resend request). Issued ones can't be recalled. */

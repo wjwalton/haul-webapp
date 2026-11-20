@@ -65,6 +65,7 @@ export function App() {
   const disconnect = () => void shop.disconnect();
   const downloadRaw = () => saveText(`raw_${state.device?.name ?? 'bike'}_${stamp()}.jsonl`, shop.rawJsonl(), 'application/x-ndjson');
   const downloadLog = (r: UpdateResult) => saveText(r.logName, r.log);
+  const downloadEvents = () => saveText(`connection_${state.device?.name ?? 'bike'}_${stamp()}.txt`, shop.connectionLog());
   const rawLines = shop.rawLineCount;
 
   async function startMock(variant: MockVariant) {
@@ -106,17 +107,21 @@ export function App() {
         <LinkProblem
           state={state}
           onReconnect={reconnect}
+          onChooseAgain={choose}
           onDisconnect={disconnect}
           extra={
-            <p>
+            <p className="row">
               <button onClick={downloadRaw} disabled={rawLines === 0}>
                 Download raw.jsonl
+              </button>
+              <button onClick={downloadEvents} disabled={state.events.length === 0}>
+                Download connection log
               </button>
             </p>
           }
         />
         {devTools}
-        {s ? <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} /> : null}
+        {s ? <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} events={state.events} onDownloadEvents={downloadEvents} /> : null}
       </>
     );
   } else if (!s || s.phase !== 'live') {
@@ -125,7 +130,7 @@ export function App() {
         {updateCard}
         <OpeningView state={state} onCancel={disconnect} />
         {devTools}
-        {s ? <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} /> : null}
+        {s ? <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} events={state.events} onDownloadEvents={downloadEvents} /> : null}
       </>
     );
   } else if (!state.confirmed) {
@@ -174,7 +179,7 @@ export function App() {
         ) : null}
         <IdentityPanel session={s} />
         {devTools}
-        <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} />
+        <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} events={state.events} onDownloadEvents={downloadEvents} />
       </>
     );
   }
@@ -227,6 +232,7 @@ function DevTools(props: { dev: DevMock | null; onStart: (v: MockVariant) => voi
         <div className="row">
           <button onClick={() => b.dropLink('dev: link dropped')}>Drop link</button>
           <button onClick={() => b.powerCycle()}>Power-cycle</button>
+          <button onClick={() => b.powerCycleUnnoticed()}>Power-cycle (computer doesn't notice)</button>
           <button onClick={() => b.setStatus({ locked: !b.status.locked })}>Toggle lock</button>
           <button onClick={() => b.setStatus({ charging: !b.status.charging })}>Toggle charging</button>
           <button onClick={() => b.setStatus({ imperial: !b.status.imperial })}>Toggle units</button>

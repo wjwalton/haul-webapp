@@ -19,10 +19,18 @@ function props(p: CharProperties): string {
   return Object.entries(p).filter(([, v]) => v).map(([k]) => k).join(', ') || '—';
 }
 
-export function DebugPanel(props_: { session: SessionState; rawLines: number; onDownloadRaw: () => void }) {
+export function DebugPanel(props_: {
+  session: SessionState;
+  rawLines: number;
+  onDownloadRaw: () => void;
+  /** The shop's connection log for this bike (connects, failures, disconnect events, reconnects). */
+  events?: readonly string[];
+  onDownloadEvents?: () => void;
+}) {
   const s = props_.session;
   const sizes = Object.entries(s.sizes).sort((a, b) => Number(a[0]) - Number(b[0]));
   const rejected = Object.entries(s.quality.rejectedByPid);
+  const events = props_.events ?? [];
   return (
     <details className="card debug">
       <summary>Debug: GATT table, notification sizes, connection log</summary>
@@ -30,8 +38,19 @@ export function DebugPanel(props_: { session: SessionState; rawLines: number; on
         <button onClick={props_.onDownloadRaw} disabled={props_.rawLines === 0}>
           Download raw.jsonl ({props_.rawLines} lines)
         </button>
+        {props_.onDownloadEvents ? (
+          <button onClick={props_.onDownloadEvents} disabled={events.length === 0}>
+            Download connection log ({events.length} lines)
+          </button>
+        ) : null}
         <span className="muted small">Python format: <span className="mono">globe_capture.py replay raw.jsonl</span> reads it.</span>
       </div>
+      {events.length ? (
+        <>
+          <h3>Connections</h3>
+          <pre className="mono small">{events.slice(-40).join('\n')}</pre>
+        </>
+      ) : null}
       <h3>GATT table</h3>
       {s.gatt.services ? (
         <table className="compact">

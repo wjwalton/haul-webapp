@@ -7,6 +7,12 @@
  * condition at the moment Start is pressed, keeps the result and its session log, and verifies the
  * new controller version on the next connection (after the power-cycle).
  *
+ * Reconnecting (2026-11-19: a reconnect after a stale link needed a page reload on Windows): Reconnect
+ * closes the old link, waits RECONNECT.settleMs for the OS to let go of it, then tries up to
+ * RECONNECT.attempts times. A disconnect event that arrives while the current link still reports
+ * connected belongs to an older connection and is ignored. Picking the same bike in the chooser again
+ * keeps its confirmation and update result. Every step goes into a connection log (ShopState.events).
+ *
  * No DOM and no navigator here: the UI renders ShopState (useSyncExternalStore) and calls the methods.
  */
 import type { VerifiedFirmware } from '../analysis/firmware';
@@ -41,6 +47,8 @@ export interface ShopState {
   connections: number;
   /** The controller update: running, or its last result (until dismissed or the bike is forgotten). */
   update: UpdateState | null;
+  /** Connection log for this bike: connects, failures, disconnect events, reconnects (time-stamped). */
+  events: readonly string[];
 }
 
 export interface UpdateState {
@@ -69,7 +77,24 @@ export interface UpdateEnv {
   stamp?: string;
 }
 
-const INITIAL: ShopState = { phase: 'idle', device: null, confirmed: false, session: null, message: null, connections: 0, update: null };
+const INITIAL: ShopState = {
+  phase: 'idle', device: null, confirmed: false, session: null, message: null, connections: 0, update: null, events: [],
+};
+
+/** Reconnect tuning. Windows can take a moment to let go of a link that was dropped or closed. */
+export const RECONNECT = Object.freeze({
+  /** After closing a link on purpose, before connecting again. */
+  settleMs: 1_500,
+  /** Attempts on Reconnect (each with its own connect timeout). */
+  attempts: 3,
+  /** Attempts right after the chooser. */
+  firstAttempts: 2,
+  /** Between failed attempts. */
+  retryPauseMs: 2_000,
+});
+
+const MAX_EVENTS = 400;
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 
 export interface ShopOptions {
   now?: () => number;
@@ -126,6 +151,7 @@ export class ShopApp {
    * chooser request is made before anything is awaited (browsers require a user gesture).
    */
   chooseBike(): Promise<void> {
+    if (this.updateRunning) return Promise.resolve();
     const request = this.transport.requestDevice(BIKE_REQUEST);
     return this.afterChooser(request);
   }
@@ -142,19 +168,59 @@ export class ShopApp {
       this.set({ ...before, message: cancelled ? before.message : `The chooser failed: ${errorText(e)}` });
       return;
     }
+    if (this.device && picked.id === this.s.device?.id) {
+      // The same bike again (the fallback when Reconnect keeps failing): keep its confirmation, update
+      // result and logs; only the device handle is new.
+      this.event(`Chooser: picked ${picked.name ?? picked.id} again (same bike: confirmation and update result kept)`);
+      const hadLink = this.link !== null;
+      await this.closeLink('picked again');
+      this.unsubDevice?.();
+      this.device = picked;
+      this.unsubDevice = picked.onDisconnected(() => this.onDisconnected());
+      this.set({ device: { id: picked.id, name: picked.name } });
+      if (hadLink && !(await this.settle())) return;
+      await this.connect(RECONNECT.attempts);
+      return;
+    }
     await this.wipe(null);
     this.device = picked;
     this.unsubDevice = picked.onDisconnected(() => this.onDisconnected());
     this.recorder = new RawRecorder(this.now);
     this.set({ ...INITIAL, device: { id: picked.id, name: picked.name } });
-    await this.connect();
+    this.event(`Chooser: picked ${picked.name ?? '(no name)'}`);
+    await this.connect(RECONNECT.firstAttempts);
   }
 
-  /** Connect again to the same bike (no chooser). Keeps the confirmation: it's the same device. */
+  /**
+   * Connect again to the same bike (no chooser). Keeps the confirmation: it's the same device. The old
+   * link is closed first and the OS gets RECONNECT.settleMs to let go of it.
+   */
   async reconnect(): Promise<void> {
     if (!this.device || this.updateRunning) return;
+    const st = this.s.session;
+    this.event(`Reconnect requested (${this.s.phase}${st?.stale ? `, no data for ${Math.round(st.stale.quietMs / 1000)} s` : ''})`);
     await this.closeLink('reconnecting');
-    await this.connect();
+    if (!(await this.settle())) return;
+    await this.connect(RECONNECT.attempts);
+  }
+
+  /** Wait for the OS to let go of a closed link. False if something else took over meanwhile. */
+  private async settle(): Promise<boolean> {
+    const g = this.gen;
+    this.set({ phase: 'connecting', session: null, message: 'Reconnecting…' });
+    await sleep(RECONNECT.settleMs);
+    return g === this.gen && this.device !== null;
+  }
+
+  /** This bike's connection log as text (for the download). */
+  connectionLog(): string {
+    return [`Globe Haul Shop Tool connection log: ${this.s.device?.name ?? 'no bike'}`, ...this.s.events].join('\n') + '\n';
+  }
+
+  private event(msg: string): void {
+    const line = `${clock(this.now())}  ${msg}`;
+    const events = this.s.events.length >= MAX_EVENTS ? [...this.s.events.slice(1 - MAX_EVENTS), line] : [...this.s.events, line];
+    this.set({ events });
   }
 
   confirm(): void {
@@ -165,6 +231,7 @@ export class ShopApp {
   async wrongBike(): Promise<void> {
     if (this.updateRunning) return;
     const name = this.s.device?.name ?? 'that bike';
+    this.event('Wrong bike: disconnecting');
     await this.wipe(`Disconnected from ${name} (wrong bike). Choose the right one.`);
   }
 
@@ -210,6 +277,7 @@ export class ShopApp {
     const need = checks.gate.checks.find((c) => c.id === 'need');
 
     const gen = this.gen;
+    this.event(`Controller update started (${need ? need.detail : 'offered'})`);
     this.set({ update: { running: true, progress: null, result: null, verify: null } });
     this.updateJob = runControllerUpdate({
       session, link, firmware,
@@ -223,6 +291,7 @@ export class ShopApp {
         if (this.s.update?.running) this.set({ update: { ...this.s.update, progress: p } });
       },
     }).then((result) => {
+      this.event(`Controller update ${result.ok ? 'finished: success' : `failed (${result.kind}): ${result.message}`}`);
       this.verifyAfterGen = result.awaitingPowerCycle ? gen : Infinity;
       const verify: VerifyState | null = result.awaitingPowerCycle
         ? { target: result.target, before: result.before, status: 'waiting', reported: null }
@@ -260,49 +329,94 @@ export class ShopApp {
 
   // ---- internals ---------------------------------------------------------------------------------
 
-  private async connect(): Promise<void> {
+  /** Connect to the current device, up to [attempts] times, then read it (BikeSession.start). */
+  private async connect(attempts = 1): Promise<void> {
     const device = this.device;
     if (!device) return;
-    const gen = ++this.gen;
+    let gen = ++this.gen;
     this.closing = false;
     const name = device.name ?? 'the bike';
     this.set({ phase: 'connecting', session: null, message: null, connections: this.s.connections + 1 });
-    let link: BikeLink;
-    try {
-      link = await openBikeLink(device, { recorder: this.recorder ?? undefined });
-    } catch (e) {
-      if (gen !== this.gen) return;
-      this.set({
-        phase: 'failed',
-        message: `Couldn't connect to ${name}: ${errorText(e)}. Check the bike is on and nothing else (another tab, app or phone) is connected to it.`,
+    for (let attempt = 1; ; attempt++) {
+      const last = attempt >= attempts;
+      const t0 = this.now();
+      this.event(`Connecting (attempt ${attempt} of ${attempts})`);
+      let link: BikeLink;
+      try {
+        link = await openBikeLink(device, { recorder: this.recorder ?? undefined });
+      } catch (e) {
+        if (gen !== this.gen) return;
+        this.event(`Connect failed after ${this.now() - t0} ms: ${errorText(e)}`);
+        if (!last) {
+          this.set({ message: `Couldn't connect (${errorText(e)}). Trying again: attempt ${attempt + 1} of ${attempts}…` });
+          await sleep(RECONNECT.retryPauseMs);
+          if (gen !== this.gen) return;
+          continue;
+        }
+        this.set({
+          phase: 'failed',
+          message: `Couldn't connect to ${name} (${attempts > 1 ? `${attempts} attempts; ` : ''}${errorText(e)}). Check the bike is on and nothing else ` +
+            '(another tab, app or phone) is connected to it, then try again. If it still won\'t connect, choose the bike again.',
+        });
+        return;
+      }
+      if (gen !== this.gen) {
+        await link.disconnect('superseded').catch(() => undefined);
+        return;
+      }
+      this.event(`Connected in ${this.now() - t0} ms`);
+      const session = new BikeSession(link, { now: this.now, errorPoll: this.opts.errorPoll });
+      this.link = link;
+      this.session = session;
+      let stale = false;
+      const g = gen;
+      this.unsubSession = session.subscribe((st) => {
+        if (g !== this.gen) return;
+        if ((st.stale !== null) !== stale) {
+          stale = st.stale !== null;
+          this.event(stale ? `No data for ${Math.round(st.stale!.quietMs / 1000)} s while the link reports connected (stale)` : 'Data arriving again');
+        }
+        this.set({ session: st });
+        this.checkVerify(g, st);
       });
-      return;
-    }
-    if (gen !== this.gen) {
-      await link.disconnect('superseded').catch(() => undefined);
-      return;
-    }
-    const session = new BikeSession(link, { now: this.now, errorPoll: this.opts.errorPoll });
-    this.link = link;
-    this.session = session;
-    this.unsubSession = session.subscribe((st) => {
-      if (gen !== this.gen) return;
-      this.set({ session: st });
-      this.checkVerify(gen, st);
-    });
-    this.set({ phase: 'connected', session: session.state });
-    try {
-      await session.start();
-    } catch (e) {
-      if (gen !== this.gen || this.s.phase === 'lost') return;
-      await this.closeLink('opening failed');
-      this.set({ phase: 'failed', message: `Connected to ${name}, but reading it failed: ${errorText(e)}` });
+      this.set({ phase: 'connected', session: session.state, message: null });
+      try {
+        await session.start();
+        if (gen === this.gen) this.event('Reading done: live data');
+        return;
+      } catch (e) {
+        if (gen !== this.gen || this.s.phase === 'lost') return;
+        this.event(`Reading the bike failed: ${errorText(e)}`);
+        const expected = this.gen + 1;
+        await this.closeLink('opening failed');
+        if (this.gen !== expected) return;
+        gen = this.gen;
+        if (!last) {
+          this.set({ phase: 'connecting', session: null, message: `Reading the bike failed (${errorText(e)}). Trying again: attempt ${attempt + 1} of ${attempts}…` });
+          await sleep(RECONNECT.settleMs);
+          if (gen !== this.gen) return;
+          this.closing = false;
+          continue;
+        }
+        this.set({ phase: 'failed', message: `Connected to ${name}, but reading it failed: ${errorText(e)}` });
+        return;
+      }
     }
   }
 
   private onDisconnected(): void {
     // While 'connecting', connect() itself reports the failure ("couldn't connect", not "lost").
-    if (this.closing || this.s.phase !== 'connected') return;
+    if (this.closing || this.s.phase !== 'connected') {
+      this.event(`Disconnect event (expected: ${this.closing ? 'closing the link on purpose' : this.s.phase})`);
+      return;
+    }
+    // Chrome marks the server disconnected before it fires the event, so a link that still reports
+    // connected means the event belongs to an earlier connection.
+    if (this.link?.gattConnected) {
+      this.event('Disconnect event ignored: the current link still reports connected (an earlier connection\'s event)');
+      return;
+    }
+    this.event('Disconnect event: the link was lost');
     this.gen++;
     this.session?.end('the Bluetooth link was lost');
     this.link?.lost('link lost');
@@ -338,6 +452,13 @@ export class ShopApp {
     this.recorder = null;
     this.set({ ...INITIAL, message });
   }
+}
+
+/** Local time of day, HH:MM:SS.mmm. */
+function clock(ms: number): string {
+  const d = new Date(ms);
+  const p = (n: number, w = 2) => String(n).padStart(w, '0');
+  return `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}.${p(d.getMilliseconds(), 3)}`;
 }
 
 function errorText(e: unknown): string {

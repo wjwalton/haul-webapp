@@ -85,7 +85,9 @@ firmware. See "Hard safety rules" in `docs/SPEC.md`.
 
 Once an update starts there is no stop button: about 4.5 s in, the controller erases its program, and
 the bike won't drive until an update completes. If it fails or the link drops, the controller waits in
-its bootloader and can be flashed again. Keep the laptop plugged in, lid open, next to the bike.
+its bootloader and can be flashed again. Keep the laptop plugged in, lid open, next to the bike. On a
+Windows laptop the transfer takes about 4 minutes (the phone app: about 30 s), and the bike's display
+shows "bypass" the whole time; don't switch the bike off until the app says it has finished.
 
 Logs and `raw.jsonl` files contain the bike's serial numbers. Don't attach them to public issues.
 

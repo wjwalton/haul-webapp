@@ -244,8 +244,11 @@ describe('flashController: slow host (50 ms per write)', () => {
     // 80 blocks left at ~50 ms each
     expect(at20.etaMs!).toBeGreaterThan(80 * 45);
     expect(at20.etaMs!).toBeLessThan(80 * 60);
-    expect(progress.at(-1)!.etaMs).toBe(0);
+    const sending = progress.filter((x) => x.confirming === null);
+    expect(sending.at(-1)!.etaMs).toBe(0);
     expect(progress[0]!.etaMs).toBeNull(); // not enough to measure yet
+    expect(progress.at(-1)!.confirming).not.toBeNull(); // then: waiting for the final status
+    expect(progress.at(-1)!.etaMs).toBeNull();
   });
 
   it('slow host + a resend: the resend logic still holds', async () => {
@@ -253,5 +256,94 @@ describe('flashController: slow host (50 ms per write)', () => {
     const d = new FakeDisplay({ writeMs: 50, onBlock: (seq, x) => { if (seq === 30 && !asked) { asked = true; x.push(2, 25); } } });
     const { r } = await run(d, 100_000);
     expect(r).toMatchObject({ ok: true, resends: 1, writes: TOTAL + 6 });
+  });
+});
+
+/**
+ * Writes without response on Chrome / Windows complete once queued, not when sent (2026-11-19 CAN
+ * capture: 10,240 writes "done" in 29 s, the display received 44 blocks/s). A barrier (a read queued
+ * behind the blocks) every barrierEvery blocks keeps the app's progress honest, and after the last block
+ * the app keeps waiting as long as a slow link could still be delivering.
+ */
+class BarrierDisplay extends FakeDisplay {
+  readonly barriers: number[] = [];
+  barrierMs = 40;
+  barrierFails = false;
+  barrierHangs = false;
+
+  async barrier(afterSeq: number): Promise<void> {
+    if (this.barrierHangs) return new Promise(() => undefined);
+    if (this.barrierFails) throw Object.assign(new Error('read not permitted'), { name: 'NotSupportedError' });
+    await new Promise((r) => setTimeout(r, this.barrierMs));
+    this.barriers.push(afterSeq);
+  }
+}
+
+describe('flashController: barriers and the final wait (writes without response)', () => {
+  it(`a barrier every ${FLASH_TIMING.barrierEvery} blocks and one after the last, timed in the result`, async () => {
+    const d = new BarrierDisplay();
+    const { r, log } = await run(d);
+    expect(r.ok).toBe(true);
+    expect(d.barriers).toEqual([32, 64, 96, 100]);
+    if (r.ok) expect(r.barrier).toMatchObject({ count: 4 });
+    expect(log.some((m) => /All blocks written/.test(m))).toBe(true);
+  });
+
+  it('no barrier method (writes with response): none attempted', async () => {
+    const { r } = await run(new FakeDisplay());
+    expect(r.ok).toBe(true);
+    if (r.ok) expect(r.barrier).toBeNull();
+  });
+
+  it('a barrier read that fails: logged, then the transfer goes on without barriers', async () => {
+    const d = new BarrierDisplay();
+    d.barrierFails = true;
+    const { r, log } = await run(d);
+    expect(r.ok).toBe(true);
+    expect(log.some((m) => /Barrier read failed .* continuing without barriers/.test(m))).toBe(true);
+    expect(d.written.length).toBe(TOTAL);
+  });
+
+  it('a barrier that never comes back: stalled after 30 s, with the blocks written so far', async () => {
+    const d = new BarrierDisplay();
+    d.barrierHangs = true;
+    const { r } = await run(d, FLASH_TIMING.stallMs + 10_000);
+    expect(r).toMatchObject({ ok: false, kind: 'stalled', stoppedAt: 32, startSent: true });
+    if (!r.ok) expect(r.reason).toMatch(/didn't leave this computer/);
+  });
+
+  it('after the last block it waits as long as a slow link could still be delivering, then succeeds', async () => {
+    // 100 blocks at a 1 block/s floor: up to 100 s from the first block. The status comes at 80 s.
+    const d = new BarrierDisplay({ finishAfterMs: 80_000 });
+    const { r, progress } = await run(d, 200_000, { timing: { drainFloorBlocksPerS: 1 } });
+    expect(r.ok).toBe(true);
+    const waiting = progress.filter((x) => x.confirming !== null);
+    expect(waiting.length).toBeGreaterThan(30); // about one a second while waiting
+    expect(waiting.at(-1)!.confirming!.maxMs).toBeGreaterThan(80_000);
+  });
+
+  it('…but not forever: past that budget (and at least 30 s) it is "stalled"', async () => {
+    const d = new BarrierDisplay({ finish: null });
+    const { r } = await run(d, 300_000, { timing: { drainFloorBlocksPerS: 1 } });
+    expect(r).toMatchObject({ ok: false, kind: 'stalled', stoppedAt: TOTAL });
+    if (!r.ok) expect(r.reason).toMatch(/No final status from the display \d+ s after the last block/);
+  });
+
+  it('a resend request during the final wait restarts the pass and its budget', async () => {
+    let asked = false;
+    const d = new BarrierDisplay({ finish: null });
+    d.barrierMs = 5;
+    const orig = d.writeBlock.bind(d);
+    d.writeBlock = async (f, seq) => {
+      await orig(f, seq);
+      if (seq === TOTAL && !asked) {
+        asked = true;
+        setTimeout(() => d.push(2, 90), 10_000);
+      } else if (seq === TOTAL) {
+        setTimeout(() => d.push(0, 0), 148);
+      }
+    };
+    const { r } = await run(d, 200_000);
+    expect(r).toMatchObject({ ok: true, resends: 1, writes: TOTAL + 11 });
   });
 });
