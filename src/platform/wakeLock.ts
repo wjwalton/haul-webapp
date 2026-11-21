@@ -5,6 +5,7 @@
  */
 interface WakeLockSentinelLike {
   release(): Promise<void>;
+  addEventListener?(type: 'release', listener: () => void): void;
 }
 
 export function holdScreenAwake(): () => void {
@@ -13,11 +14,19 @@ export function holdScreenAwake(): () => void {
   let sentinel: WakeLockSentinelLike | null = null;
   let active = true;
   const acquire = () => {
-    if (!active || document.visibilityState !== 'visible') return;
+    if (!active || sentinel !== null || document.visibilityState !== 'visible') return;
     nav.wakeLock!.request('screen').then(
       (s) => {
-        if (active) sentinel = s;
-        else void s.release();
+        if (!active) {
+          void s.release();
+          return;
+        }
+        sentinel = s;
+        // Released by the system (not by us): take it again while the tab is visible.
+        s.addEventListener?.('release', () => {
+          if (sentinel === s) sentinel = null;
+          if (active) setTimeout(acquire, 1_000);
+        });
       },
       () => undefined,
     );

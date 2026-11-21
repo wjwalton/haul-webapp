@@ -116,6 +116,19 @@ describe('short frames: page 0x3C, acks, status, DIS', () => {
     expect(classifyNotification(Uint8Array.of(0xbe)).kind).toBe('dump-start');
     expect(classifyNotification(Uint8Array.of(0xed)).kind).toBe('dump-end');
     const can = classifyNotification(fromHex('51' + 'af010000' + '08' + '0003000039000000' + '00' + '10270000'));
-    expect(can.kind === 'can' && can.frame).toMatchObject({ canId: 0x1af, len: 8, src: 'HMI_RX' });
+    expect(can.kind === 'can' && can.frames).toMatchObject([{ canId: 0x1af, len: 8, src: 'HMI_RX' }]);
+  });
+
+  it('a 0x51 notification of n × 19 bytes is n CAN frames (DEVIATIONS: PROTOCOL.md "parse 1..n")', () => {
+    const echo = '51' + '47000000' + '08' + '5a89555557000000' + '01' + '01000000';
+    const ack = '51' + '48000000' + '08' + '0000000000000000' + '00' + '02000000';
+    const two = classifyNotification(fromHex(echo + ack));
+    expect(two.kind).toBe('can');
+    expect(two.kind === 'can' && two.frames.map((f) => [f.canId, f.src])).toEqual([[0x47, 'HMI_TX'], [0x48, 'HMI_RX']]);
+    // 20 frames = 380 bytes, also a multiple of 20: still CAN (0x51 is never a page id)
+    const twenty = classifyNotification(fromHex(ack.repeat(20)));
+    expect(twenty.kind === 'can' && twenty.frames.length).toBe(20);
+    // 40 bytes starting 0x51 isn't n × 19: not CAN
+    expect(classifyNotification(new Uint8Array(40).fill(0x51)).kind).toBe('pages');
   });
 });

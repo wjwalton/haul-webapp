@@ -24,11 +24,15 @@ Needs Python 3 (installed on most desktops) and Chrome or Chromium. Firefox has 
 2. First time only: if the app says "Web Bluetooth is off by default on Linux", open
    chrome://flags/#enable-experimental-web-platform-features , set it to Enabled, and click Relaunch.
 3. Keep the terminal open while you use the app. Ctrl+C stops it.
+4. It asks "Fast Bluetooth for firmware updates?". Say yes (Enter) and type your password: new
+   Bluetooth connections then use a 7.5-15 ms interval instead of BlueZ's ~60 ms, which makes a
+   battery update about 4x faster (minutes instead of ~26). The old setting is put back when the tool
+   stops. Skip the question with:  sh start-shop-tool.sh --fast-bluetooth no   (or yes)
 
 - Bluetooth must be on (the BlueZ service running: systemctl status bluetooth).
 - Chromium installed as a Snap also needs, once:   sudo snap connect chromium:bluez
-- The header shows "updates: not on this browser" on Linux: reading works; the controller update stays
-  disabled until Linux passes the hardware test.
+- The header shows "updates: battery only on this browser" on Linux: reading and the battery update
+  work; the controller update stays disabled until Linux passes the hardware test.
 
 
 Before connecting (both)

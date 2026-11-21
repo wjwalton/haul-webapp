@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import type { ChipInfo } from '../analysis/firmware';
 import type { ShopState } from '../app/shop';
 import type { SessionState } from '../protocol/session';
 import type { PlatformInfo } from '../platform/detect';
@@ -11,6 +12,17 @@ export function Card({ title, children, tone }: { title?: ReactNode; children: R
       {title ? <h2>{title}</h2> : null}
       {children}
     </section>
+  );
+}
+
+/** A part's chip (analysis/firmware.ts KnownChips) with its qualifier underneath. */
+export function Chip({ chip, unknown = 'not known' }: { chip: ChipInfo | null; unknown?: string }) {
+  if (chip === null) return <span className="muted">{unknown}</span>;
+  return (
+    <>
+      {chip.chip}
+      {chip.note ? <div className="muted small">{chip.note}</div> : null}
+    </>
   );
 }
 

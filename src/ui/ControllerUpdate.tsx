@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { reasonText, verifyFirmware, type VerifiedFirmware } from '../analysis/firmware';
+import { MAX_FIRMWARE_BYTES, reasonText, verifyFirmware, type VerifiedFirmware } from '../analysis/firmware';
 import type { ShopState, UpdateState } from '../app/shop';
 import type { SessionState } from '../protocol/session';
 import type { UpdateResult } from '../update/controller';
@@ -75,10 +75,18 @@ export function ControllerUpdatePanel(p: UpdatePanelProps) {
   const armed = isArmed(typed, name);
 
   async function pick(file: File) {
+    if (file.size > MAX_FIRMWARE_BYTES) {
+      setPicked({ kind: 'rejected', what: file.name, detail: `The file is ${file.size.toLocaleString()} bytes: far too large to be firmware. It wasn't read.` });
+      return;
+    }
     setPicked({ kind: 'loading', what: file.name });
-    const bytes = new Uint8Array(await file.arrayBuffer());
-    const r = await verifyFirmware(bytes, 'controller', { source: `disk:${file.name}`, pickedName: file.name });
-    setPicked(r.ok ? { kind: 'ok', fw: r.firmware } : { kind: 'rejected', what: file.name, detail: reasonText(r.report) });
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const r = await verifyFirmware(bytes, 'controller', { source: `disk:${file.name}`, pickedName: file.name });
+      setPicked(r.ok ? { kind: 'ok', fw: r.firmware } : { kind: 'rejected', what: file.name, detail: reasonText(r.report) });
+    } catch (e) {
+      setPicked({ kind: 'rejected', what: file.name, detail: `Couldn't read the file (${e instanceof Error ? e.message : String(e)})` });
+    }
   }
 
   return (

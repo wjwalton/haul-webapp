@@ -31,7 +31,7 @@ import {
 } from './gatt';
 import {
   ACK_STATUS, ACK_SUCCESS, classifyNotification, controllerType, decodeAck, decodePower, disString,
-  splitPages, STRING_PAGES, DUMP_END, type Decoded, type FwStatus, type PowerStatus,
+  splitPages, STRING_PAGES, DUMP_END, type CanFrame, type Decoded, type FwStatus, type PowerStatus,
 } from './pages';
 import { ErrorDebouncer, gateNotification } from './validate';
 
@@ -66,6 +66,8 @@ export const TIMING = Object.freeze({
   /** An unrequested log dump is dropped until 0xED, or until it has been quiet this long / this old. */
   drainQuietMs: 2_000,
   drainMaxMs: 5 * 60_000,
+  /** After the battery update turns bus access off: mirrored frames still in flight are dropped quietly. */
+  canDrainMs: 2_000,
   /** Before a firmware update: no live page for this long = the stream has stopped (STREAM_QUIET_MS) … */
   streamQuietMs: 500,
   /** … waited for at most this long (STREAM_QUIET_MAX_MS). */
@@ -122,6 +124,8 @@ export interface SessionState {
   config: Readonly<Decoded> | null;
   /** Page 55 fields, as validated (headlight, auto-off timer, raw component error codes). */
   settings: Readonly<Decoded> | null;
+  /** Auto power-off timer in seconds from page 5 (0 = off); null until page 5 was read (battery update). */
+  autoOffS: number | null;
   configMissing: readonly number[];
   production: { buildDate: string | null; prodId: number | null };
 
@@ -139,8 +143,10 @@ export interface SessionState {
   displayInUpdateMode: boolean;
   /** A firmware verdict (0 = success, 1 = failed) that arrived after the update had stopped waiting. */
   lateFwStatus: number | null;
-  /** CAN-analysis frames seen: another app left CAN analysis on (only a power cycle clears it here). */
+  /** CAN-analysis frames seen outside the battery update: another app left CAN analysis on. */
   canFrames: number;
+  /** The battery update has bus access (50 01) on: data pages stop, CAN frames go to the update. */
+  busAccess: boolean;
 
   quality: DataQuality;
   /** …0001 notification sizes seen, bytes → count (docs/SPEC.md "Log the observed sizes"). */
@@ -212,6 +218,10 @@ export class BikeSession {
   private rejectNotes = 0;
   /** Set while a firmware update owns the link: page 0x3C goes here, not to "still in update mode". */
   private fwStatusSink: ((st: FwStatus, raw: Uint8Array) => void) | null = null;
+  /** Set while the battery update owns the bus: mirrored CAN frames go here. */
+  private canSink: ((f: CanFrame) => void) | null = null;
+  /** Mirrored frames still arriving after the battery update let go of the bus are dropped until then. */
+  private canDrainUntil = 0;
   private pollWaiting = false;
 
   constructor(private readonly link: SessionLink, opts: SessionOptions = {}) {
@@ -227,7 +237,8 @@ export class BikeSession {
       identity: {}, identityMissing: [], identityReads: 0,
       config: null, settings: null, configMissing: [], production: { buildDate: null, prodId: null },
       live: {}, liveAt: null, errorBits: null, errors: [],
-      livePaused: false, stale: null, displayInUpdateMode: false, lateFwStatus: null, canFrames: 0,
+      autoOffS: null,
+      livePaused: false, stale: null, displayInUpdateMode: false, lateFwStatus: null, canFrames: 0, busAccess: false,
       quality: { dropped: 0, rejectedByPid: {}, lastReject: null },
       sizes: {}, pagesReceived: 0, log: [],
     };
@@ -252,6 +263,11 @@ export class BikeSession {
   private set(patch: Partial<SessionState>): void {
     this.s = { ...this.s, ...patch };
     for (const l of [...this.listeners]) l(this.s);
+  }
+
+  /** Update without notifying: bookkeeping that changes thousands of times a minute (the battery update's frames). */
+  private setQuiet(patch: Partial<SessionState>): void {
+    this.s = { ...this.s, ...patch };
   }
 
   /** Connection log (shown in the debug panel, part of the session record). */
@@ -513,6 +529,22 @@ export class BikeSession {
     this.fwStatusSink = null;
   }
 
+  /**
+   * The battery update owns the bus (it is about to send 50 01): every mirrored CAN frame goes to [sink],
+   * in arrival order. endCanBus() hands them back (after 50 00); frames still in flight are then dropped
+   * for TIMING.canDrainMs instead of being reported as "another app left CAN analysis on".
+   */
+  beginCanBus(sink: (f: CanFrame) => void): void {
+    this.canSink = sink;
+    this.set({ busAccess: true });
+  }
+
+  endCanBus(): void {
+    this.canSink = null;
+    this.canDrainUntil = this.now() + TIMING.canDrainMs;
+    this.set({ busAccess: false });
+  }
+
   /** After a failed update that sent 0x46: the display waits in update mode until power-cycled. */
   markDisplayInUpdateMode(why: string): void {
     if (!this.s.displayInUpdateMode) this.note(`[firmware] ${why}: the display stays in update mode until the bike is power-cycled`);
@@ -639,8 +671,13 @@ export class BikeSession {
         if (!this.s.displayInUpdateMode) this.note(`[firmware] page 0x3C outside an update (${hex(b)}): the display is still in update mode`);
         return this.set({ ...patch, displayInUpdateMode: true });
       case 'can':
+        if (this.canSink) {
+          for (const f of n.frames) this.canSink(f);
+          return this.setQuiet(patch);
+        }
+        if (now < this.canDrainUntil) return this.set(patch);
         if (this.s.canFrames === 0) {
-          this.note('[CAN] CAN-analysis frames are arriving: another app left CAN analysis on. Power-cycle the bike (this app never sends 50).');
+          this.note('[CAN] CAN-analysis frames are arriving outside the battery update: another app left CAN analysis on. Power-cycle the bike.');
         }
         return this.set({ ...patch, canFrames: this.s.canFrames + 1 });
       case 'bypass-reply':
@@ -694,6 +731,8 @@ export class BikeSession {
         if (pid === ERROR_PAGE) patch.settings = d;
       } else if (pid === 54) {
         patch.config = d;
+      } else if (pid === 5) {
+        patch.autoOffS = typeof d.shutdown_timer_s === 'number' ? d.shutdown_timer_s : null;
       } else if (pid === 56) {
         const date = typeof d.build_date === 'string' ? d.build_date : null;
         const id = typeof d.prod_id === 'number' ? d.prod_id : null;

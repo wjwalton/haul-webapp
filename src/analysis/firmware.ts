@@ -2,8 +2,9 @@
  * Firmware files: the SHA-256 allowlist and the validation gate. Ported from the Android app
  * (firmware/FirmwareAllowlist.kt, FirmwareValidation.kt, FirmwareVerifier.kt).
  *
- * Only the two officially app-updatable images exist here. Battery firmware, the older M1B0260s0.bin,
- * the BMS/S-Link files and the stock APK have no entry and no code path (docs/SPEC.md).
+ * Controller and HMI: the two official images in ALLOWLIST. Battery: the two official BMS images in
+ * BMS_ALLOWLIST (docs/DECISIONS.md 2026-11-20), validated by analysis/bmsFirmware.ts. The older
+ * M1B0260s0.bin, the dealer tool and the stock APK have no entry and no code path.
  *
  * A file becomes flashable only as a VerifiedFirmware returned by verifyFirmware(): its bytes are a
  * private copy that nothing outside this module can modify, and protocol/frames.ts builds 0x46/0x47
@@ -43,6 +44,43 @@ export const ALLOWLIST: readonly AllowedFirmware[] = Object.freeze([
     model: '1B',
     sha256: 'e7e308034972da1604a72676acc05fdb45bbbdbb15947ef88d99052a71e9f6e4',
     size: 81_920,
+  }),
+]);
+
+/** The battery's two BMS platforms (PROTOCOL.md "Battery (BMS) firmware images"). */
+export type BmsLine = 'RC' | 'SC';
+
+/** One official battery (BMS) image. Its version and line are also read from the file itself. */
+export interface AllowedBmsFirmware {
+  readonly line: BmsLine;
+  /** Specialized's file name (for the screen only: nothing is derived from it). */
+  readonly fileName: string;
+  /** "01.00.12": what the BMS answers on 0x280 afterwards, and page 24 nibble-swapped. */
+  readonly version: string;
+  /** Full lowercase SHA-256 of the whole file. Never shortened. */
+  readonly sha256: string;
+  readonly size: number;
+}
+
+/**
+ * THE battery allowlist (docs/DECISIONS.md 2026-11-20, PROTOCOL.md "Battery (BMS) firmware images"):
+ * the two official BMS images. They are different CPUs (RC = Renesas RL78, SC = ARM Cortex-M), so the
+ * line is checked against the battery before anything is sent. Edit only by hand.
+ */
+export const BMS_ALLOWLIST: readonly AllowedBmsFirmware[] = Object.freeze([
+  Object.freeze<AllowedBmsFirmware>({
+    line: 'RC',
+    fileName: 'F.00.00G1.B.02.A12_V01.00.12.bin',
+    version: '01.00.12',
+    sha256: '2c3821a26eae19ed3d276ab43b97dbf5564d3825327baf2d69f7c21a5832d751',
+    size: 107_336,
+  }),
+  Object.freeze<AllowedBmsFirmware>({
+    line: 'SC',
+    fileName: 'F.00.00G1.B.01.A08_V01.00.08.bin',
+    version: '01.00.08',
+    sha256: 'aae2884bbe92492dd2956221650b82f755a3ad9d863ce55b24203166a8174465',
+    size: 108_728,
   }),
 ]);
 
@@ -309,12 +347,43 @@ export const LatestKnown = Object.freeze({
   batteryByLine: Object.freeze({ SC: '01.00.08', RC: '01.00.12' }) as Readonly<Record<string, string>>,
 });
 
+/** A part's processor, as far as its official firmware shows it. */
+export interface ChipInfo {
+  readonly chip: string;
+  /** A qualifier worth showing beside it (a probable part number, the BMS hardware type), or null. */
+  readonly note: string | null;
+}
+
+/**
+ * THE chip table, the only place a part's processor is named. The bike reports versions, never a
+ * chip: each entry is the processor that part's official firmware is built for (PROTOCOL.md: the HMI
+ * 5.19 image is an nRF52832 application; "Controller hardware and firmware image"; "Battery (BMS)
+ * firmware images"). The battery comes on two BMS platforms, told apart by the line suffix of its
+ * version (…RC / …SC; 0x281 byte 2 = hardware type 2 / 1). They are different CPUs, so one line's
+ * firmware never fits the other. Battery firmware stays dealer update only: this is for display.
+ */
+export const KnownChips = Object.freeze({
+  hmi: Object.freeze<ChipInfo>({ chip: 'Nordic nRF52832', note: null }),
+  controllerByType: Object.freeze({
+    s0: Object.freeze<ChipInfo>({ chip: 'TI C2000 (C28x)', note: 'most likely a TMS320F2803x' }),
+  }) as Readonly<Record<string, ChipInfo>>,
+  batteryByLine: Object.freeze({
+    RC: Object.freeze<ChipInfo>({ chip: 'Renesas RL78', note: 'BMS hardware type 2' }),
+    SC: Object.freeze<ChipInfo>({ chip: 'ARM Cortex-M', note: 'BMS hardware type 1' }),
+  }) as Readonly<Record<string, ChipInfo>>,
+});
+
 export type Verdict = 'latest' | 'older' | 'newer' | 'unknown';
 
 export interface VersionReading {
   version: string | null;
   verdict: Verdict;
   label: string;
+}
+
+/** A part's version verdict plus its chip (null when the version doesn't tell which one). */
+export interface PartReading extends VersionReading {
+  chip: ChipInfo | null;
 }
 
 /**
@@ -353,26 +422,29 @@ export function hmiVersion(swRev: string | null | undefined, fwRev: string | nul
   return blankToNull(swRev) ?? blankToNull(fwRev);
 }
 
-export function hmiReading(swRev: string | null | undefined, fwRev: string | null | undefined): VersionReading {
-  return judgeVersion(hmiVersion(swRev, fwRev), LatestKnown.hmi);
+/** The display is always an EH02, so its chip is known even before its version is read. */
+export function hmiReading(swRev: string | null | undefined, fwRev: string | null | undefined): PartReading {
+  return { ...judgeVersion(hmiVersion(swRev, fwRev), LatestKnown.hmi), chip: KnownChips.hmi };
 }
 
-/** Controller SW (identity page 19), judged against the latest for ITS type suffix. */
-export function controllerReading(ctrlSw: string | null | undefined): VersionReading {
+/** Controller SW (identity page 19), judged against the latest for ITS type suffix; the chip by that type. */
+export function controllerReading(ctrlSw: string | null | undefined): PartReading {
   const v = blankToNull(ctrlSw);
-  if (v === null) return { version: null, verdict: 'unknown', label: 'not read' };
+  if (v === null) return { version: null, verdict: 'unknown', label: 'not read', chip: null };
   const type = swType(v);
-  if (type === null) return { version: v, verdict: 'unknown', label: `version ${v}` };
+  if (type === null) return { version: v, verdict: 'unknown', label: `version ${v}`, chip: null };
+  const chip = KnownChips.controllerByType[type] ?? null;
   const latest = LatestKnown.controllerByType[type];
-  if (latest === undefined) return { version: v, verdict: 'unknown', label: `${v}: type ${type} isn't in the latest-known table` };
-  return judgeVersion(v, latest);
+  if (latest === undefined) return { version: v, verdict: 'unknown', label: `${v}: type ${type} isn't in the latest-known table`, chip };
+  return { ...judgeVersion(v, latest), chip };
 }
 
-export interface BatteryReading extends VersionReading {
+export interface BatteryReading extends PartReading {
   /** As the HMI reports it (nibble-swapped). */
   raw: string | null;
   /** Each 2-digit group reversed plus the line, e.g. "01.00.12 RC"; null if the string doesn't have that shape. */
   corrected: string | null;
+  /** "RC" / "SC" (the BMS platform), or null. */
   line: string | null;
 }
 
@@ -387,18 +459,22 @@ export function correctBatteryVersion(raw: string): string | null {
   return digits.map((d) => d[1]! + d[0]!).join('.') + rest.map((p) => ` ${p}`).join('');
 }
 
-/** Battery firmware: dealer update only. Judged corrected, against the latest for its line. */
+/**
+ * Battery firmware: dealer update only. Judged corrected, against the latest for its line; the chip
+ * is the line's BMS platform (KnownChips). An unknown line names no chip: never guess one.
+ */
 export function batteryReading(battSw: string | null | undefined): BatteryReading {
   const raw = blankToNull(battSw);
-  if (raw === null) return { raw: null, corrected: null, line: null, version: null, verdict: 'unknown', label: 'not read' };
+  if (raw === null) return { raw: null, corrected: null, line: null, version: null, verdict: 'unknown', label: 'not read', chip: null };
   const corrected = correctBatteryVersion(raw);
-  if (corrected === null) return { raw, corrected: null, line: null, version: raw, verdict: 'unknown', label: `version ${raw}` };
+  if (corrected === null) return { raw, corrected: null, line: null, version: raw, verdict: 'unknown', label: `version ${raw}`, chip: null };
   const numeric = corrected.split(' ')[0]!;
   const line = corrected.includes(' ') ? corrected.slice(corrected.indexOf(' ') + 1).toUpperCase() : null;
+  const chip = line ? KnownChips.batteryByLine[line] ?? null : null;
   const latest = line ? LatestKnown.batteryByLine[line] : undefined;
-  if (latest === undefined) return { raw, corrected, line, version: corrected, verdict: 'unknown', label: corrected };
+  if (latest === undefined) return { raw, corrected, line, version: corrected, verdict: 'unknown', label: corrected, chip };
   const c = compareVersions(numeric, latest);
-  const base = { raw, corrected, line, version: corrected };
+  const base = { raw, corrected, line, version: corrected, chip };
   if (c === null) return { ...base, verdict: 'unknown', label: corrected };
   if (c === 0) return { ...base, verdict: 'latest', label: `${corrected}: current (latest for ${line})` };
   if (c < 0) return { ...base, verdict: 'older', label: `${corrected}: older than latest for ${line} (${latest})` };

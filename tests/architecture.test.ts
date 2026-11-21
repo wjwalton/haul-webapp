@@ -55,12 +55,24 @@ describe('architecture rules', () => {
     }
   });
 
-  it('no firmware file other than the two allowlisted images is referenced', () => {
+  it('no firmware file other than the allowlisted images is referenced', () => {
+    // The controller and HMI images, and (docs/DECISIONS.md 2026-11-20) the two official battery images.
+    const allowed = ['M1B0306s0.bin', 'EH02_Eagotech_5.19.zip', 'F.00.00G1.B.02.A12_V01.00.12.bin', 'F.00.00G1.B.01.A08_V01.00.08.bin'];
     for (const s of sources) {
-      expect(s.text, s.path).not.toMatch(/reference\/firmware|M1B0260|BMS\.zip|Globe BMS Firmware|S_Link|S-Link|\.apk\b|F\.00\.00G1/i);
-      for (const m of s.text.matchAll(/assets\/firmware\/([^'"?]+)/g)) {
-        expect(['M1B0306s0.bin', 'EH02_Eagotech_5.19.zip'], s.path).toContain(m[1]);
-      }
+      expect(s.text, s.path).not.toMatch(/reference\/firmware|M1B0260|BMS\.zip|Globe BMS Firmware|S_Link|S-Link|\.apk\b/i);
+      for (const m of s.text.matchAll(/F\.00\.00G1[^'"`\s)]*/g)) expect(allowed, s.path).toContain(m[0]);
+      for (const m of s.text.matchAll(/assets\/firmware\/([^'"?]+)/g)) expect(allowed, s.path).toContain(m[1]);
+    }
+  });
+
+  it('only analysis/firmware.ts names the battery images, and only update/battery.ts sends battery frames', () => {
+    for (const s of sources) {
+      if (s.path !== 'analysis/firmware.ts' && s.path !== 'ui/firmwareAssets.ts') expect(s.text, s.path).not.toMatch(/F\.00\.00G1/);
+      if (s.path === 'protocol/frames.ts' || s.path === 'update/battery.ts') continue;
+      expect(s.text, s.path).not.toMatch(/\b(bmsStart|bmsBlock|bmsEnd|bmsWake|bmsRead|canBus|autoOff)\s*\(/);
+      // FrameContext.battery is built only by the updater.
+      expect(s.text, s.path).not.toMatch(/\bBatteryFrameContext\b/);
+      expect(s.text, s.path).not.toMatch(/\b(sendCommand|command)\s*\([^;]*\bbattery\s*:/);
     }
   });
 

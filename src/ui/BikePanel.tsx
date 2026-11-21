@@ -1,9 +1,12 @@
 import type { ReactNode } from 'react';
-import { batteryReading, controllerReading, hmiReading, type Verdict } from '../analysis/firmware';
-import { ERROR_HINTS, rawErrorCode } from '../protocol/errors';
+import { batteryReading, controllerReading, hmiReading, swType, type Verdict } from '../analysis/firmware';
+import { bitOf, ERROR_HINTS, hasBit, rawErrorCode } from '../protocol/errors';
 import type { SessionState } from '../protocol/session';
 import { amps, distance, duration, hex32, num, pct, rangeKm, speed, volts, type Units } from './format';
-import { Card } from './screens';
+import { Card, Chip } from './screens';
+
+/** "Battery - Communication Error": the display can't reach the BMS application. */
+const BMS_E032_BIT = bitOf('bms_e032');
 
 function Field({ label, children, hint }: { label: string; children: ReactNode; hint?: string }) {
   return (
@@ -171,6 +174,7 @@ export function IdentityPanel({ session: s }: { session: SessionState }) {
   const hmi = hmiReading(s.dis.sw_rev, s.dis.fw_rev);
   const ctrl = controllerReading(id.ctrl_sw);
   const batt = batteryReading(id.batt_sw);
+  const battUnreachable = batt.raw === null && hasBit(s.errorBits, BMS_E032_BIT);
   const serial = (a?: string, b?: string) => [a, b].filter(Boolean).join(' ') || undefined;
   return (
     <Card title="Identity">
@@ -180,6 +184,9 @@ export function IdentityPanel({ session: s }: { session: SessionState }) {
           <Field label="Model">{text(s.dis.model)}</Field>
           <Field label="Software (DIS)">
             {text(s.dis.sw_rev)} <span className={VERDICT_CLASS[hmi.verdict]}>{hmi.verdict === 'unknown' ? '' : hmi.label}</span>
+          </Field>
+          <Field label="Chip">
+            <Chip chip={hmi.chip} />
           </Field>
           <Field label="Firmware / hardware rev">{text([s.dis.fw_rev, s.dis.hw_rev].filter(Boolean).join(' / '))}</Field>
           <Field label="Manufacturer">{text(s.dis.manufacturer)}</Field>
@@ -193,6 +200,9 @@ export function IdentityPanel({ session: s }: { session: SessionState }) {
           <Field label="Software (page 19)">
             {text(id.ctrl_sw)} <span className={VERDICT_CLASS[ctrl.verdict]}>{ctrl.verdict === 'unknown' ? '' : ctrl.label}</span>
           </Field>
+          <Field label={ctrl.chip ? `Chip (type ${swType(ctrl.version)})` : 'Chip'}>
+            <Chip chip={ctrl.chip} unknown={ctrl.version ? 'not known for this type' : 'not known (no version reported)'} />
+          </Field>
           <Field label="Hardware (page 20)">{text(id.ctrl_hw)}</Field>
           <Field label="Manufacturer (page 27)">{text(id.ctrl_mfr)}</Field>
         </div>
@@ -200,7 +210,7 @@ export function IdentityPanel({ session: s }: { session: SessionState }) {
           <h3>Battery</h3>
           <Field label="Serial (pages 21/22)">{text(serial(id.batt_serial1, id.batt_serial2))}</Field>
           <Field label="Model (page 23)">{text(id.batt_model)}</Field>
-          <Field label="Software (page 24)" hint="dealer update only">
+          <Field label="Software (page 24)" hint="as the display read it at power-on; see Battery firmware update">
             {batt.raw ? (
               <>
                 <span className="mono">{batt.corrected ?? batt.raw}</span>{' '}
@@ -209,10 +219,25 @@ export function IdentityPanel({ session: s }: { session: SessionState }) {
               </>
             ) : nr}
           </Field>
+          <Field label={batt.line ? `Chip (${batt.line} line)` : 'Chip'}>
+            <Chip chip={batt.chip} unknown={batt.raw ? 'not known (the version names no RC / SC line)' : 'not known (no version reported)'} />
+          </Field>
           <Field label="Hardware (page 25)">{text(id.batt_hw)}</Field>
           <Field label="Manufacturer (page 28)">{text(id.batt_mfr)}</Field>
         </div>
       </div>
+      {battUnreachable ? (
+        <p className="notice">
+          <strong>The battery reports no version and bms_e032 (Battery - Communication Error) is active,</strong> so its chip can't be shown: the
+          display can't reach the battery's BMS. A pack whose firmware update failed looks exactly like this: it waits in its bootloader, still powers
+          the display, and the display shows E032. If so, the battery firmware update below repairs it: read the battery (it won't answer), then
+          choose its line (RC or SC) from the pack's label, never a guess: the two lines are different chips.
+        </p>
+      ) : null}
+      <p className="muted small">
+        Chips aren't reported by the bike: each is the processor that part's official firmware is built for. The battery's follows from the RC / SC
+        line at the end of its version.
+      </p>
       {s.identityMissing.length ? <p className="muted small">Identity pages that didn't come back: {s.identityMissing.join(', ')}</p> : null}
     </Card>
   );

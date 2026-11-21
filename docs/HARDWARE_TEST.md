@@ -46,7 +46,8 @@ distribution, the browser and its version, and how it was installed (deb / rpm /
    - Live: speed 0 at rest, then a plausible speed with the wheel spun. Battery %, V and A are plausible.
      The assist level follows the + / − buttons.
    - Identity: HMI 5.19, controller `1B`, `03.06.s0`, `AS.03`, battery `01.00.12 RC` (reported
-     `10.00.21.RC`). The serials are the bike's.
+     `10.00.21.RC`). The serials are the bike's. Chips: HMI Nordic nRF52832, controller TI C2000 (C28x),
+     battery Renesas RL78 for an RC pack (ARM Cortex-M for an SC pack).
    - Active errors: "No active errors" (or the real ones).
    - The controller update checklist: everything ✓ except "Update needed" ("already runs 03.06.s0"),
      and a "Reflash the same version" checkbox above it. Don't tick it in this step. On Linux, "Verified
@@ -124,6 +125,31 @@ Bring back (copy into `logs/` on the dev PC):
 - Notes: Windows and Chrome versions; the debug panel's …0011 properties, FE59 yes / no and notification
   sizes; how long the flash took; what the bike's display showed during and after it; anything that
   looked wrong, even if it worked.
+
+## 2b. Battery (BMS) update on Windows Chrome / Edge or Linux Chrome / Chromium (docs/DECISIONS.md 2026-11-20)
+
+On the test bike only, after step 1 passes on the same laptop and browser. On Linux the header says
+"updates: battery only on this browser": the controller update stays Windows-only. Laptop plugged in, lid open,
+next to the bike, this tab in front. Bike battery at least 40 % (20 % is the hard limit). Keep the
+reference flasher (bleflash) at hand: it can recover the pack if this fails. Allow 30 minutes.
+
+1. Connected and confirmed. In **Battery firmware update**, click **Read the battery**. It must say
+   "The battery answers: firmware 01.00.xx RC (or SC), hardware type 2 (or 1)" and name the chip. The
+   live data stops for a few seconds and comes back. The display may show bypass briefly.
+   It also shows the measured Bluetooth round trip and how long the update will take. On Linux, start
+   the tool with `sh start-shop-tool.sh` and answer yes to "Fast Bluetooth": the round trip should drop
+   to about 15-35 ms (from ~120 ms), and the estimate with it. Note both numbers.
+2. The file for that line is chosen by itself (or load it from disk). Every check is ✓. On a pack that
+   already runs the latest version this is a **re-flash**: tick "Re-flash the same version".
+3. Type the bike's name, click **Start battery update**. The motor power goes off; the display stays on.
+   Note the blocks/s and the ETA (the first update over Linux ran at 9 blocks/s, 26 min).
+4. At the end: "The battery accepted the new firmware", then about 15 s later the bike restarts by itself
+   and the app reconnects (press the power button if it says so). The card must end with "Verified after
+   the restart: the battery reports 01.00.12 RC" (or 01.00.08 SC). If the auto-off timer was set, it is
+   back to its old value.
+5. Download the update log (`battery_update_<bike>_<time>.txt`) and copy it into `logs/`.
+- Notes: blocks/s and the block round trip in the log summary (Windows' connection interval decides the
+  speed); whether the display showed E032 during the update; anything that looked wrong.
 
 ## 3. HMI DFU on Windows (milestone 4, deferred: no HMI to test on yet)
 

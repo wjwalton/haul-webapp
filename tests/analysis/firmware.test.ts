@@ -3,8 +3,8 @@ import { join } from 'node:path';
 import { zipSync, strToU8 } from 'fflate';
 import { describe, expect, it } from 'vitest';
 import {
-  ALLOWLIST, batteryReading, compareVersions, controllerReading, correctBatteryVersion, fileType, hmiReading,
-  isVerifiedFirmware, LatestKnown, readFirmware, recheckFirmware, sha256Hex, swType, verifyFirmware,
+  ALLOWLIST, BMS_ALLOWLIST, batteryReading, compareVersions, controllerReading, correctBatteryVersion, fileType, hmiReading,
+  isVerifiedFirmware, KnownChips, LatestKnown, readFirmware, recheckFirmware, sha256Hex, swType, verifyFirmware,
 } from '../../src/analysis/firmware';
 import { bundledBytes, FIRMWARE_DIR, HAS_FIRMWARE, ROOT } from '../helpers';
 
@@ -21,9 +21,11 @@ describe('allowlist', () => {
     expect(Object.isFrozen(ALLOWLIST)).toBe(true);
   });
 
-  it('src/assets/firmware holds nothing but those two files (and its README)', () => {
+  it('src/assets/firmware holds nothing but the allowlisted files (and its README)', () => {
     const names = existsSync(FIRMWARE_DIR) ? readdirSync(FIRMWARE_DIR).filter((f) => f !== 'README.md') : [];
-    for (const f of names) expect(['EH02_Eagotech_5.19.zip', 'M1B0306s0.bin']).toContain(f);
+    const allowed = [...ALLOWLIST.map((e) => e.fileName), ...BMS_ALLOWLIST.map((e) => e.fileName)];
+    expect(allowed).toEqual(['EH02_Eagotech_5.19.zip', 'M1B0306s0.bin', 'F.00.00G1.B.02.A12_V01.00.12.bin', 'F.00.00G1.B.01.A08_V01.00.08.bin']);
+    for (const f of names) expect(allowed).toContain(f);
   });
 
   it('file / SW types: M1B0306s0.bin -> s0, 03.06.s0 -> s0', () => {
@@ -179,5 +181,44 @@ describe('LatestKnown and verdicts (Android FirmwareVersions)', () => {
     expect(batteryReading('10.00.50.SC')).toMatchObject({ corrected: '01.00.05 SC', verdict: 'older' });
     expect(batteryReading('10.00.21')).toMatchObject({ corrected: '01.00.12', line: null, verdict: 'unknown' });
     expect(batteryReading(undefined)).toMatchObject({ verdict: 'unknown', label: 'not read' });
+  });
+});
+
+describe('KnownChips (PROTOCOL.md: the processor each official image is built for)', () => {
+  it('one table: HMI nRF52832, controller s0 C28x, battery RC = RL78 / SC = Cortex-M', () => {
+    expect(KnownChips).toEqual({
+      hmi: { chip: 'Nordic nRF52832', note: null },
+      controllerByType: { s0: { chip: 'TI C2000 (C28x)', note: 'most likely a TMS320F2803x' } },
+      batteryByLine: {
+        RC: { chip: 'Renesas RL78', note: 'BMS hardware type 2' },
+        SC: { chip: 'ARM Cortex-M', note: 'BMS hardware type 1' },
+      },
+    });
+    expect(Object.isFrozen(KnownChips)).toBe(true);
+    expect(Object.isFrozen(KnownChips.batteryByLine)).toBe(true);
+    expect(Object.isFrozen(KnownChips.batteryByLine.RC)).toBe(true);
+  });
+
+  it('every line and type with a latest version has a chip, and no more', () => {
+    expect(Object.keys(KnownChips.batteryByLine).sort()).toEqual(Object.keys(LatestKnown.batteryByLine).sort());
+    expect(Object.keys(KnownChips.controllerByType).sort()).toEqual(Object.keys(LatestKnown.controllerByType).sort());
+  });
+
+  it('battery: the chip follows the line; no line, no chip (never a guess)', () => {
+    expect(batteryReading('10.00.21.RC').chip).toEqual({ chip: 'Renesas RL78', note: 'BMS hardware type 2' });
+    expect(batteryReading('10.00.80.SC').chip).toEqual({ chip: 'ARM Cortex-M', note: 'BMS hardware type 1' });
+    expect(batteryReading('10.00.50.sc')).toMatchObject({ line: 'SC', chip: { chip: 'ARM Cortex-M' }, verdict: 'older' });
+    expect(batteryReading('10.00.21.XC')).toMatchObject({ line: 'XC', chip: null, verdict: 'unknown' });
+    expect(batteryReading('10.00.21').chip).toBeNull();
+    expect(batteryReading('garbage').chip).toBeNull();
+    expect(batteryReading('').chip).toBeNull();
+  });
+
+  it('controller: the chip follows the type suffix; HMI: always the nRF52832', () => {
+    expect(controllerReading('03.05.s0').chip?.chip).toBe('TI C2000 (C28x)');
+    expect(controllerReading('03.06.s1').chip).toBeNull();
+    expect(controllerReading('').chip).toBeNull();
+    expect(hmiReading('5.17', null).chip?.chip).toBe('Nordic nRF52832');
+    expect(hmiReading(null, null).chip?.chip).toBe('Nordic nRF52832');
   });
 });

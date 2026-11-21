@@ -13,10 +13,17 @@ writing it again: read [Safety](#safety) before using it.
 Milestone 3, in beta:
 
 - Connects to one bike and asks you to confirm it against the bike's screen. Then it shows live data,
-  identity (versions, models, serials) and active errors.
+  identity (versions, models, serials, and the chip each part's firmware runs on, including which of the
+  two battery platforms the pack is: RC = Renesas RL78, SC = ARM Cortex-M) and active errors.
 - Updates the controller firmware (the official `M1B0306s0.bin` only). It can also reflash the same
   version as a repair, and recover a controller that isn't answering. Every attempt gives a
   downloadable session log.
+- Updates the battery (BMS) firmware with the two official images (RC 01.00.12, SC 01.00.08), through the
+  display's CAN access, the way the dealer tool does it. It reads the battery first and only writes the
+  image for the battery's own line; it can also recover a pack left in its bootloader by a failed update
+  (E032). Expect 10-30 minutes over Bluetooth; the bike restarts by itself at the end and the app
+  reconnects. Enabled on Windows (Chrome, Edge) and Linux (Chrome, Chromium); the controller update is
+  Windows-only for now.
 - Next: the display (HMI) update (deferred until there's a display to test on), the report and log
   downloads, controller updates on Linux, then iPhone / iPad.
 
@@ -59,10 +66,11 @@ npm run laptop     # the offline laptop copy in laptop/
 
 ## Firmware files
 
-The two official images (`M1B0306s0.bin`, `EH02_Eagotech_5.19.zip`) are Specialized's files and are
-**not in this repository**. To build them in, for local and laptop builds only, copy them into
-`src/assets/firmware/`. That folder's README lists the exact sizes and SHA-256 hashes. Without them
-everything builds and runs, and the update screen loads the file from disk. Either way, only those
+The official images (`M1B0306s0.bin`, `EH02_Eagotech_5.19.zip`, and the battery's
+`F.00.00G1.B.02.A12_V01.00.12.bin` (RC) and `F.00.00G1.B.01.A08_V01.00.08.bin` (SC)) are Specialized's
+files and are **not in this repository**. To build them in, for local and laptop builds only, copy them
+into `src/assets/firmware/`. That folder's README lists the exact sizes and SHA-256 hashes. Without them
+everything builds and runs, and the update screens load the file from disk. Either way, only those
 files are accepted, checked by full SHA-256.
 
 ## Tests and real data
@@ -79,9 +87,12 @@ The app can only send a short whitelist of frames (`src/protocol/frames.ts`, enf
 Firmware frames can only be built from a verified, allowlisted image. The controller update is offered
 when the stock app would offer it (a newer file, a failed update (`controller_e031`), or a controller
 that doesn't answer (recovery)), or when the mechanic ticks "Reflash the same version" on a controller
-that already runs the file's version. It never flashes an older version. It never erases logs, writes
-configuration, unlocks a PIN, touches assist, current, power or speed limits, or flashes battery
-firmware. See "Hard safety rules" in `docs/SPEC.md`.
+that already runs the file's version. It never flashes an older version. The battery update sends only
+the dealer tool's CAN frames (bus access on, the battery's version and hardware-type reads, start, the
+image's blocks in order, end, bus access off) and the auto-off timer (to 0 for the update, then back);
+the battery's line must match the file. It never erases logs, writes configuration, unlocks a PIN, or
+touches assist, current, power or speed limits. See "Hard safety rules" in `docs/SPEC.md` and
+`docs/DECISIONS.md`.
 
 Once an update starts there is no stop button: about 4.5 s in, the controller erases its program, and
 the bike won't drive until an update completes. If it fails or the link drops, the controller waits in

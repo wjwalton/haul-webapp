@@ -26,6 +26,7 @@ export const DEVIATIONS = [
   'Fields renamed with their confirmed units: speed -> speed_kmh, range_est -> range_km, cadence_raw -> cadence_rpm (RENAMED_FROM_PYTHON).',
   'Assist 255 is dropped (no "assist" key) and walk_mode is never emitted: PROTOCOL.md "this bike has no walk mode". The Python emits walk_mode true/false.',
   'Page 56 (production info) is decoded (prod_record_type u16@1, build_date "YYYY-MM" from ASCII @3-8, prod_id u32@11): PROTOCOL.md "Page 56". The Python returns {} for it.',
+  'A 0x51 notification whose length is a multiple of 19 is split into that many CAN frames: PROTOCOL.md "mirror frame … parse 1..n" (and the Android splitCan). on_read treats only a single <20-byte 0x51 notification as CAN.',
 ] as const;
 
 export const STRING_PAGES: Readonly<Record<number, string>> = {
@@ -265,15 +266,15 @@ export function decodeCan(b: Uint8Array): CanFrame | null {
  * first while a dump is open). Same order as Session.on_read: 0xBE, 0xED, page 0x3C, a short 0x51
  * CAN frame, a short 0x1F bypass reply, else 20-byte pages.
  *
- * CAN frames only arrive while CAN analysis (50 01) is on, which this app never sends; seeing them
- * means another app left it on, and the bike must be power-cycled (the app can't send 50 00).
+ * CAN frames only arrive while bus access (50 01) is on. The app turns it on only inside the battery
+ * update; anywhere else they mean another app left it on, and the bike must be power-cycled.
  */
 export type Notification =
   | { kind: 'empty' }
   | { kind: 'dump-start' }
   | { kind: 'dump-end' }
   | { kind: 'fw-status'; status: FwStatus | null; bytes: Uint8Array }
-  | { kind: 'can'; frame: CanFrame }
+  | { kind: 'can'; frames: CanFrame[] }
   | { kind: 'bypass-reply'; bytes: Uint8Array }
   | { kind: 'pages'; pages: Uint8Array[]; tail: number };
 
@@ -283,9 +284,19 @@ export function classifyNotification(b: Uint8Array): Notification {
   if (first === DUMP_START) return { kind: 'dump-start' };
   if (first === DUMP_END) return { kind: 'dump-end' };
   if (first === PAGE_FW_STATUS) return { kind: 'fw-status', status: decodeFwStatus(b), bytes: b };
-  if (b.length < PAGE_SIZE && first === PAGE_CAN) {
-    const frame = decodeCan(b);
-    if (frame) return { kind: 'can', frame };
+  if (first === PAGE_CAN) {
+    if (b.length < PAGE_SIZE) {
+      const frame = decodeCan(b);
+      if (frame) return { kind: 'can', frames: [frame] };
+    } else if (b.length % CAN_FRAME_SIZE === 0) {
+      // DEVIATIONS: 1..n frames back to back (0x51 is never a data page id: the HMI builds pages 1-56).
+      const frames: CanFrame[] = [];
+      for (let i = 0; i < b.length; i += CAN_FRAME_SIZE) {
+        const f = decodeCan(b.subarray(i, i + CAN_FRAME_SIZE));
+        if (f) frames.push(f);
+      }
+      if (frames.length) return { kind: 'can', frames };
+    }
   }
   if (b.length < PAGE_SIZE && first === PAGE_BYPASS_REPLY) return { kind: 'bypass-reply', bytes: b };
   return { kind: 'pages', pages: splitPages(b), tail: b.length % PAGE_SIZE };

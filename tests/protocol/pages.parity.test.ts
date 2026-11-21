@@ -46,7 +46,8 @@ describe('decode_page parity', () => {
   });
 
   it('documents its deviations', () => {
-    expect(DEVIATIONS.length).toBe(3);
+    expect(DEVIATIONS.length).toBe(4);
+    expect(DEVIATIONS[3]).toMatch(/multiple of 19 is split into that many CAN frames/);
   });
 });
 

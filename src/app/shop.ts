@@ -7,6 +7,10 @@
  * condition at the moment Start is pressed, keeps the result and its session log, and verifies the
  * new controller version on the next connection (after the power-cycle).
  *
+ * And the battery (BMS) update (update/battery.ts, docs/DECISIONS.md 2026-11-20): "Read the battery",
+ * then Start (every check re-run), then, after a success, the bike's own restart: the link drops, the
+ * app reconnects by itself for up to 3 minutes, restores the auto-off timer and checks the new version.
+ *
  * Reconnecting (2026-11-19: a reconnect after a stale link needed a page reload on Windows): Reconnect
  * closes the old link, waits RECONNECT.settleMs for the OS to let go of it, then tries up to
  * RECONNECT.attempts times. A disconnect event that arrives while the current link still reports
@@ -15,14 +19,21 @@
  *
  * No DOM and no navigator here: the UI renders ShopState (useSyncExternalStore) and calls the methods.
  */
-import type { VerifiedFirmware } from '../analysis/firmware';
+import { batteryReading, type BmsLine, type VerifiedFirmware } from '../analysis/firmware';
+import type { VerifiedBmsFirmware } from '../analysis/bmsFirmware';
 import { openBikeLink, type BikeLink } from '../ble/link';
 import type { BleDevice, DeviceRequest, GattTransport } from '../ble/transport';
 import { RawRecorder } from '../export/rawJsonl';
 import { NAME_PREFIX, OPTIONAL_SERVICES, SCAN_UUID } from '../protocol/gatt';
 import { BikeSession, type SessionState } from '../protocol/session';
 import { runControllerUpdate, type FlashTiming, type UpdateProgress, type UpdateResult } from '../update/controller';
+import {
+  afterBatteryRestart, BMS_TIMING, readBattery, runBatteryUpdate, type BatteryProgress, type BatteryReadResult,
+  type BatteryUpdateResult, type BmsTiming,
+} from '../update/battery';
+import { batteryChecks } from '../update/batteryGate';
 import { controllerSilent } from '../update/gate';
+import { bitOf, hasBit } from '../protocol/errors';
 import { controllerChecks, isArmed } from '../update/preflight';
 
 /** docs/SPEC.md "Picking a bike": name prefix OR the advertised scan UUID; the Globe service is GATT-only. */
@@ -49,7 +60,49 @@ export interface ShopState {
   update: UpdateState | null;
   /** Connection log for this bike: connects, failures, disconnect events, reconnects (time-stamped). */
   events: readonly string[];
+  /** The battery update: the last battery read, the run, its result and the restart that follows. */
+  battery: BatteryState;
 }
+
+export interface BatteryState {
+  /** "Read the battery" is running. */
+  reading: boolean;
+  /** Its last result on the CURRENT connection (cleared on every new connection). */
+  read: BatteryReadResult | null;
+  running: boolean;
+  progress: BatteryProgress | null;
+  result: BatteryUpdateResult | null;
+  /** After a successful update: the restart, the reconnect, the check. */
+  after: BatteryAfter | null;
+}
+
+export interface BatteryAfter {
+  status: 'reconnecting' | 'checking' | 'verified' | 'mismatch' | 'silent' | 'gave-up' | 'stopped';
+  /** "01.00.12 RC" */
+  target: string;
+  /** What page 24 reports after the restart (corrected), or null. */
+  reported: string | null;
+  autoOffBefore: number | null;
+  autoOffRestored: boolean | null;
+  startedAt: number;
+  /** Nothing yet after BMS_TIMING.powerButtonHintMs: ask for the power button. */
+  powerButtonHint: boolean;
+  /** bms_e032 still active after the restart. */
+  e032: boolean;
+}
+
+/** What battery Start needs from the page. */
+export interface BatteryEnv {
+  platformVerified: boolean;
+  platformLabel: string;
+  typedName: string;
+  chosenLine: BmsLine | null;
+  reflashSameVersion: boolean;
+  stamp?: string;
+}
+
+export const NO_BATTERY: BatteryState = { reading: false, read: null, running: false, progress: null, result: null, after: null };
+const BMS_E032_BIT = bitOf('bms_e032');
 
 export interface UpdateState {
   running: boolean;
@@ -78,7 +131,7 @@ export interface UpdateEnv {
 }
 
 const INITIAL: ShopState = {
-  phase: 'idle', device: null, confirmed: false, session: null, message: null, connections: 0, update: null, events: [],
+  phase: 'idle', device: null, confirmed: false, session: null, message: null, connections: 0, update: null, events: [], battery: NO_BATTERY,
 };
 
 /** Reconnect tuning. Windows can take a moment to let go of a link that was dropped or closed. */
@@ -102,6 +155,8 @@ export interface ShopOptions {
   errorPoll?: boolean;
   /** Tests: shorter flasher timeouts. */
   flashTiming?: Partial<FlashTiming>;
+  /** Tests: shorter battery-update timeouts. */
+  batteryTiming?: Partial<BmsTiming>;
 }
 
 export class ShopApp {
@@ -121,6 +176,12 @@ export class ShopApp {
   private updateJob: Promise<void> | null = null;
   /** Verify on connections newer than this one (the one the update ran on). */
   private verifyAfterGen = Infinity;
+  private batteryJob: Promise<void> | null = null;
+  /** The battery restart's check runs on connections newer than this one. */
+  private batteryAfterGen = Infinity;
+  private batteryChecking = false;
+  /** The automatic reconnect after a battery update is running. */
+  private restartLoop = false;
 
   constructor(readonly transport: GattTransport, private readonly opts: ShopOptions = {}) {
     this.now = opts.now ?? (() => Date.now());
@@ -196,7 +257,7 @@ export class ShopApp {
    * link is closed first and the OS gets RECONNECT.settleMs to let go of it.
    */
   async reconnect(): Promise<void> {
-    if (!this.device || this.updateRunning) return;
+    if (!this.device || this.updateRunning || this.restartLoop) return;
     const st = this.s.session;
     this.event(`Reconnect requested (${this.s.phase}${st?.stale ? `, no data for ${Math.round(st.stale.quietMs / 1000)} s` : ''})`);
     await this.closeLink('reconnecting');
@@ -254,7 +315,7 @@ export class ShopApp {
   // ---- controller update -------------------------------------------------------------------------
 
   get updateRunning(): boolean {
-    return this.s.update?.running === true;
+    return this.s.update?.running === true || this.s.battery.running || this.s.battery.reading;
   }
 
   /**
@@ -267,6 +328,7 @@ export class ShopApp {
     const link = this.link;
     if (this.updateRunning) return 'An update is already running';
     if (!session || !link || this.s.phase !== 'connected') return 'Not connected to a bike';
+    if (this.restartLoop || this.s.battery.after?.status === 'checking') return 'The bike is restarting after the battery update';
     const checks = controllerChecks({
       session: session.state, confirmed: this.s.confirmed, platformVerified: env.platformVerified, platformLabel: env.platformLabel,
       firmware, reflashSameVersion: env.reflashSameVersion, updateRunning: false, now: this.now(),
@@ -290,14 +352,27 @@ export class ShopApp {
       onProgress: (p) => {
         if (this.s.update?.running) this.set({ update: { ...this.s.update, progress: p } });
       },
-    }).then((result) => {
-      this.event(`Controller update ${result.ok ? 'finished: success' : `failed (${result.kind}): ${result.message}`}`);
-      this.verifyAfterGen = result.awaitingPowerCycle ? gen : Infinity;
-      const verify: VerifyState | null = result.awaitingPowerCycle
-        ? { target: result.target, before: result.before, status: 'waiting', reported: null }
-        : null;
-      this.set({ update: { running: false, progress: this.s.update?.progress ?? null, result, verify } });
-    });
+    }).then(
+      (result) => {
+        this.event(`Controller update ${result.ok ? 'finished: success' : `failed (${result.kind}): ${result.message}`}`);
+        this.verifyAfterGen = result.awaitingPowerCycle ? gen : Infinity;
+        const verify: VerifyState | null = result.awaitingPowerCycle
+          ? { target: result.target, before: result.before, status: 'waiting', reported: null }
+          : null;
+        this.set({ update: { running: false, progress: this.s.update?.progress ?? null, result, verify } });
+      },
+      (e: unknown) => {
+        // runControllerUpdate never throws; if a bug makes it, the screen must not stay locked on "running".
+        this.event(`Controller update stopped on an internal error: ${errorText(e)}`);
+        const result: UpdateResult = {
+          ok: false, kind: 'protocol', before: null, after: null, target: firmware.entry.version, controllerErased: true, verified: false,
+          awaitingPowerCycle: false, writeMode: null, timing: null, writes: 0, resends: 0,
+          message: `The update stopped on an internal error (${errorText(e)}). If the display shows "bypass", power-cycle the bike, reconnect, and flash again (recovery). Download the connection log.`,
+          log: this.connectionLog(), logName: `update_${this.s.device?.name ?? 'bike'}_${env.stamp ?? 'error'}.txt`,
+        };
+        this.set({ update: { running: false, progress: this.s.update?.progress ?? null, result, verify: null } });
+      },
+    );
     return null;
   }
 
@@ -325,6 +400,173 @@ export class ShopApp {
     } else if (controllerSilent(st)) {
       this.set({ update: { ...u, verify: { ...v, status: 'silent', reported: null } } });
     }
+  }
+
+  // ---- battery update ----------------------------------------------------------------------------
+
+  private setBattery(patch: Partial<BatteryState>): void {
+    this.set({ battery: { ...this.s.battery, ...patch } });
+  }
+
+  /** "Read the battery": bus access on, version + hardware type, bus access off. Changes nothing. */
+  async readBattery(): Promise<void> {
+    const session = this.session;
+    const link = this.link;
+    if (!session || !link || this.s.phase !== 'connected' || this.updateRunning || this.restartLoop) return;
+    const gen = this.gen;
+    this.event('Reading the battery (bus access on, 0x280 / 0x281, bus access off)');
+    this.setBattery({ reading: true });
+    try {
+      const read = await readBattery(session, link, { timing: this.opts.batteryTiming, now: this.now });
+      const id = read.identity;
+      this.event(`Battery read: ${read.problem ?? (id?.responding ? `${id.version} ${id.line}, hardware type ${id.hwType}` : 'no answer')}`);
+      this.setBattery({ reading: false, read: gen === this.gen ? read : this.s.battery.read });
+    } catch (e) {
+      this.event(`Battery read stopped on an internal error: ${errorText(e)}`);
+      this.setBattery({ reading: false });
+    }
+  }
+
+  /**
+   * Start the battery update with [firmware]. Every check is run again now; returns why it can't
+   * start, or null once it has started.
+   */
+  startBatteryUpdate(firmware: VerifiedBmsFirmware, env: BatteryEnv): string | null {
+    const session = this.session;
+    const link = this.link;
+    if (this.updateRunning || this.restartLoop) return 'An update is already running';
+    if (!session || !link || this.s.phase !== 'connected') return 'Not connected to a bike';
+    const b = this.s.battery;
+    const checks = batteryChecks({
+      session: session.state, confirmed: this.s.confirmed, platformVerified: env.platformVerified, platformLabel: env.platformLabel,
+      firmware, read: b.read, chosenLine: env.chosenLine, reflashSameVersion: env.reflashSameVersion, updateRunning: false, now: this.now(),
+    });
+    const failing = checks.checks.find((c) => c.ok !== true);
+    if (failing) return `${failing.label}: ${failing.detail}`;
+    if (!isArmed(env.typedName, this.s.device?.name ?? null)) return "Type the bike's name to arm the update";
+    const identity = b.read?.identity ?? null;
+    const need = checks.checks.find((c) => c.id === 'version');
+    const gen = this.gen;
+    this.event(`Battery update started: ${firmware.info.version} ${firmware.info.line} (${need?.detail ?? 'offered'})`);
+    this.setBattery({ running: true, progress: null, result: null, after: null });
+    this.batteryJob = runBatteryUpdate({
+      session, link, firmware,
+      expected: identity,
+      chosenLine: identity?.responding ? null : env.chosenLine,
+      sameVersion: env.reflashSameVersion && checks.sameVersion,
+      deviceName: this.s.device?.name ?? 'bike',
+      platformLabel: env.platformLabel,
+      why: need?.detail,
+      now: this.now,
+      timing: this.opts.batteryTiming,
+      stamp: env.stamp,
+      onProgress: (p) => {
+        if (this.s.battery.running) this.setBattery({ progress: p });
+      },
+    }).then((result) => {
+      this.event(`Battery update ${result.ok ? 'finished: success' : `failed (${result.kind}): ${result.message}`}`);
+      const after: BatteryAfter | null = result.ok && result.restarting
+        ? {
+            status: 'reconnecting', target: result.target, reported: null, autoOffBefore: result.autoOff.changed ? result.autoOff.before : null,
+            autoOffRestored: null, startedAt: this.now(), powerButtonHint: false, e032: false,
+          }
+        : null;
+      this.batteryAfterGen = after ? gen : Infinity;
+      this.setBattery({ running: false, result, after, read: null });
+      if (after) void this.awaitBatteryRestart();
+    }, (e: unknown) => {
+      // runBatteryUpdate never throws; if a bug makes it, the screen must not stay locked on "running".
+      this.event(`Battery update stopped on an internal error: ${errorText(e)}`);
+      const result: BatteryUpdateResult = {
+        ok: false, kind: 'not-started', before: null, target: `${firmware.info.version} ${firmware.info.line}`, line: firmware.info.line,
+        packInBootloader: false, restarting: false, after: null, autoOff: { before: null, changed: false, restored: null }, attempts: 0, ackTiming: null,
+        message: `The update stopped on an internal error (${errorText(e)}). Read the battery before doing anything else, and download the connection log.`,
+        log: this.connectionLog(), logName: `battery_update_${this.s.device?.name ?? 'bike'}_${env.stamp ?? 'error'}.txt`,
+      };
+      this.setBattery({ running: false, result, after: null, read: null });
+    });
+    return null;
+  }
+
+  whenBatteryDone(): Promise<void> {
+    return this.batteryJob ?? Promise.resolve();
+  }
+
+  /** Clear the battery result (not while it runs or the bike restarts). */
+  dismissBattery(): void {
+    if (this.s.battery.running || this.restartLoop) return;
+    this.batteryAfterGen = Infinity;
+    this.setBattery({ result: null, progress: null, after: null });
+  }
+
+  /** Stop the automatic reconnect after a battery update (the mechanic takes over). */
+  stopBatteryReconnect(): void {
+    if (!this.restartLoop) return;
+    this.restartLoop = false;
+    const a = this.s.battery.after;
+    if (a && a.status === 'reconnecting') this.setBattery({ after: { ...a, status: 'stopped' } });
+  }
+
+  get batteryReconnecting(): boolean {
+    return this.restartLoop;
+  }
+
+  /**
+   * After a successful battery update the BMS restart cuts system power: the display reboots and the
+   * link drops (PROTOCOL.md section 2). Reconnect by itself (same device, no chooser) for up to
+   * BMS_TIMING.reconnectMs; after powerButtonHintMs, ask for the power button.
+   */
+  private async awaitBatteryRestart(): Promise<void> {
+    const t = { ...BMS_TIMING, ...this.opts.batteryTiming };
+    const t0 = this.now();
+    this.restartLoop = true;
+    this.event('The bike is restarting after the battery update: reconnecting by itself');
+    try {
+      if (this.link) await this.closeLink('battery restart');
+      this.set({ phase: 'lost', message: 'The bike is restarting after the battery update. Reconnecting…' });
+      await sleep(t.reconnectPauseMs);
+      while (this.restartLoop && this.device && this.now() - t0 < t.reconnectMs) {
+        const a = this.s.battery.after;
+        if (a && !a.powerButtonHint && this.now() - t0 >= t.powerButtonHintMs) this.setBattery({ after: { ...a, powerButtonHint: true } });
+        await this.connect(1);
+        if (!this.restartLoop || !this.device) return;
+        if (this.s.phase === 'connected') return; // the session subscription runs the check
+        this.set({ message: 'The bike is restarting after the battery update. Reconnecting…' });
+        await sleep(t.reconnectPauseMs);
+      }
+      const a = this.s.battery.after;
+      if (this.restartLoop && a?.status === 'reconnecting') {
+        this.setBattery({ after: { ...a, status: 'gave-up' } });
+        this.set({ message: "The bike didn't come back within 3 minutes. Switch it on, then click Reconnect: the app then checks the battery version." });
+      }
+    } finally {
+      this.restartLoop = false;
+    }
+  }
+
+  /** On the first live connection after the restart: restore auto-off, then compare page 24. */
+  private checkBatteryAfter(gen: number, st: SessionState): void {
+    const a = this.s.battery.after;
+    if (!a || (a.status !== 'reconnecting' && a.status !== 'gave-up' && a.status !== 'stopped') || gen <= this.batteryAfterGen || st.phase !== 'live') return;
+    if (this.batteryChecking) return;
+    const session = this.session;
+    const link = this.link;
+    if (!session || !link) return;
+    this.batteryChecking = true;
+    this.setBattery({ after: { ...a, status: 'checking' } });
+    void afterBatteryRestart(session, link, a.autoOffBefore)
+      .catch(() => ({ restored: false }))
+      .then(({ restored }) => {
+        const cur = this.session?.state ?? st;
+        const r = batteryReading(cur.identity.batt_sw);
+        const reported = r.corrected ?? r.raw;
+        const status: BatteryAfter['status'] = reported === null ? 'silent' : reported === a.target ? 'verified' : 'mismatch';
+        this.event(`After the battery update: page 24 ${reported ?? 'not reported'} (target ${a.target}): ${status}${restored === null ? '' : `; auto-off restored: ${restored ? 'yes' : 'NO'}`}`);
+        this.setBattery({ after: { ...a, status, reported, autoOffRestored: restored, e032: hasBit(cur.errorBits, BMS_E032_BIT) } });
+      })
+      .finally(() => {
+        this.batteryChecking = false;
+      });
   }
 
   // ---- internals ---------------------------------------------------------------------------------
@@ -368,6 +610,8 @@ export class ShopApp {
       const session = new BikeSession(link, { now: this.now, errorPoll: this.opts.errorPoll });
       this.link = link;
       this.session = session;
+      // A battery read belongs to the connection it was made on.
+      if (this.s.battery.read) this.setBattery({ read: null });
       let stale = false;
       const g = gen;
       this.unsubSession = session.subscribe((st) => {
@@ -378,6 +622,7 @@ export class ShopApp {
         }
         this.set({ session: st });
         this.checkVerify(g, st);
+        this.checkBatteryAfter(g, st);
       });
       this.set({ phase: 'connected', session: session.state, message: null });
       try {
@@ -445,6 +690,7 @@ export class ShopApp {
 
   /** Forget the bike and everything read from it. */
   private async wipe(message: string | null): Promise<void> {
+    this.restartLoop = false;
     await this.closeLink('disconnected');
     this.unsubDevice?.();
     this.unsubDevice = null;

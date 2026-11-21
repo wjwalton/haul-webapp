@@ -11,13 +11,24 @@ export type PlatformId = `${OsId}-${BrowserId}`;
 /** Updates are enabled only here. A platform is added only after it passes docs/HARDWARE_TEST.md on the test bike. */
 export const VERIFIED_UPDATE_PLATFORMS: readonly PlatformId[] = Object.freeze(['windows-chrome', 'windows-edge']);
 
+/**
+ * The battery (BMS) update: the controller's platforms plus Linux Chrome / Chromium (docs/DECISIONS.md
+ * 2026-11-20, the user's ruling: the battery update was proven over BlueZ on Linux, and every block waits
+ * for the battery's answer, so a slow or queueing link can't run ahead of it).
+ */
+export const VERIFIED_BATTERY_UPDATE_PLATFORMS: readonly PlatformId[] = Object.freeze([
+  ...VERIFIED_UPDATE_PLATFORMS, 'linux-chrome', 'linux-chromium',
+]);
+
 export interface PlatformInfo {
   id: PlatformId;
   os: OsId;
   browser: BrowserId;
   label: string;
-  /** In VERIFIED_UPDATE_PLATFORMS. */
+  /** In VERIFIED_UPDATE_PLATFORMS (the controller update). */
   updatesVerified: boolean;
+  /** In VERIFIED_BATTERY_UPDATE_PLATFORMS (the battery update). */
+  batteryUpdatesVerified: boolean;
   /** navigator.bluetooth exists. */
   bluetoothApi: boolean;
   /** https or localhost: Web Bluetooth needs it. */
@@ -75,6 +86,7 @@ export function platformInfo(u: UaInput, bluetoothApi: boolean, secureContext: b
     id, os, browser,
     label: `${BROWSER_LABEL[browser]} on ${OS_LABEL[os]}`,
     updatesVerified: VERIFIED_UPDATE_PLATFORMS.includes(id),
+    batteryUpdatesVerified: VERIFIED_BATTERY_UPDATE_PLATFORMS.includes(id),
     bluetoothApi, secureContext,
   };
 }

@@ -129,6 +129,21 @@ export function settingsPage(c: MockConfig, assist: number, errorBits: number): 
   return b;
 }
 
+/**
+ * Page 5 (PROTOCOL.md "Page 5 — settings"): auto-off u32 @1, wheel u16 @5, light @7, sensitivity @8
+ * (0xFF), charge count @9 (0xFFFF = not reported). MOCK ASSUMPTION: the undecoded bytes are 0xFF and
+ * byte 19 (assist levels in decode_page) is the level count; no page 5 was ever captured.
+ */
+export function settings5Page(c: MockConfig): Uint8Array {
+  const b = new Uint8Array(20).fill(0xff);
+  b[0] = 5;
+  put32(b, 1, c.shutdown_timer_s);
+  put16(b, 5, c.wheel_circ_mm);
+  b[7] = c.headlight;
+  b[19] = c.assist_levels;
+  return b;
+}
+
 /** Page 56 as captured (build date 2022-09). */
 export function productionPage(): Uint8Array {
   return tpl(56);

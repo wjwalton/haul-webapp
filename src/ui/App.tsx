@@ -5,7 +5,9 @@ import { WebBluetoothTransport } from '../ble/webBluetooth';
 import { BUILD, BUILD_LABEL } from '../build';
 import { detectPlatform } from '../platform/detect';
 import { holdScreenAwake } from '../platform/wakeLock';
+import type { BatteryUpdateResult } from '../update/battery';
 import type { UpdateResult } from '../update/controller';
+import { BatteryResultCard, BatteryUpdatePanel, BatteryUpdateRunning } from './BatteryUpdate';
 import { ErrorsPanel, IdentityPanel, LivePanel, StatusBar, Warnings } from './BikePanel';
 import { ControllerUpdatePanel, UpdateResultCard, UpdateRunning } from './ControllerUpdate';
 import { DebugPanel } from './DebugPanel';
@@ -36,11 +38,14 @@ export function App() {
   const state = useSyncExternalStore(shop.subscribe, shop.getSnapshot);
   const [unitsOverride, setUnitsOverride] = useState<{ device: string; units: Units } | null>(null);
   const now = useNow();
-  const updating = state.update?.running === true;
+  const updating = state.update?.running === true || state.battery.running;
+  // After a battery update the bike restarts and the app reconnects by itself: keep the page awake too.
+  const batteryRestart = state.battery.after?.status === 'reconnecting' || state.battery.after?.status === 'checking';
+  const keepAwake = updating || batteryRestart;
 
   // During an update: keep the screen on and warn before the tab is closed or reloaded.
   useEffect(() => {
-    if (!updating) return;
+    if (!keepAwake) return;
     const release = holdScreenAwake();
     const warn = (e: BeforeUnloadEvent) => {
       e.preventDefault();
@@ -51,7 +56,7 @@ export function App() {
       release();
       window.removeEventListener('beforeunload', warn);
     };
-  }, [updating]);
+  }, [keepAwake]);
 
   const s = state.session;
   const bikeUnits: Units = s?.power?.units === 'imperial' ? 'imperial' : 'metric';
@@ -65,6 +70,7 @@ export function App() {
   const disconnect = () => void shop.disconnect();
   const downloadRaw = () => saveText(`raw_${state.device?.name ?? 'bike'}_${stamp()}.jsonl`, shop.rawJsonl(), 'application/x-ndjson');
   const downloadLog = (r: UpdateResult) => saveText(r.logName, r.log);
+  const downloadBatteryLog = (r: BatteryUpdateResult) => saveText(r.logName, r.log);
   const downloadEvents = () => saveText(`connection_${state.device?.name ?? 'bike'}_${stamp()}.txt`, shop.connectionLog());
   const rawLines = shop.rawLineCount;
 
@@ -97,6 +103,20 @@ export function App() {
     ) : null
   ) : null;
 
+  const b = state.battery;
+  const batteryCard = b.running ? (
+    <BatteryUpdateRunning progress={b.progress} now={now} />
+  ) : b.result ? (
+    <BatteryResultCard
+      result={b.result}
+      after={b.after}
+      now={now}
+      onDownloadLog={downloadBatteryLog}
+      onDismiss={() => shop.dismissBattery()}
+      onStopReconnect={() => shop.stopBatteryReconnect()}
+    />
+  ) : null;
+
   let body;
   if (state.phase === 'idle' || state.phase === 'choosing') {
     body = <ConnectScreen platform={platform} state={state} onChoose={choose} devTools={devTools} firmware={<FirmwareCard />} />;
@@ -104,6 +124,7 @@ export function App() {
     body = (
       <>
         {updateCard}
+        {batteryCard}
         <LinkProblem
           state={state}
           onReconnect={reconnect}
@@ -128,6 +149,7 @@ export function App() {
     body = (
       <>
         {updateCard}
+        {batteryCard}
         <OpeningView state={state} onCancel={disconnect} />
         {devTools}
         {s ? <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} events={state.events} onDownloadEvents={downloadEvents} /> : null}
@@ -137,6 +159,7 @@ export function App() {
     body = (
       <>
         {updateCard}
+        {batteryCard}
         <ConfirmBike state={state} session={s} units={units} now={now} onConfirm={() => shop.confirm()} onWrong={() => void shop.wrongBike()} />
         {devTools}
       </>
@@ -150,18 +173,19 @@ export function App() {
           now={now}
           units={units}
           bikeUnits={bikeUnits}
-          busy={updating}
+          busy={updating || batteryRestart}
           onUnits={(u) => setUnitsOverride({ device: state.device?.id ?? '', units: u })}
           onReconnect={reconnect}
           onDisconnect={disconnect}
         />
         {updateCard}
+        {batteryCard}
         {!updating ? <Warnings session={s} onReconnect={reconnect} /> : null}
         <div className="two-col">
           <LivePanel session={s} units={units} />
           <ErrorsPanel session={s} />
         </div>
-        {!state.update ? (
+        {!state.update && !b.running && !b.result ? (
           <ControllerUpdatePanel
             state={state}
             session={s}
@@ -177,6 +201,18 @@ export function App() {
             onDownloadLog={downloadLog}
           />
         ) : null}
+        {!state.update && !b.running && !b.result ? (
+          <BatteryUpdatePanel
+            state={state}
+            session={s}
+            platformVerified={platform.batteryUpdatesVerified}
+            platformLabel={platform.label}
+            linux={platform.os === 'linux'}
+            now={now}
+            onRead={() => void shop.readBattery()}
+            onStart={(fw, e) => shop.startBatteryUpdate(fw, { ...e, platformVerified: platform.batteryUpdatesVerified, platformLabel: platform.label, stamp: stamp() })}
+          />
+        ) : null}
         <IdentityPanel session={s} />
         {devTools}
         <DebugPanel session={s} rawLines={rawLines} onDownloadRaw={downloadRaw} events={state.events} onDownloadEvents={downloadEvents} />
@@ -189,12 +225,12 @@ export function App() {
       <header className="top">
         <div>
           <h1>Globe Haul Shop Tool</h1>
-          <p className="sub">Connect, confirm the bike, read it, and update the controller firmware.</p>
+          <p className="sub">Connect, confirm the bike, read it, and update the controller and battery firmware.</p>
         </div>
         <div className="platform">
           <span className="chip">{platform.label}</span>
           <span className={`chip ${platform.updatesVerified ? 'ok' : 'warn'}`}>
-            {platform.updatesVerified ? 'updates: verified browser' : 'updates: not on this browser'}
+            {platform.updatesVerified ? 'updates: verified browser' : platform.batteryUpdatesVerified ? 'updates: battery only on this browser' : 'updates: not on this browser'}
           </span>
           {__DEV_TOOLS__ && dev ? <span className="chip warn">SIMULATED BIKE</span> : null}
           <span className={`chip${BUILD.channel === 'beta' ? ' warn' : ''}`} title="This build (also written into every update log)">

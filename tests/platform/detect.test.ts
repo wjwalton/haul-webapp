@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { classifyPlatform, connectBlocker, platformInfo, VERIFIED_UPDATE_PLATFORMS } from '../../src/platform/detect';
+import { classifyPlatform, connectBlocker, platformInfo, VERIFIED_BATTERY_UPDATE_PLATFORMS, VERIFIED_UPDATE_PLATFORMS } from '../../src/platform/detect';
 
 const UA = {
   winChrome: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36',
@@ -43,6 +43,22 @@ describe('platform detection', () => {
     for (const ua of [UA.linuxChrome, UA.android, UA.winOpera, UA.cros, UA.macSafari]) {
       expect(platformInfo({ userAgent: ua }, true, true).updatesVerified, ua).toBe(false);
     }
+  });
+
+  it('the battery update: also Linux Chrome and Chromium (docs/DECISIONS.md), nothing else', () => {
+    expect(VERIFIED_BATTERY_UPDATE_PLATFORMS).toEqual(['windows-chrome', 'windows-edge', 'linux-chrome', 'linux-chromium']);
+    expect(Object.isFrozen(VERIFIED_BATTERY_UPDATE_PLATFORMS)).toBe(true);
+    const linuxChromium = { userAgent: UA.linuxChrome, brands: [{ brand: 'Chromium' }], uaPlatform: 'Linux' };
+    for (const u of [{ userAgent: UA.winChrome }, { userAgent: UA.winEdge }, { userAgent: UA.linuxChrome }, linuxChromium]) {
+      expect(platformInfo(u, true, true).batteryUpdatesVerified, u.userAgent).toBe(true);
+    }
+    const linuxEdge = { userAgent: UA.linuxChrome, brands: [{ brand: 'Microsoft Edge' }], uaPlatform: 'Linux' };
+    const linuxBrave = { userAgent: UA.linuxChrome, brands: [{ brand: 'Brave' }], uaPlatform: 'Linux' };
+    for (const u of [{ userAgent: UA.android }, { userAgent: UA.winOpera }, { userAgent: UA.cros }, { userAgent: UA.macSafari }, linuxEdge, linuxBrave]) {
+      expect(platformInfo(u, true, true).batteryUpdatesVerified, JSON.stringify(u)).toBe(false);
+    }
+    // the controller update stays Windows-only
+    expect(platformInfo({ userAgent: UA.linuxChrome }, true, true).updatesVerified).toBe(false);
   });
 
   it('Linux without navigator.bluetooth gets exactly the flag steps', () => {

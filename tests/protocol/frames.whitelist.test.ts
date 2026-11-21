@@ -11,7 +11,9 @@ import {
 } from '../../src/protocol/frames';
 import { bytesEqual, fromHex, hex } from '../../src/protocol/bytes';
 import { verifyFirmware, type VerifiedFirmware } from '../../src/analysis/firmware';
-import { bundledBytes, bundledController, captureFixture, fixture, HAS_CAPTURES, HAS_FIRMWARE } from '../helpers';
+import type { VerifiedBmsFirmware } from '../../src/analysis/bmsFirmware';
+import { autoOff, bmsBlock, bmsEnd, bmsRead, bmsStart, bmsWake, canBus } from '../../src/protocol/frames';
+import { bmsBytes, bundledBms, bundledBytes, bundledController, captureFixture, fixture, HAS_BMS_FIRMWARE, HAS_CAPTURES, HAS_FIRMWARE } from '../helpers';
 
 interface FrameCase { name: string; op: number; pages: number[]; hex: string }
 const py = fixture<{ cases: FrameCase[] }>('py_frames.json');
@@ -135,9 +137,16 @@ describe('everything else is refused', () => {
         expect(checkFrame('block', f, { firmware: img })).not.toBeNull();
       }
     }
-    // the spec's list, explicitly
-    for (const op of [0x2a, 0x2b, 0x1e, 0x20, 0x0b, 0x08, 0x0c, 0x01, 0x02, 0x04, 0x05, 0x06, 0x07, 0x09, 0x2c, 0x52, 0x50]) {
+    // the spec's list, explicitly (09 / 50 / 52: only inside the battery update, see below)
+    for (const op of [0x2a, 0x2b, 0x1e, 0x20, 0x0b, 0x08, 0x0c, 0x01, 0x02, 0x04, 0x05, 0x06, 0x07, 0x2c]) {
       expect(NEVER_SEND[op]).toBeDefined();
+    }
+    for (const op of [0x09, 0x50, 0x52]) {
+      for (let len = 1; len <= 20; len++) {
+        const f = Uint8Array.from({ length: len }, (_, i) => (i === 0 ? op : Math.floor(r() * 256)));
+        expect(checkFrame('command', f), hex(f)).toMatch(/only sent by the battery update/);
+        expect(checkFrame('block', f)).not.toBeNull();
+      }
     }
   });
 
@@ -185,7 +194,7 @@ describe('everything else is refused', () => {
     expect(passed).toBeGreaterThan(valid.length);
   });
 
-  it.runIf(HAS_CAPTURES)('every frame the Python client sent in the captures: page/loop/MTU frames pass, 50/52 never', () => {
+  it.runIf(HAS_CAPTURES)('every frame the Python client sent in the captures: page/loop/MTU frames pass, 50/52 never outside the battery update', () => {
     for (const { hex: h } of captureTx) {
       const f = fromHex(h);
       const ok = checkFrame('command', f) === null;
@@ -206,6 +215,111 @@ describe('everything else is refused', () => {
 
   it('frames.ts exports no other builders', () => {
     const fns = Object.entries(frames).filter(([, v]) => typeof v === 'function').map(([k]) => k).sort();
-    expect(fns).toEqual(['ForbiddenFrameError', 'assertFrame', 'checkFrame', 'dumpLog', 'fwBlock', 'fwStart', 'liveLoop', 'mtuPageMode', 'oncePages']);
+    expect(fns).toEqual([
+      'ForbiddenFrameError', 'assertFrame', 'autoOff', 'bmsBlock', 'bmsEnd', 'bmsRead', 'bmsStart', 'bmsWake', 'canBus', 'checkFrame',
+      'dumpLog', 'fwBlock', 'fwStart', 'liveLoop', 'mtuPageMode', 'oncePages',
+    ]);
+  });
+});
+
+describe('battery update frames (docs/DECISIONS.md 2026-11-20, PROTOCOL.md section 7)', () => {
+  const read = { battery: { image: null } };
+
+  it('the exact bytes', () => {
+    expect(hex(canBus(true))).toBe('5001');
+    expect(hex(canBus(false))).toBe('5000');
+    expect(hex(bmsWake())).toBe('52' + '01010000' + '08' + '55aa55aa00000000');
+    expect(hex(bmsRead(0x280))).toBe('52' + '80020000' + '08' + '0000000000000000');
+    expect(hex(bmsRead(0x281))).toBe('52' + '81020000' + '08' + '0000000000000000');
+    expect(hex(bmsRead(0x10f))).toBe('52' + '0f010000' + '08' + '0000000000000000');
+    expect(hex(bmsStart())).toBe('52' + '45000000' + '08' + '000000004541474f'); // "....EAGO"
+    expect(hex(bmsEnd())).toBe('52' + '49000000' + '08' + '0000000000000000');
+    expect(hex(autoOff(0))).toBe('0900000000');
+    expect(hex(autoOff(600))).toBe('0958020000');
+    expect(() => autoOff(30)).toThrow(/0 or 60/);
+    expect(() => bmsRead(0x282 as 0x280)).toThrow();
+  });
+
+  it('none of them without the battery-update context', () => {
+    for (const f of [canBus(true), canBus(false), bmsWake(), bmsRead(0x280), bmsRead(0x281), bmsStart(), bmsEnd(), autoOff(0)]) {
+      expect(checkFrame('command', f), hex(f)).toMatch(/only sent by the battery update/);
+      expect(checkFrame('block', f)).not.toBeNull();
+    }
+  });
+
+  it('reading the battery: bus access, wake, 0x280, 0x281 only; never start, end, 0x10F or a block', () => {
+    for (const f of [canBus(true), canBus(false), bmsWake(), bmsRead(0x280), bmsRead(0x281), autoOff(0)]) expect(checkFrame('command', f, read), hex(f)).toBeNull();
+    expect(checkFrame('command', bmsStart(), read)).toMatch(/only sent during a battery flash/);
+    expect(checkFrame('command', bmsEnd(), read)).toMatch(/only sent during a battery flash/);
+    expect(checkFrame('command', bmsRead(0x10f), read)).toMatch(/only sent during a battery flash/);
+    expect(checkFrame('command', fromHex('52' + '47000000' + '08' + '5a89555557000000'), read)).toMatch(/only sent during a battery flash/);
+  });
+
+  it('fuzz: with the battery context, a 52 / 50 / 09 passes only if it is one of the exact frames', () => {
+    const r = rng(7);
+    const exact = new Set([canBus(true), canBus(false), bmsWake(), bmsRead(0x280), bmsRead(0x281), autoOff(0)].map(hex));
+    const ids = [0x101, 0x10f, 0x280, 0x281, 0x282, 0x045, 0x046, 0x047, 0x048, 0x049, 0x04a, 0x005, 0x1b0, 0x273, 0x7ff];
+    let passed = 0;
+    for (let k = 0; k < 20_000; k++) {
+      const pick = r();
+      let f: Uint8Array;
+      if (pick < 0.7) {
+        const id = ids[Math.floor(r() * ids.length)]!;
+        f = Uint8Array.of(0x52, id & 0xff, id >> 8, 0, 0, r() < 0.9 ? 8 : Math.floor(r() * 9), ...Array.from({ length: 8 }, () => (r() < 0.7 ? 0 : Math.floor(r() * 256))));
+        if (r() < 0.2) f = f.subarray(0, Math.floor(r() * 14));
+      } else if (pick < 0.85) {
+        f = Uint8Array.of(0x50, Math.floor(r() * 3), ...(r() < 0.2 ? [0] : []));
+      } else {
+        f = Uint8Array.of(0x09, ...Array.from({ length: r() < 0.8 ? 4 : Math.floor(r() * 6) }, () => (r() < 0.6 ? 0 : Math.floor(r() * 256))));
+      }
+      if (f.length && checkFrame('command', f, read) === null) {
+        passed++;
+        expect(exact.has(hex(f)), hex(f)).toBe(true);
+      }
+    }
+    expect(passed).toBeGreaterThan(10);
+  });
+
+  it('09: only 0, or the value read from page 5 before the update (60 s or more)', () => {
+    expect(checkFrame('command', autoOff(600), read)).toMatch(/only set 0 or restore/);
+    expect(checkFrame('command', autoOff(600), { battery: { image: null, autoOffRestore: 600 } })).toBeNull();
+    expect(checkFrame('command', autoOff(900), { battery: { image: null, autoOffRestore: 600 } })).toMatch(/only set 0 or restore/);
+    expect(checkFrame('command', fromHex('091e000000'), { battery: { image: null, autoOffRestore: 30 } })).toMatch(/only set 0 or restore/);
+    expect(checkFrame('command', fromHex('09000000'), read)).toMatch(/exactly 5 bytes/);
+  });
+
+  it('a forged battery image is refused', () => {
+    const forged = { entry: {}, info: {}, blockCount: 10 } as unknown as VerifiedBmsFirmware;
+    expect(checkFrame('command', bmsStart(), { battery: { image: forged } })).toMatch(/verified battery image/);
+    expect(() => bmsBlock(forged, 0)).toThrow(/verified/);
+  });
+});
+
+describe.runIf(HAS_BMS_FIRMWARE)('battery update frames with the official image', () => {
+  let rc: VerifiedBmsFirmware;
+  let sc: VerifiedBmsFirmware;
+  beforeAll(async () => {
+    rc = await bundledBms('RC');
+    sc = await bundledBms('SC');
+  });
+
+  it('0x047 carries exactly the block the updater is on, as stored', () => {
+    const raw = bmsBytes('RC');
+    const b0 = bmsBlock(rc, 0);
+    expect(hex(b0)).toBe('52' + '47000000' + '08' + hex(raw.subarray(0, 8)));
+    expect(hex(bmsBlock(rc, 13_416)).slice(-16)).toBe(hex(new TextEncoder().encode('010012RC')));
+    const flash = (block?: number) => ({ battery: { image: rc, block } });
+    expect(checkFrame('command', b0, flash(0))).toBeNull();
+    expect(checkFrame('command', bmsBlock(rc, 5), flash(5))).toBeNull();
+    expect(checkFrame('command', bmsBlock(rc, 5), flash(6))).toMatch(/isn't block 6/);
+    expect(checkFrame('command', bmsBlock(rc, 5), flash())).toMatch(/no block is due/);
+    expect(checkFrame('command', bmsBlock(rc, 5), flash(13_417))).toMatch(/no block is due/);
+    // the other line's image never passes as this one's block
+    expect(checkFrame('command', bmsBlock(sc, 5), flash(5))).toMatch(/isn't block 5/);
+    const tampered = bmsBlock(rc, 9);
+    tampered[8] ^= 0xff;
+    expect(checkFrame('command', tampered, flash(9))).toMatch(/isn't block 9/);
+    // start, end and 0x10F only during a flash
+    for (const f of [bmsStart(), bmsEnd(), bmsRead(0x10f)]) expect(checkFrame('command', f, flash())).toBeNull();
   });
 });

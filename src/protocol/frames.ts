@@ -8,11 +8,23 @@
  *   46 00 <N u16> v0 v1 v2    controller update start (type 0 ONLY)   …0010  verified image only
  *   47 <seq u16> <len> <8 B>  controller update block                 …0011  verified image only
  *
+ * and, ONLY inside the battery update (update/battery.ts sets FrameContext.battery; docs/DECISIONS.md
+ * 2026-11-20, PROTOCOL.md "Battery (BMS) firmware update over BLE" section 7, the shared whitelist):
+ *
+ *   50 01 / 50 00             bus access (CAN mirroring) on / off     …0010
+ *   09 <u32 LE>               auto-off timer: 0, or the value read from page 5 before the update
+ *   52 <id u32 LE> 08 <8 B>   one CAN frame, ONLY these:              …0010
+ *       0x101 55 AA 55 AA 00 00 00 00      wake
+ *       0x10F / 0x280 / 0x281  00 x8        reads (0x10F only during a flash)
+ *       0x045 00 00 00 00 45 41 47 4F      start ("....EAGO"), only during a flash
+ *       0x047 <8 bytes>                    the block the updater is on, of a verified battery image
+ *       0x049 00 x8                        end, only during a flash
+ *
  * and checkFrame() refuses anything else, on any characteristic. Every write in the app goes through
  * checkFrame (ble/link.ts). Page requests are built exactly like page_req() in globe_capture.py.
  * Nordic Secure DFU writes are not frames of this protocol; they are gated in update/hmiDfu.ts.
  */
-import { bytesEqual, hexSpaced, u16 } from './bytes';
+import { bytesEqual, hexSpaced, u16, u32 } from './bytes';
 import {
   fwVersionBytes,
   isVerifiedFirmware,
@@ -20,6 +32,7 @@ import {
   FW_BLOCK_SIZE,
   type VerifiedFirmware,
 } from '../analysis/firmware';
+import { isVerifiedBms, readBmsBlock, type VerifiedBmsFirmware } from '../analysis/bmsFirmware';
 
 export const OP_MTU_PAGE_MODE = 0x3c; // 60
 export const OP_ONCE_PAGE = 0x3d; // 61
@@ -28,6 +41,31 @@ export const OP_DUMP_LOG = 0x29; // 41
 export const OP_FW_START = 0x46; // 70
 export const OP_FW_BLOCK = 0x47; // 71
 export const FW_TYPE_CONTROLLER = 0x00;
+export const OP_AUTO_OFF = 0x09;
+export const OP_CAN_BUS = 0x50; // 80
+export const OP_CAN_SEND = 0x52; // 82
+/** `52 <id u32 LE> <len> <8 data>`. */
+export const CAN_SEND_FRAME_SIZE = 14;
+/** The stock app refuses an auto-off of 1-59 s (PROTOCOL.md `09`). */
+export const AUTO_OFF_MIN_S = 60;
+
+/** The battery-update CAN IDs (PROTOCOL.md "Battery (BMS) firmware update over BLE"). */
+export const BMS_CAN = Object.freeze({
+  PROBE_10F: 0x10f,
+  WAKE: 0x101,
+  VERSION: 0x280,
+  HW_TYPE: 0x281,
+  START: 0x045,
+  ERASED: 0x046,
+  DATA: 0x047,
+  ACK: 0x048,
+  END: 0x049,
+  RESULT: 0x04a,
+});
+const BMS_WAKE_DATA = [0x55, 0xaa, 0x55, 0xaa, 0, 0, 0, 0] as const;
+/** "....EAGO": the dealer tool's start frame (not the HMI relay's "0" + version bytes). */
+const BMS_START_DATA = [0, 0, 0, 0, 0x45, 0x41, 0x47, 0x4f] as const;
+export type BmsReadId = typeof BMS_CAN.PROBE_10F | typeof BMS_CAN.VERSION | typeof BMS_CAN.HW_TYPE;
 
 /** Identity strings, once (PAGES_IDENTITY). */
 export const PAGES_IDENTITY: readonly number[] = Object.freeze(range(11, 28));
@@ -125,15 +163,81 @@ export function fwBlock(img: VerifiedFirmware, seq: number): Uint8Array {
   return frame;
 }
 
+// ---- battery update (update/battery.ts only) -----------------------------------------------------
+
+/** `50 01` / `50 00`: bus access (CAN mirroring) on / off. */
+export function canBus(on: boolean): Uint8Array {
+  return Uint8Array.of(OP_CAN_BUS, on ? 1 : 0);
+}
+
+/** `52 <id u32 LE> 08 <8 data>`. Private: only the battery-update builders below use it. */
+function canSend(id: number, data: ArrayLike<number>): Uint8Array {
+  const f = new Uint8Array(CAN_SEND_FRAME_SIZE);
+  f[0] = OP_CAN_SEND;
+  f[1] = id & 0xff;
+  f[2] = (id >>> 8) & 0xff;
+  f[3] = (id >>> 16) & 0xff;
+  f[4] = (id >>> 24) & 0xff;
+  f[5] = 8;
+  f.set(Array.from(data).slice(0, 8), 6);
+  return f;
+}
+
+/** CAN 0x101 `55 AA 55 AA 00 00 00 00` (the dealer tool's "MCWakeup"). */
+export function bmsWake(): Uint8Array {
+  return canSend(BMS_CAN.WAKE, BMS_WAKE_DATA);
+}
+
+/** CAN 0x10F / 0x280 (version) / 0x281 (hardware type), 8 zero bytes. */
+export function bmsRead(id: BmsReadId): Uint8Array {
+  if (id !== BMS_CAN.PROBE_10F && id !== BMS_CAN.VERSION && id !== BMS_CAN.HW_TYPE) throw new Error(`0x${(id as number).toString(16)} is not a battery read`);
+  return canSend(id, [0, 0, 0, 0, 0, 0, 0, 0]);
+}
+
+/** CAN 0x045 `00 00 00 00 45 41 47 4F`: the BMS bootloader start. */
+export function bmsStart(): Uint8Array {
+  return canSend(BMS_CAN.START, BMS_START_DATA);
+}
+
+/** CAN 0x049, 8 zero bytes: the end of the image. */
+export function bmsEnd(): Uint8Array {
+  return canSend(BMS_CAN.END, [0, 0, 0, 0, 0, 0, 0, 0]);
+}
+
+/** CAN 0x047 with block [index] (0-based) of a verified battery image, exactly as stored. */
+export function bmsBlock(img: VerifiedBmsFirmware, index: number): Uint8Array {
+  if (!isVerifiedBms(img)) throw new Error('Battery blocks need a verified (allowlisted) battery image');
+  return canSend(BMS_CAN.DATA, readBmsBlock(img, index));
+}
+
+/** `09 <u32 LE seconds>`: the auto-off timer. 0 = never; otherwise at least 60 s (the stock rule). */
+export function autoOff(seconds: number): Uint8Array {
+  if (!Number.isInteger(seconds) || seconds < 0 || seconds > 0xffffffff || (seconds > 0 && seconds < AUTO_OFF_MIN_S)) {
+    throw new Error(`Auto-off must be 0 or ${AUTO_OFF_MIN_S}+ seconds, not ${seconds}`);
+  }
+  return Uint8Array.of(OP_AUTO_OFF, seconds & 0xff, (seconds >>> 8) & 0xff, (seconds >>> 16) & 0xff, (seconds >>> 24) & 0xff);
+}
+
 /** Where a frame is written: …0010 (commands, with response) or …0011 (controller blocks). */
 export type FrameTarget = 'command' | 'block';
 
+/** Set ONLY by update/battery.ts. Without it, 50 / 52 / 09 are refused. */
+export interface BatteryFrameContext {
+  /** The image being flashed; null while the battery is only being read. 0x045 / 0x047 / 0x049 need it. */
+  image: VerifiedBmsFirmware | null;
+  /** 0-based index of the one 0x047 block allowed now (the next block in file order). */
+  block?: number;
+  /** The auto-off value read from page 5 before the update: the only nonzero `09` allowed. */
+  autoOffRestore?: number | null;
+}
+
 /**
- * Set ONLY by update/controller.ts while a controller update runs. Without it, 46/47 are refused even
- * for a verified image.
+ * Set ONLY by update/controller.ts (firmware) or update/battery.ts (battery) while that update runs.
+ * Without it, 46/47 and 50/52/09 are refused even for a verified image.
  */
 export interface FrameContext {
   firmware?: VerifiedFirmware;
+  battery?: BatteryFrameContext;
 }
 
 /** Opcodes that must never be sent, with why (docs/SPEC.md). Used for clear refusal messages. */
@@ -145,16 +249,13 @@ export const NEVER_SEND: Readonly<Record<number, string>> = {
   0x06: 'clear PIN (06)',
   0x07: 'headlight (07)',
   0x08: 'power off (08)',
-  0x09: 'auto-off timer (09)',
   0x0b: 'sensitivity (0B): unsupported on this bike',
   0x0c: 'suspend (0C): a power-off on this bike',
   0x1e: 'raw CAN bypass (1E)',
-  0x20: 'raw CAN frame (20)',
+  0x20: 'raw CAN frame (20): the battery update uses the proven 52 path only',
   0x2a: 'LOG ERASE (2A): destructive',
   0x2b: 'config bundle (2B): includes the speed-limit and capacity fields',
   0x2c: 'units (2C)',
-  0x50: 'CAN analysis (50)',
-  0x52: 'throttle activation / CAN request (52)',
 };
 
 /** null = the frame may be sent to [target]; otherwise why not. Never throws. */
@@ -178,7 +279,7 @@ export function checkFrame(target: FrameTarget, frame: Uint8Array, ctx: FrameCon
         : 'only the stored-log reads 29 01|02|03 00 00 are allowed';
     case OP_FW_START: {
       if (frame.length >= 2 && frame[1] !== FW_TYPE_CONTROLLER) {
-        return `firmware type 0x${frame[1]!.toString(16).padStart(2, '0')} refused: only the controller (type 0x00); battery firmware is dealer-only`;
+        return `firmware type 0x${frame[1]!.toString(16).padStart(2, '0')} refused: only the controller (type 0x00); the battery is updated with raw CAN frames (52), never the display's relay`;
       }
       const img = ctx.firmware;
       if (!img) return '46 is only sent by the controller update, with a verified image';
@@ -187,6 +288,13 @@ export function checkFrame(target: FrameTarget, frame: Uint8Array, ctx: FrameCon
     }
     case OP_FW_BLOCK:
       return 'firmware blocks (47) go to …0011, never …0010';
+    case OP_CAN_BUS:
+      if (!ctx.battery) return '50 (bus access) is only sent by the battery update';
+      return bytesEqual(frame, canBus(true)) || bytesEqual(frame, canBus(false)) ? null : 'the only 50 frames are 50 01 and 50 00';
+    case OP_CAN_SEND:
+      return checkCanSend(frame, ctx.battery);
+    case OP_AUTO_OFF:
+      return checkAutoOff(frame, ctx.battery);
     default:
       return NEVER_SEND[op] !== undefined
         ? `never sent: ${NEVER_SEND[op]}`
@@ -213,6 +321,48 @@ function checkBlock(frame: Uint8Array, ctx: FrameContext): string | null {
   const seq = u16(frame, 1)!;
   if (seq < 1 || seq > img.blockCount) return `block ${seq} is outside 1..${img.blockCount}`;
   return bytesEqual(frame, fwBlock(img, seq)) ? null : `block ${seq} doesn't match the verified image`;
+}
+
+function checkCanSend(frame: Uint8Array, b: BatteryFrameContext | undefined): string | null {
+  if (!b) return '52 (CAN frame) is only sent by the battery update';
+  if (frame.length !== CAN_SEND_FRAME_SIZE || frame[5] !== 8) return `52 frames are exactly ${CAN_SEND_FRAME_SIZE} bytes with length 8`;
+  const id = u32(frame, 1)!;
+  const name = `CAN 0x${id.toString(16).padStart(3, '0')}`;
+  const flashing = b.image !== null && isVerifiedBms(b.image);
+  if (b.image !== null && !flashing) return '52 needs a verified battery image';
+  switch (id) {
+    case BMS_CAN.WAKE:
+      return bytesEqual(frame, bmsWake()) ? null : `${name}: only 55 AA 55 AA 00 00 00 00`;
+    case BMS_CAN.VERSION:
+    case BMS_CAN.HW_TYPE:
+      return bytesEqual(frame, bmsRead(id)) ? null : `${name}: only 8 zero bytes`;
+    case BMS_CAN.PROBE_10F:
+      if (!flashing) return `${name} is only sent during a battery flash`;
+      return bytesEqual(frame, bmsRead(id)) ? null : `${name}: only 8 zero bytes`;
+    case BMS_CAN.START:
+      if (!flashing) return `${name} (start) is only sent during a battery flash, with a verified image`;
+      return bytesEqual(frame, bmsStart()) ? null : `${name}: only 00 00 00 00 45 41 47 4F`;
+    case BMS_CAN.END:
+      if (!flashing) return `${name} (end) is only sent during a battery flash, with a verified image`;
+      return bytesEqual(frame, bmsEnd()) ? null : `${name}: only 8 zero bytes`;
+    case BMS_CAN.DATA: {
+      if (!flashing) return `${name} (data) is only sent during a battery flash, with a verified image`;
+      const i = b.block;
+      if (i === undefined || !Number.isInteger(i) || i < 0 || i >= b.image!.blockCount) return `${name}: no block is due now`;
+      return bytesEqual(frame, bmsBlock(b.image!, i)) ? null : `${name}: isn't block ${i} of the verified image`;
+    }
+    default:
+      return `${name} is not a battery-update frame`;
+  }
+}
+
+function checkAutoOff(frame: Uint8Array, b: BatteryFrameContext | undefined): string | null {
+  if (!b) return '09 (auto-off) is only sent by the battery update';
+  if (frame.length !== 5) return '09 frames are exactly 5 bytes';
+  const v = u32(frame, 1)!;
+  if (v === 0) return null;
+  if (v >= AUTO_OFF_MIN_S && b.autoOffRestore != null && v === b.autoOffRestore) return null;
+  return `09 may only set 0 or restore the value read before the update${b.autoOffRestore ? ` (${b.autoOffRestore} s)` : ''}`;
 }
 
 /** checkFrame, throwing ForbiddenFrameError. */

@@ -1,8 +1,8 @@
 # Globe Haul Shop Tool (Web Bluetooth)
 
 Static TypeScript + Vite + React app for a bike shop: connect to ONE Globe Haul display (EH02_xxxxx),
-flash the two OFFICIAL images as a repair, read everything, print a report, download logs. No backend,
-no storage, no network at runtime.
+flash the OFFICIAL controller, HMI and battery (BMS) images as a repair, read everything, print a report,
+download logs. No backend, no storage, no network at runtime.
 
 - **The spec is `docs/SPEC.md`. Read it first; it wins over everything else here.** `docs/DECISIONS.md`
   holds the user's later rulings; each one amends the spec where it says so.
@@ -13,12 +13,18 @@ no storage, no network at runtime.
   `%USERPROFILE%\AndroidStudioProjects\GlobeHaulApp` (read-only reference; never edit it).
 - Never fabricate protocol details. Not in PROTOCOL.md / the Python / the Android source → ask.
 - Sendable frames are whitelisted in `src/protocol/frames.ts` (`checkFrame`). Never add an opcode there
-  without the spec allowing it. Never send: 2A 2B 1E 20 0B 08 0C 01 02 04 05 06 07 09 2C 52 50.
+  without the spec allowing it. Never send: 2A 2B 1E 20 0B 08 0C 01 02 04 05 06 07 2C.
+  `50`, `52` and `09` only from the battery update (`src/update/battery.ts`, which alone builds
+  `FrameContext.battery`): `52` only the BMS frames of PROTOCOL.md "Battery (BMS) firmware update over BLE"
+  section 7, `0x047` only the next block of a verified battery image, `09` only 0 or the value read from
+  page 5 (docs/DECISIONS.md 2026-11-20).
 - `protocol/`, `analysis/`, `update/`, `export/` stay free of DOM and `navigator` (a test enforces it).
   Only `src/ble/webBluetooth.ts` / `src/platform/` may touch `navigator.bluetooth`.
-- Firmware: only the two allowlisted images (`src/analysis/firmware.ts`, full SHA-256). Nothing from
-  `reference/firmware/` other than those two is ever bundled, loaded or parsed.
-- **Never commit firmware, captures, logs or anything from a real bike** (see `.gitignore`). The two
+- Firmware: only the allowlisted images in `src/analysis/firmware.ts`, by full SHA-256: `ALLOWLIST`
+  (controller `M1B0306s0.bin`, HMI `EH02_Eagotech_5.19.zip`) and `BMS_ALLOWLIST` (the two battery images,
+  RC and SC: different CPUs, the line is checked against the battery). Nothing else from
+  `reference/firmware/` is ever bundled, loaded or parsed.
+- **Never commit firmware, captures, logs or anything from a real bike** (see `.gitignore`). The
   images and the captures exist only locally; tests that need them skip when they're absent.
 - Decoder deviations from the Python are listed in ONE place: `DEVIATIONS` in `src/protocol/pages.ts`.
 - Parity fixtures: `python tools/make_fixtures.py` regenerates `tests/fixtures/py_*.json` (synthetic,
